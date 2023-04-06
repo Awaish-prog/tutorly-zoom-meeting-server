@@ -1,18 +1,12 @@
+const express = require('express');
+const { getPreviousMeetings, getUpcomingMeetings } = require('./Controllers/Meetings');
+const app = express()
 
-var Acuity = require('acuityscheduling');
+app.get("/getPreviousMeetings/:email/:role", getPreviousMeetings)
 
-var acuity = Acuity.basic({
-  userId: 24928536,
-  apiKey: '3f944e8ea743a039ecaded4245af4f68'
-});
+app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 
-acuity.request('appointments?calendarID=8175425&max=2147483647', function (err, res, appointments) {
-  if (err) return console.error(err);
-  for(let i = 0; i < appointments.length; i++){
-    if(new Date(appointments[i].datetime) > new Date()){
-            console.log(`${appointments[i].type} ${i} ${appointments[i].datetime}`);
-    }
-  }
-  
-});
 
+app.listen("4000", () => {
+  console.log("server running");
+})
