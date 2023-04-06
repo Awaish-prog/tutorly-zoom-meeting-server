@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- Load the Google API Client Library -->
+<script src="https://apis.google.com/js/api.js"></script>
+
+<script>
+  // Initialize the Google API Client Library
+// function initClient() {
+//     gapi.client.init({
+//       apiKey: 'AIzaSyBqbR16l6d6pioYnmmRQc0wIuZRRItBUNA',
+//       clientId: '217185937608-hk1rimb2lgcvaklub2nn5ne9se5tr2kd.apps.googleusercontent.com',
+//       discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
+//       scope: 'https://www.googleapis.com/auth/drive.file'
+//     }).then(function() {
+//       console.log('Google API client initialized');
+//       // You can now use the gapi object to access Google APIs
+//     }, function(error) {
+//       console.error(`Error initializing Google API client: ${error}`);
+//     });
+//   }
+
+//   // Load the Google API Client Library
+//   async function createFolder(name){
+//     await gapi.load('client', initClient);
+//     const accessToken = 'AIzaSyBqbR16l6d6pioYnmmRQc0wIuZRRItBUNA'
+//     gapi.client.drive.files.create({
+//     resource: {
+//       name: name,
+//       mimeType: 'application/vnd.google-apps.folder'
+//     },
+//     fields: 'id',
+//     headers: {
+//       Authorization: `Bearer ${accessToken}`
+//     }
+//   }).then(function(response) {
+//     console.log(`Folder created with ID: ${response.result.id}`);
+//   }, function(error) {
+//     console.error(`Error creating folder: ${error}`);
+//   }); 
+//   }
+//   createFolder('My Folder');
+
+
+</script>
+
+</body>
+</html>
