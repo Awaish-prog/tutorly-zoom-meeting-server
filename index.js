@@ -19,6 +19,13 @@ app.post("/getEvent", (req, res) => {
   console.log(req.body);
 })
 
+app.get('/getEvent', (req, res) => {
+  const verificationCode = req.query['verify_token'];
+  
+  res.status(200).send(verificationCode);
+  
+});
+
 var options = {
   method: 'GET',
   // A non-existing sample userId is used in the example below.
