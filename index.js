@@ -25,7 +25,8 @@ app.post("/getEvent", (req, res) => {
     const dl = new DownloaderHelper(downloadUrl, __dirname);
 
     dl.on('end', () => {
-      printMeetingDetails(recording.meeting_id)
+      //printMeetingDetails(recording.meeting_id)
+      console.log("here");
     });
     dl.on('error', (err) => console.log('Download Failed', err));
     dl.start().catch(err => console.error(err));
