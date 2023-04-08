@@ -3,15 +3,22 @@ const { getPreviousMeetings, getUpcomingMeetings } = require('./Controllers/Meet
 const app = express()
 const cors = require('cors')
 const request = require('request')
+const bodyParser = require('body-parser');
 const { DownloaderHelper } = require('node-downloader-helper');
 
 
 
 app.use(cors())
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/getPreviousMeetings/:email/:role", getPreviousMeetings)
 
 app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
+
+app.post("/getEvent", (req, res) => {
+  console.log(res.body);
+})
 
 var options = {
   method: 'GET',
