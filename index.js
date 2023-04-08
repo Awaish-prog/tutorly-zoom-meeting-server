@@ -3,6 +3,9 @@ const { getPreviousMeetings, getUpcomingMeetings } = require('./Controllers/Meet
 const app = express()
 const cors = require('cors')
 const request = require('request')
+const { DownloaderHelper } = require('node-downloader-helper');
+
+
 
 app.use(cors())
 
@@ -13,22 +16,30 @@ app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 var options = {
   method: 'GET',
   // A non-existing sample userId is used in the example below.
-  url: 'https://api.zoom.us/v2/users/antonia@tutorly.com/meetings',
+  url: 'https://api.zoom.us/v2/meetings/iql/ZxJpTmmJ+xk0SALs+g==/recordings',
   headers: {
-    authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6Ilg3a2d4RVg0UmFlWmhtcG55Y1dCRmciLCJleHAiOjE2ODA4NDI1MjksImlhdCI6MTY4MDgzNzEyOX0.oV_WenOWQIufvG8tDE1TzU_bpnTkyxdi_almf9m5ZPo', // Do not publish or share your token publicly.
+    authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6Ilg3a2d4RVg0UmFlWmhtcG55Y1dCRmciLCJleHAiOjE2ODA4ODIwNTMsImlhdCI6MTY4MDg3NjY1NH0.pN7eDyqTS4k5tijBnso-zm_sEwB3VPDn1zCt2hK7plY', // Do not publish or share your token publicly.
   },
 };
+
 
 function makeR(){
   request(options, function (error, response, body) {
     if (error) throw new Error(error);
-    const j = JSON.stringify(JSON.parse(body), null, 2);
-    console.log(j);
+    const j = JSON.parse(body)
+    const downloadUrl = j.recording_files[0].download_url;
+    
+    const dl = new DownloaderHelper(downloadUrl, __dirname);
+
+    dl.on('end', () => console.log('Download Completed'));
+    dl.on('error', (err) => console.log('Download Failed', err));
+    dl.start().catch(err => console.error(err));
+
   });
 }
 
 
-makeR()
+//makeR()
 
 
 app.listen("4000", () => {
