@@ -18,6 +18,7 @@ app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 
 app.post("/getEvent", (req, res) => {
   console.log("welcome");
+  console.log(req.body)
   // var response
 
   // console.log(req.headers)
