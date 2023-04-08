@@ -19,7 +19,7 @@ app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 app.post("/getEvent", (req, res) => {
   console.log(req.body);
   if(req.body.event === 'endpoint.url_validation') {
-    const hashForValidate = crypto.createHmac('sha256', process.env.ZOOM_WEBHOOK_SECRET_TOKEN).update(req.body.payload.plainToken).digest('hex')
+    const hashForValidate = crypto.createHmac('sha256', "f2E7AulvQuGM18R5mwfZDg").update(req.body.payload.plainToken).digest('hex')
 
           
     response = {
