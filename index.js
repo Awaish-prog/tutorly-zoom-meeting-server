@@ -17,7 +17,7 @@ app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 
 app.post("/getEvent", (req, res) => {
   console.log(req.body);
-  res.status(200).send(req.body.payload.plainToken);
+  res.status(200).send(req.body.subscriptionId);
 })
 
 app.get('/getEvent', (req, res) => {
