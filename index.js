@@ -1,5 +1,5 @@
 const express = require('express');
-const { getPreviousMeetings, getUpcomingMeetings } = require('./Controllers/Meetings');
+const { getPreviousMeetings, getUpcomingMeetings, printMeetingDetails } = require('./Controllers/Meetings');
 const app = express()
 const cors = require('cors')
 const request = require('request')
@@ -18,7 +18,16 @@ app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 
 app.post("/getEvent", (req, res) => {
   
-  console.log(req.body.payload.object.recording_files)
+  const recording = req.body.payload.object.recording_files[0]
+  const downloadUrl = recording.download_url
+    
+    const dl = new DownloaderHelper(downloadUrl, __dirname);
+
+    dl.on('end', () => {
+      printMeetingDetails(recording.meeting_id)
+    });
+    dl.on('error', (err) => console.log('Download Failed', err));
+    dl.start().catch(err => console.error(err));
   // var response
 
   // console.log(req.headers)
@@ -88,13 +97,7 @@ function makeR(){
   request(options, function (error, response, body) {
     if (error) throw new Error(error);
     const j = JSON.parse(body)
-    const downloadUrl = j.recording_files[0].download_url;
     
-    const dl = new DownloaderHelper(downloadUrl, __dirname);
-
-    dl.on('end', () => console.log('Download Completed'));
-    dl.on('error', (err) => console.log('Download Failed', err));
-    dl.start().catch(err => console.error(err));
 
   });
 }

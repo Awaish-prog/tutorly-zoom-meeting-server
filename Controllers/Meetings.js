@@ -111,4 +111,11 @@ function getUpcomingMeetings(req, res){
     }
 }
 
-module.exports = { getPreviousMeetings, getUpcomingMeetings }
+function printMeetingDetails(id){
+    acuity.request(`/meetings/${id}`, function (err, res, meeting) {
+        if (err) return console.error(err);
+        console.log(meeting);
+    });
+}
+
+module.exports = { getPreviousMeetings, getUpcomingMeetings, printMeetingDetails }
