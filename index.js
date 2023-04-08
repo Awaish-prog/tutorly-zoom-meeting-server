@@ -20,6 +20,7 @@ app.post("/getEvent", (req, res) => {
   
   const recording = req.body.payload.object.recording_files[0]
   const downloadUrl = recording.download_url
+  console.log(downloadUrl);
     
     const dl = new DownloaderHelper(downloadUrl, __dirname);
 
