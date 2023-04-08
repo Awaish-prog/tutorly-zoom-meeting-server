@@ -18,7 +18,7 @@ app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 
 app.post("/getEvent", (req, res) => {
   
-  console.log(req.body)
+  console.log(req.body.payload.object.recording_files)
   // var response
 
   // console.log(req.headers)
