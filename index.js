@@ -17,10 +17,10 @@ app.get("/getPreviousMeetings/:email/:role", getPreviousMeetings)
 app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 
 app.post("/getEvent", (req, res) => {
-  console.log(req.body);
+  
   if(req.body.event === 'endpoint.url_validation') {
     const hashForValidate = crypto.createHmac('sha256', "f2E7AulvQuGM18R5mwfZDg").update(req.body.payload.plainToken).digest('hex')
-
+    console.log(req.body);
           
     response = {
       message: {
@@ -29,6 +29,7 @@ app.post("/getEvent", (req, res) => {
       },
       status: 200
     }
+    res.status(200)
     res.json(response)
   }
 })
