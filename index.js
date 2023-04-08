@@ -5,6 +5,7 @@ const cors = require('cors')
 const request = require('request')
 const bodyParser = require('body-parser');
 const { DownloaderHelper } = require('node-downloader-helper');
+const crypto = require('crypto')
 
 
 
@@ -17,7 +18,19 @@ app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 
 app.post("/getEvent", (req, res) => {
   console.log(req.body);
-  res.status(200).send(req.body.subscriptionId);
+  if(req.body.event === 'endpoint.url_validation') {
+    const hashForValidate = crypto.createHmac('sha256', process.env.ZOOM_WEBHOOK_SECRET_TOKEN).update(req.body.payload.plainToken).digest('hex')
+
+          
+    response = {
+      message: {
+        plainToken: req.body.payload.plainToken,
+        encryptedToken: hashForValidate
+      },
+      status: 200
+    }
+    res.json(response)
+  }
 })
 
 app.get('/getEvent', (req, res) => {
