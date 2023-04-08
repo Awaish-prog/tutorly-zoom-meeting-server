@@ -22,15 +22,12 @@ app.post("/getEvent", (req, res) => {
     const hashForValidate = crypto.createHmac('sha256', "f2E7AulvQuGM18R5mwfZDg").update(req.body.payload.plainToken).digest('hex')
     console.log(req.body);
           
-    response = {
-      message: {
-        plainToken: req.body.payload.plainToken,
-        encryptedToken: hashForValidate
-      },
-      status: 200
-    }
+    
     res.status(200)
-    res.json(response)
+    response.json({
+      "plainToken": request.body.payload.plainToken,
+      "encryptedToken": hashForValidate
+    })
   }
 })
 
