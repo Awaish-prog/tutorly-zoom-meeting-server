@@ -64,14 +64,14 @@ app.post("/getEvent", (req, res) => {
   const downloadUrl = recording.download_url
   console.log(downloadUrl);
     
-  //   const dl = new DownloaderHelper(downloadUrl, __dirname);
+    const dl = new DownloaderHelper(downloadUrl, __dirname);
 
-  //   dl.on('end', () => {
-  //     //printMeetingDetails(recording.meeting_id)
-  //     console.log("here");
-  //   });
-  //   dl.on('error', (err) => console.log('Download Failed', err));
-  //   dl.start().catch(err => console.error(err));
+    dl.on('end', () => {
+      //printMeetingDetails(recording.meeting_id)
+      console.log("here");
+    });
+    dl.on('error', (err) => console.log('Download Failed', err));
+    dl.start().catch(err => console.error(err));
 
     }
   } else {
