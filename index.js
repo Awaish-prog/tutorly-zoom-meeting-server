@@ -18,18 +18,7 @@ app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 
 app.post("/getEvent", (req, res) => {
   
-  // const recording = req.body.payload.object.recording_files[0]
-  // const downloadUrl = recording.download_url
-  // console.log(downloadUrl);
-    
-  //   const dl = new DownloaderHelper(downloadUrl, __dirname);
 
-  //   dl.on('end', () => {
-  //     //printMeetingDetails(recording.meeting_id)
-  //     console.log("here");
-  //   });
-  //   dl.on('error', (err) => console.log('Download Failed', err));
-  //   dl.start().catch(err => console.error(err));
   var response
 
   console.log(req.headers)
@@ -71,6 +60,18 @@ app.post("/getEvent", (req, res) => {
       res.json(response)
 
       // business logic here, example make API request to Zoom or 3rd party
+      const recording = req.body.payload.object.recording_files[0]
+  const downloadUrl = recording.download_url
+  console.log(downloadUrl);
+    
+  //   const dl = new DownloaderHelper(downloadUrl, __dirname);
+
+  //   dl.on('end', () => {
+  //     //printMeetingDetails(recording.meeting_id)
+  //     console.log("here");
+  //   });
+  //   dl.on('error', (err) => console.log('Download Failed', err));
+  //   dl.start().catch(err => console.error(err));
 
     }
   } else {
