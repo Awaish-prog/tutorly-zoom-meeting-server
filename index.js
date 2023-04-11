@@ -126,7 +126,8 @@ async function upload(){
 
 async function getFile(){
   const x = await driveClient.files.get({
-    fileId: '1T7MsrywtY4nPmr1HZYrVpNdosEHfj_EX'
+    fileId: '1T7MsrywtY4nPmr1HZYrVpNdosEHfj_EX',
+    fields: 'webViewLink'
   })
   console.log(x);
 }
