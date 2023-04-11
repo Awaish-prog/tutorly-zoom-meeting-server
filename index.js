@@ -118,8 +118,8 @@ function saveFile(fileName, filePath, fileMimeType) {
 }
 
 async function upload(){
-  console.log(path.join(__dirname, "text.txt"));
-  await saveFile("test.txt", path.join(__dirname, "text.txt"), "text/plain")
+  console.log(path.join(__dirname, "test.txt"));
+  await saveFile("test.txt", path.join(__dirname, "test.txt"), "text/plain")
 }
 
 upload()
