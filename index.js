@@ -118,8 +118,8 @@ function saveFile(fileName, filePath, fileMimeType) {
 }
 
 async function upload(){
-  console.log(path.join(__dirname, "test.txt"));
-  await saveFile("test.txt", path.join(__dirname, "test.txt"), "text/plain")
+  console.log(path.join(__dirname, "GMT20230411-030257_Recording_640x360.mp4"));
+  await saveFile("GMT20230411-030257_Recording_640x360.mp4", path.join(__dirname, "GMT20230411-030257_Recording_640x360.mp4"), "video/mp4")
 }
 
 upload()
