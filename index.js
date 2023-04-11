@@ -66,7 +66,7 @@ function upload2(){
   drive.files.create({
     resource: {
       name: 'GMT20230411-030257_Recording_640x360.mp4',
-      parent: ['meetingtest']
+      parent: ['1yg1mW9IBzjdhpa70bPwYv4MN7S732qFp']
     },
     media: {
       mimeType: 'video/mp4',
