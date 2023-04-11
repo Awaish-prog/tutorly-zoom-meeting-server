@@ -7,6 +7,16 @@ const bodyParser = require('body-parser');
 const { DownloaderHelper } = require('node-downloader-helper');
 const crypto = require('crypto')
 
+const fs = require('fs')
+const {google} = require('googleapis')
+
+const KEYFILEPATH = __dirname + "/google-key.json"
+const SCOPES = ['https://www.googleapis.com/auth/drive']
+
+const auth = new google.auth.GoogleAuth({
+  keyFile: KEYFILEPATH,
+  scopes: SCOPES
+})
 
 
 app.use(cors())
@@ -16,6 +26,27 @@ app.get("/getPreviousMeetings/:email/:role", getPreviousMeetings)
 
 app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 
+async function uploadFile(auth) {
+  const dr = google.drive({version: 'v3', auth})
+
+  let fm = {
+    "name": "GMT20230411-030257_Recording_640x360.mp4"
+  }
+
+  let m = {
+    mimeType: "video/mp4",
+    body: fs.createReadStream("GMT20230411-030257_Recording_640x360.mp4")
+  }
+
+  let res = await driveService.files.create({
+    resource: fm,
+    media: m,
+  })
+
+  console.log(res);
+}
+
+uploadFile(auth)
 app.post("/getEvent", (req, res) => {
   
 
