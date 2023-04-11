@@ -124,74 +124,74 @@ async function upload(){
 }
 
 upload()
-app.post("/getEvent", (req, res) => {
+// app.post("/getEvent", (req, res) => {
   
 
-  var response
+//   var response
 
-  console.log(req.headers)
-  console.log(req.body)
+//   console.log(req.headers)
+//   console.log(req.body)
 
-  // construct the message string
-  const message = `v0:${req.headers['x-zm-request-timestamp']}:${JSON.stringify(req.body)}`
+//   // construct the message string
+//   const message = `v0:${req.headers['x-zm-request-timestamp']}:${JSON.stringify(req.body)}`
 
-  const hashForVerify = crypto.createHmac('sha256', "D4HtDu_4T8OWhiYjBqoKhg").update(message).digest('hex')
+//   const hashForVerify = crypto.createHmac('sha256', "D4HtDu_4T8OWhiYjBqoKhg").update(message).digest('hex')
 
-  // hash the message string with your Webhook Secret Token and prepend the version semantic
-  const signature = `v0=${hashForVerify}`
+//   // hash the message string with your Webhook Secret Token and prepend the version semantic
+//   const signature = `v0=${hashForVerify}`
 
-  // you validating the request came from Zoom https://marketplace.zoom.us/docs/api-reference/webhook-reference#notification-structure
-  if (req.headers['x-zm-signature'] === signature) {
+//   // you validating the request came from Zoom https://marketplace.zoom.us/docs/api-reference/webhook-reference#notification-structure
+//   if (req.headers['x-zm-signature'] === signature) {
 
-    // Zoom validating you control the webhook endpoint https://marketplace.zoom.us/docs/api-reference/webhook-reference#validate-webhook-endpoint
-    if(req.body.event === 'endpoint.url_validation') {
-      const hashForValidate = crypto.createHmac('sha256', "D4HtDu_4T8OWhiYjBqoKhg").update(req.body.payload.plainToken).digest('hex')
+//     // Zoom validating you control the webhook endpoint https://marketplace.zoom.us/docs/api-reference/webhook-reference#validate-webhook-endpoint
+//     if(req.body.event === 'endpoint.url_validation') {
+//       const hashForValidate = crypto.createHmac('sha256', "D4HtDu_4T8OWhiYjBqoKhg").update(req.body.payload.plainToken).digest('hex')
 
-      response = {
-        message: {
-          plainToken: req.body.payload.plainToken,
-          encryptedToken: hashForValidate
-        },
-        status: 200
-      }
+//       response = {
+//         message: {
+//           plainToken: req.body.payload.plainToken,
+//           encryptedToken: hashForValidate
+//         },
+//         status: 200
+//       }
 
-      console.log(response.message)
+//       console.log(response.message)
 
-      res.status(response.status)
-      res.json(response.message)
-    } else {
-      response = { message: 'Authorized request to Zoom Webhook sample.', status: 200 }
+//       res.status(response.status)
+//       res.json(response.message)
+//     } else {
+//       response = { message: 'Authorized request to Zoom Webhook sample.', status: 200 }
 
-      console.log(response.message)
+//       console.log(response.message)
 
-      res.status(response.status)
-      res.json(response)
+//       res.status(response.status)
+//       res.json(response)
 
-      // business logic here, example make API request to Zoom or 3rd party
-      const recording = req.body.payload.object.recording_files[0]
-  const downloadUrl = recording.download_url
-  console.log(downloadUrl);
+//       // business logic here, example make API request to Zoom or 3rd party
+//       const recording = req.body.payload.object.recording_files[0]
+//   const downloadUrl = recording.download_url
+//   console.log(downloadUrl);
     
-    const dl = new DownloaderHelper(downloadUrl, __dirname);
+//     const dl = new DownloaderHelper(downloadUrl, __dirname);
 
-    dl.on('end', () => {
-      //printMeetingDetails(recording.meeting_id)
-      console.log("here");
-    });
-    dl.on('error', (err) => console.log('Download Failed', err));
-    dl.start().catch(err => console.error(err));
+//     dl.on('end', () => {
+//       //printMeetingDetails(recording.meeting_id)
+//       console.log("here");
+//     });
+//     dl.on('error', (err) => console.log('Download Failed', err));
+//     dl.start().catch(err => console.error(err));
 
-    }
-  } else {
+//     }
+//   } else {
 
-    response = { message: 'Unauthorized request to Zoom Webhook sample.', status: 401 }
+//     response = { message: 'Unauthorized request to Zoom Webhook sample.', status: 401 }
 
-    console.log(response.message)
+//     console.log(response.message)
 
-    res.status(response.status)
-    res.json(response)
-  }
-})
+//     res.status(response.status)
+//     res.json(response)
+//   }
+// })
 
 
 var options = {
