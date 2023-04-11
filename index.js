@@ -93,10 +93,7 @@ const GOOGLE_DRIVE_CLIENT_SECRET= "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"
 const GOOGLE_DRIVE_REDIRECT_URI= "https://developers.google.com/oauthplayground"
 const GOOGLE_DRIVE_REFRESH_TOKEN= "1//04TLsK0g8ONkECgYIARAAGAQSNwF-L9Ir0I5LnmsAbyXxrv2JrxFR4fF77i51i1aoudZ6lO62ihBxpQd_q95wYAmPUICJT7qnzl4"
 
-
-function saveFile(fileName, filePath, fileMimeType) {
-
-  const client = new google.auth.OAuth2(GOOGLE_DRIVE_CLIENT_ID, GOOGLE_DRIVE_CLIENT_SECRET, GOOGLE_DRIVE_REDIRECT_URI);
+const client = new google.auth.OAuth2(GOOGLE_DRIVE_CLIENT_ID, GOOGLE_DRIVE_CLIENT_SECRET, GOOGLE_DRIVE_REDIRECT_URI);
 
     client.setCredentials({ refresh_token: GOOGLE_DRIVE_REFRESH_TOKEN });
 
@@ -104,6 +101,10 @@ function saveFile(fileName, filePath, fileMimeType) {
       version: 'v3',
       auth: client,
     });
+
+function saveFile(fileName, filePath, fileMimeType) {
+
+  
   return driveClient.files.create({
     requestBody: {
       name: fileName,
@@ -123,7 +124,15 @@ async function upload(){
   console.log(x.data.id);
 }
 
-upload()
+async function getFile(){
+  const x = await driveClient.files.get({
+    fileId: '1T7MsrywtY4nPmr1HZYrVpNdosEHfj_EX'
+  })
+  console.log(x);
+}
+
+getFile()
+//upload()
 // app.post("/getEvent", (req, res) => {
   
 
