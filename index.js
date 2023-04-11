@@ -38,7 +38,7 @@ async function uploadFile(auth) {
     body: fs.createReadStream("GMT20230411-030257_Recording_640x360.mp4")
   }
 
-  let res = await driveService.files.create({
+  let res = await dr.files.create({
     resource: fm,
     media: m,
   })
