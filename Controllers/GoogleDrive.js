@@ -60,13 +60,13 @@ async function getWebLink(id, fileName, host_email, start_time){
         if(calendarID){
             acuity.request(`appointments?calendarID=${calendarID}&max=2147483647`, function (err, res, appointments) {
                 if (err) return console.error(err);
-                console.log(calendarID);
+                console.log(start_time);
                 for(let i = 0; i < appointments.length; i++){
                     const localDate1 = new Date(Date.parse(appointments[i].datetime))
                     const utcDate1 = new Date(localDate1.toUTCString());
                     const localDate2 = new Date(Date.parse(start_time))
                     const utcDate2 = new Date(localDate2.toUTCString());
-                    console.log(`${utcDate1.toUTCString()} ${utcDate2.toUTCString()}`);
+                    //console.log(`${utcDate1.toUTCString()} ${utcDate2.toUTCString()}`);
                     if(utcDate1.toUTCString() === utcDate2.toUTCString()){
                         console.log("We found the match");
                         var options = {
