@@ -44,7 +44,7 @@ async function getWebLink(id, fileName){
       fileId: id,
       fields: 'webViewLink'
     })
-    console.log(`web link: ${x.config.data}`);
+    console.log(`web link: ${x.data}`);
     fs.unlinkSync(path.join(__dirname, fileName))
 }
   
