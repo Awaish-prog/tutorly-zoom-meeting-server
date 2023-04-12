@@ -38,9 +38,11 @@ function downloadRecording(req, res){
       res.status(response.status)
       res.json(response)
 
-      const recording = req.body.payload.object.recording_files[0]
+      const recording = req.body.payload.object.recording_files[0].file_extension === 'MP4' ? 
+      req.body.payload.object.recording_files[0] :
+      req.body.payload.object.recording_files[1]
       console.log(recording);
-  const downloadUrl = recording.download_url
+    const downloadUrl = recording.download_url
 
     
     const dl = new DownloaderHelper(downloadUrl, __dirname, {fileName: "ZoomR.mp4"});
