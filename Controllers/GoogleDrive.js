@@ -1,6 +1,7 @@
 const {google} = require('googleapis');
 const path = require('path');
-const fs = require('fs')
+const fs = require('fs');
+const { getAllAppointsments } = require('./Meetings');
 
 const GOOGLE_DRIVE_CLIENT_ID= "590998069758-nmo7i410ubnqqnvijdabadcb8j8649ti.apps.googleusercontent.com"
 const GOOGLE_DRIVE_CLIENT_SECRET= "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"
@@ -33,18 +34,20 @@ function uploadFile(fileName) {
     });
 }
   
-async function uploadFileAndGetWebLink(fileName){
+async function uploadFileAndGetWebLink(fileName, meetingData){
     const x = await uploadFile(fileName)
     console.log("File uploaded to G-drive");
-    getWebLink(x.data.id, fileName);
+    getWebLink(x.data.id, fileName, meetingData);
 }
   
-async function getWebLink(id, fileName){
+async function getWebLink(id, fileName, meetingData){
     const x = await driveClient.files.get({
       fileId: id,
       fields: 'webViewLink'
     })
     console.log(`web link: ${JSON.stringify(x.data, null, 4)}`);
+    // const appointments = getAllAppointsments()
+    // console.log(appointments);
     fs.unlinkSync(path.join(__dirname, fileName))
 }
   

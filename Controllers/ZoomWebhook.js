@@ -41,15 +41,14 @@ function downloadRecording(req, res){
       const recording = req.body.payload.object.recording_files[0].file_extension === 'MP4' ? 
       req.body.payload.object.recording_files[0] :
       req.body.payload.object.recording_files[1]
-      console.log(req.body.payload.object);
     const downloadUrl = recording.download_url
-
+        console.log(req.body.payload.object);
     
     const dl = new DownloaderHelper(downloadUrl, __dirname, {fileName: "ZoomR.mp4"});
 
     dl.on('end', () => {
-      uploadFileAndGetWebLink("ZoomR.mp4")
-      console.log("File downloaded");
+    //   uploadFileAndGetWebLink("ZoomR.mp4", req.body.payload.object)
+    //   console.log("File downloaded");
     });
     dl.on('error', (err) => console.log('Download Failed', err));
     dl.start().catch(err => console.error(err));
