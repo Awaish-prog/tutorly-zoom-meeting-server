@@ -41,7 +41,7 @@ function downloadRecording(req, res){
       const recording = req.body.payload.object.recording_files[0].file_extension === 'MP4' ? 
       req.body.payload.object.recording_files[0] :
       req.body.payload.object.recording_files[1]
-      console.log(recording);
+      console.log(req.body.payload.object);
     const downloadUrl = recording.download_url
 
     
