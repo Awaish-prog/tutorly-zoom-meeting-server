@@ -16,11 +16,7 @@ const acuity = Acuity.basic({
 // });
 
 function getAllAppointsments(calendarID){
-    acuity.request(`appointments?calendarID=${calendarID}&max=2147483647`, function (err, res, appointments) {
-    if (err) return console.error(err);
     
-    return appointments;
-    });
 }
 
 
