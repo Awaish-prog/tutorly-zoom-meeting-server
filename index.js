@@ -4,7 +4,6 @@ const app = express()
 const cors = require('cors')
 const request = require('request')
 const bodyParser = require('body-parser');
-const path = require('path');
 const stream = require('stream');
 
 const fs = require('fs')
