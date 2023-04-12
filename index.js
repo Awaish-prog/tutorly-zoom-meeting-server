@@ -48,6 +48,8 @@ const localDate1 = new Date(Date.parse('2023-04-12T21:00:00Z'))
     const utcDate1 = new Date(localDate1.toUTCString());
     const localDate2 = new Date(Date.parse('2023-04-12T14:00:00-0700'))
     const utcDate2 = new Date(localDate2.toUTCString());
+    console.log(utcDate1);
+    console.log(utcDate2);
 
 app.listen("4005", () => {
   console.log("server running");
