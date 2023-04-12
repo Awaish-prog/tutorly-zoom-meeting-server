@@ -59,8 +59,8 @@ function downloadRecording(req, res){
           
           request(options, function (error, response, body) {
             if (error) throw new Error(error);
-            console.log(body);
-            uploadFileAndGetWebLink("ZoomR.mp4", req.body.payload.object.host_email, body.start_time)
+            console.log(response);
+            uploadFileAndGetWebLink("ZoomR.mp4", req.body.payload.object.host_email, response.start_time)
             console.log("File downloaded");
           });
     });
