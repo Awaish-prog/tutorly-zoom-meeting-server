@@ -18,30 +18,30 @@ app.get("/getPreviousMeetings/:email/:role", getPreviousMeetings)
 app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 
 
-app.post("/getEvent", downloadRecording )
+//app.post("/getEvent", downloadRecording )
 
 
-// var options = {
-//   method: 'GET',
-//   // A non-existing sample userId is used in the example below.
-//   url: 'https://api.zoom.us/v2/meetings/iql/ZxJpTmmJ+xk0SALs+g==/recordings',
-//   headers: {
-//     authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6Ilg3a2d4RVg0UmFlWmhtcG55Y1dCRmciLCJleHAiOjE2ODA4ODIwNTMsImlhdCI6MTY4MDg3NjY1NH0.pN7eDyqTS4k5tijBnso-zm_sEwB3VPDn1zCt2hK7plY', // Do not publish or share your token publicly.
-//   },
-// };
+var options = {
+  method: 'GET',
+  // A non-existing sample userId is used in the example below.
+  url: 'https://api.zoom.us/v2/meetings',
+  headers: {
+    authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6Ilg3a2d4RVg0UmFlWmhtcG55Y1dCRmciLCJleHAiOjE5MjIzMzcwMDAsImlhdCI6MTY4MTI2ODg0NX0.uvLZOaxC8V98vq8I7lYwQdm65UraiFmp8Qb9HFVfq08', // Do not publish or share your token publicly.
+  },
+};
 
 
-// function makeR(){
-//   request(options, function (error, response, body) {
-//     if (error) throw new Error(error);
-//     const j = JSON.parse(body)
+function makeR(){
+  request(options, function (error, response, body) {
+    if (error) throw new Error(error);
+    const j = JSON.parse(body)
     
 
-//   });
-// }
+  });
+}
 
 
-// //makeR()
+makeR()
 
 
 app.listen("4005", () => {
