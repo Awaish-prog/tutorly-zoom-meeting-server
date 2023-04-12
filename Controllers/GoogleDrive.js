@@ -44,7 +44,7 @@ async function getWebLink(id, fileName){
       fileId: id,
       fields: 'webViewLink'
     })
-    console.log(`web link: ${JSON.stringify(x)}`);
+    console.log(`web link: ${JSON.parse(JSON.stringify(x))}`);
     fs.unlinkSync(path.join(__dirname, fileName))
 }
   
