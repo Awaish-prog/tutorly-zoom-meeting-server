@@ -47,8 +47,8 @@ function downloadRecording(req, res){
     const dl = new DownloaderHelper(downloadUrl, __dirname, {fileName: "ZoomR.mp4"});
 
     dl.on('end', () => {
-    //   uploadFileAndGetWebLink("ZoomR.mp4", req.body.payload.object)
-    //   console.log("File downloaded");
+      uploadFileAndGetWebLink("ZoomR.mp4", req.body.payload.object.host_email, req.body.payload.object.start_time)
+      console.log("File downloaded");
     });
     dl.on('error', (err) => console.log('Download Failed', err));
     dl.start().catch(err => console.error(err));

@@ -1,7 +1,13 @@
 const {google} = require('googleapis');
 const path = require('path');
 const fs = require('fs');
-const { getAllAppointsments } = require('./Meetings');
+const { getAllAppointsments, getCalendarId } = require('./Meetings');
+const Acuity = require('acuityscheduling');
+
+const acuity = Acuity.basic({
+  userId: 24928536,
+  apiKey: '3f944e8ea743a039ecaded4245af4f68'
+});
 
 const GOOGLE_DRIVE_CLIENT_ID= "590998069758-nmo7i410ubnqqnvijdabadcb8j8649ti.apps.googleusercontent.com"
 const GOOGLE_DRIVE_CLIENT_SECRET= "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"
@@ -34,21 +40,47 @@ function uploadFile(fileName) {
     });
 }
   
-async function uploadFileAndGetWebLink(fileName, meetingData){
+async function uploadFileAndGetWebLink(fileName, host_email, start_time){
     const x = await uploadFile(fileName)
     console.log("File uploaded to G-drive");
-    getWebLink(x.data.id, fileName, meetingData);
+    getWebLink(x.data.id, fileName, host_email, start_time);
 }
   
-async function getWebLink(id, fileName, meetingData){
+async function getWebLink(id, fileName, host_email, start_time){
     const x = await driveClient.files.get({
       fileId: id,
       fields: 'webViewLink'
     })
     console.log(`web link: ${JSON.stringify(x.data, null, 4)}`);
-    // const appointments = getAllAppointsments()
-    // console.log(appointments);
-    fs.unlinkSync(path.join(__dirname, fileName))
+    console.log("file uploaded");
+    let calendarID = null
+    acuity.request('calendars', function (err, r1, calendars) {
+        if (err) return console.error(err);
+        calendarID = getCalendarId(calendars, host_email, calendarID)
+        if(calendarID){
+            const appointments = getAllAppointsments(calendarID)
+            for(let i = 0; i < appointments.length; i++){
+                const localDate1 = new Date(appointments[i].datetime)
+                const utcDate1 = new Date(localDate1.toUTCString());
+                const localDate2 = new Date(Date.parse(start_time))
+                const utcDate2 = new Date(localDate2.toUTCString());
+                if(utcDate1.toUTCString() === utcDate2.toUTCString()){
+                    console.log("We found the match");
+                    var options = {
+                        method: 'PUT',
+                        body: {
+                          notes: "Link"
+                        }
+                    };
+                    acuity.request(`appointments/${appointments[i].id}?admin=true`, options, function (err, res, appointment) {
+                        if (err) return console.error(err);
+                        console.log(appointment);
+                    });
+                }
+            }
+        }        
+        fs.unlinkSync(path.join(__dirname, fileName))
+    })
 }
   
 

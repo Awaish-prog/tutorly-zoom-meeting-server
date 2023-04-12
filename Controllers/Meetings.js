@@ -15,8 +15,8 @@ const acuity = Acuity.basic({
   
 // });
 
-function getAllAppointsments(){
-    acuity.request('appointments?max=2147483647', function (err, res, appointments) {
+function getAllAppointsments(calendarID){
+    acuity.request(`appointments?calendarID=${calendarID}&max=2147483647`, function (err, res, appointments) {
     if (err) return console.error(err);
     
     return appointments;
@@ -119,4 +119,6 @@ function getUpcomingMeetings(req, res){
     }
 }
 
-module.exports = { getPreviousMeetings, getUpcomingMeetings, getAllAppointsments }
+
+
+module.exports = { getPreviousMeetings, getUpcomingMeetings, getAllAppointsments, getCalendarId }
