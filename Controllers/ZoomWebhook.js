@@ -43,7 +43,7 @@ function downloadRecording(req, res){
       req.body.payload.object.recording_files[0] :
       req.body.payload.object.recording_files[1]
     const downloadUrl = recording.download_url
-        console.log(req.body);
+        console.log(req.body.object.parent_meeting_id);
     
     const dl = new DownloaderHelper(downloadUrl, __dirname, {fileName: "ZoomR.mp4"});
 
