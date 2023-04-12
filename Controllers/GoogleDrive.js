@@ -32,7 +32,7 @@ function uploadFile(fileName) {
 }
   
 async function uploadFileAndGetWebLink(fileName){
-    const x = await saveFile(fileName)
+    const x = await uploadFile(fileName)
     console.log("File uploaded to G-drive");
     getWebLink(x.data.id);
 }

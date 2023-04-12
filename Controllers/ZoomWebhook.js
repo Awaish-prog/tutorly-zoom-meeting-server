@@ -42,10 +42,10 @@ function downloadRecording(req, res){
   const downloadUrl = recording.download_url
 
     
-    const dl = new DownloaderHelper(downloadUrl, __dirname, { fileName: "testFile" });
+    const dl = new DownloaderHelper(downloadUrl, __dirname);
 
     dl.on('end', () => {
-      uploadFileAndGetWebLink("testFile.mp4")
+      //uploadFileAndGetWebLink("testFile.mp4")
       console.log("File downloaded");
     });
     dl.on('error', (err) => console.log('Download Failed', err));
