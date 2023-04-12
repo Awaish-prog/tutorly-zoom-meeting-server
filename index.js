@@ -5,8 +5,6 @@ const cors = require('cors')
 const request = require('request')
 const bodyParser = require('body-parser');
 const stream = require('stream');
-
-const fs = require('fs')
 const { downloadRecording } = require('./Controllers/ZoomWebhook');
 
 
