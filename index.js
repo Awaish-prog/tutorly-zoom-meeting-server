@@ -18,7 +18,7 @@ app.get("/getPreviousMeetings/:email/:role", getPreviousMeetings)
 app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 
 
-//app.post("/getEvent", downloadRecording )
+app.post("/getEvent", downloadRecording )
 
 
 var options = {
