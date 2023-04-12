@@ -36,15 +36,16 @@ function uploadFile(fileName) {
 async function uploadFileAndGetWebLink(fileName){
     const x = await uploadFile(fileName)
     console.log("File uploaded to G-drive");
-    getWebLink(x.data.id);
+    getWebLink(x.data.id, fileName);
 }
   
-async function getWebLink(id){
+async function getWebLink(id, fileName){
     const x = await driveClient.files.get({
       fileId: id,
       fields: 'webViewLink'
     })
     console.log(`web link: ${x}`);
+    fs.unlinkSync(path.join(__dirname, fileName))
 }
   
 
