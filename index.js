@@ -35,7 +35,7 @@ function makeR(){
   request(options, function (error, response, body) {
     if (error) throw new Error(error);
     const j = JSON.parse(body)
-    
+    console.log(j);
 
   });
 }
