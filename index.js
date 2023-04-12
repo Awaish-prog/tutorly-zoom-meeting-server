@@ -24,7 +24,7 @@ app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 var options = {
   method: 'GET',
   // A non-existing sample userId is used in the example below.
-  url: 'https://api.zoom.us/v2/meetings',
+  url: 'https://api.zoom.us/v2/users/awaish@tutorly.com/meetings',
   headers: {
     authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6Ilg3a2d4RVg0UmFlWmhtcG55Y1dCRmciLCJleHAiOjE5MjIzMzcwMDAsImlhdCI6MTY4MTI2ODg0NX0.uvLZOaxC8V98vq8I7lYwQdm65UraiFmp8Qb9HFVfq08', // Do not publish or share your token publicly.
   },
