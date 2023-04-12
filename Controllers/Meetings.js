@@ -15,6 +15,18 @@ const acuity = Acuity.basic({
   
 // });
 
+function printMeetings(){
+    acuity.request('appointments?calendarID=6360410&max=2147483647', function (err, res, appointments) {
+    if (err) return console.error(err);
+    // for(let i = 0; i < appointments.length; i++){
+    //     if(new Date(appointments[i].datetime) > new Date()){
+    //         console.log(`${appointments[i].type} ${i} ${appointments[i].datetime}`);
+    //     }
+    // }
+    console.log(appointments);
+    });
+}
+
 
 function getCalendarId(calendars, email, calendarID){
     let tutorEmail = ""
@@ -118,4 +130,4 @@ function printMeetingDetails(id){
     });
 }
 
-module.exports = { getPreviousMeetings, getUpcomingMeetings, printMeetingDetails }
+module.exports = { getPreviousMeetings, getUpcomingMeetings, printMeetingDetails, printMeetings }

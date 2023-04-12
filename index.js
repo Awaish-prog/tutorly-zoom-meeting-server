@@ -1,5 +1,5 @@
 const express = require('express');
-const { getPreviousMeetings, getUpcomingMeetings, printMeetingDetails } = require('./Controllers/Meetings');
+const { getPreviousMeetings, getUpcomingMeetings, printMeetingDetails, printMeetings } = require('./Controllers/Meetings');
 const app = express()
 const cors = require('cors')
 const request = require('request')
@@ -40,8 +40,9 @@ function makeR(){
   });
 }
 
+printMeetings()
 
-makeR()
+//makeR()
 
 
 app.listen("4005", () => {
