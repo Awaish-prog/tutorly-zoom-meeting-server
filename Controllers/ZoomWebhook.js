@@ -1,6 +1,7 @@
 const { DownloaderHelper } = require('node-downloader-helper');
 const { uploadFileAndGetWebLink } = require('./GoogleDrive');
 const crypto = require('crypto')
+var request = require('request');
 
 function downloadRecording(req, res){
     var response
@@ -47,8 +48,21 @@ function downloadRecording(req, res){
     const dl = new DownloaderHelper(downloadUrl, __dirname, {fileName: "ZoomR.mp4"});
 
     dl.on('end', () => {
-      uploadFileAndGetWebLink("ZoomR.mp4", req.body.payload.object.host_email, req.body.payload.object.start_time)
-      console.log("File downloaded");
+        var options = {
+            method: 'GET',
+            // A non-existing sample userId is used in the example below.
+            url: `https://api.zoom.us/v2/meetings/${req.body.payload.object.uuid}`,
+            headers: {
+              authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6Ilg3a2d4RVg0UmFlWmhtcG55Y1dCRmciLCJleHAiOjE5MjIzMzcwMDAsImlhdCI6MTY4MTI3NzEwN30.5Nq4bNDiz4i7wEe_sty4zn7uF1jKYjhLgFWIYj10Llc', // Do not publish or share your token publicly.
+            },
+          };
+          
+          request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+          
+            uploadFileAndGetWebLink("ZoomR.mp4", req.body.payload.object.host_email, body.start_time)
+            console.log("File downloaded");
+          });
     });
     dl.on('error', (err) => console.log('Download Failed', err));
     dl.start().catch(err => console.error(err));

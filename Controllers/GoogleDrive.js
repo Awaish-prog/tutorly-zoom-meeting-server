@@ -66,6 +66,7 @@ async function getWebLink(id, fileName, host_email, start_time){
                     const utcDate1 = new Date(localDate1.toUTCString());
                     const localDate2 = new Date(Date.parse(start_time))
                     const utcDate2 = new Date(localDate2.toUTCString());
+                    console.log(`${utcDate1.toUTCString()} ${utcDate2.toUTCString()}`);
                     if(utcDate1.toUTCString() === utcDate2.toUTCString()){
                         console.log("We found the match");
                         var options = {
