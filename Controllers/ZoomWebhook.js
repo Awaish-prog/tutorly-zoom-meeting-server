@@ -49,23 +49,7 @@ function downloadRecording(req, res){
     const dl = new DownloaderHelper(downloadUrl, __dirname, {fileName: "ZoomR.mp4"});
 
     dl.on('end', () => {
-        // console.log(req.body.payload.object.host_email);
-        // var options = {
-        //     method: 'GET',
-        //     // A non-existing sample userId is used in the example below.
-        //     url: `https://api.zoom.us/v2/users/${req.body.payload.object.host_email}/meetings`,
-        //     headers: {
-        //       authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6Ilg3a2d4RVg0UmFlWmhtcG55Y1dCRmciLCJleHAiOjE5MjIzMzcwMDAsImlhdCI6MTY4MTI3NzEwN30.5Nq4bNDiz4i7wEe_sty4zn7uF1jKYjhLgFWIYj10Llc', // Do not publish or share your token publicly.
-        //     },
-        //   };
-          
-        //   request(options, function (error, response, body) {
-        //     if (error) throw new Error(error);
-        //     console.log("**********************************************************************");
-        //     let b = JSON.parse(body)
-        //     console.log(b);
-            
-        //  });
+        
         uploadFileAndGetWebLink("ZoomR.mp4", req.body.payload.object.host_email, req.body.payload.object.start_time)
         console.log("File downloaded");
     });

@@ -51,6 +51,7 @@ async function getWebLink(id, fileName, host_email, start_time){
       fileId: id,
       fields: 'webViewLink'
     })
+    let link = JSON.stringify(x.data)
     console.log("file uploaded");
     let calendarID = null
     acuity.request('calendars', function (err, r1, calendars) {
@@ -77,7 +78,7 @@ async function getWebLink(id, fileName, host_email, start_time){
                 var options = {
                     method: 'PUT',
                     body: {
-                        notes: x.data
+                        notes: link
                     }
                 };
                 acuity.request(`appointments/${id}?admin=true`, options, function (err, res, appointment) {
