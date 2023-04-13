@@ -1,5 +1,5 @@
 const express = require('express');
-const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting } = require('./Controllers/Meetings');
+const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, test, getAvailability } = require('./Controllers/Meetings');
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
@@ -16,10 +16,13 @@ app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 
 app.post("/getEvent", downloadRecording )
 
+app.get("/getAvailabilty", getAvailability)
+
 app.post("/rescheduleMeeting", rescheduleMeeting)
 
 app.post("/cancelMeeting", cancelMeeting)
 
+//test()
 
 app.listen("4005", () => {
   console.log("server running");

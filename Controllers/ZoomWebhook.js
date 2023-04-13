@@ -44,7 +44,6 @@ function downloadRecording(req, res){
       req.body.payload.object.recording_files[1]
     const downloadUrl = recording.download_url
     let f = String(req.body.payload.object.topic) + " " + req.body.payload.object.start_time
-    //String(new Date(req.body.payload.object.start_time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })))
     const dl = new DownloaderHelper(downloadUrl, __dirname, {fileName: f});
 
     dl.on('end', () => {

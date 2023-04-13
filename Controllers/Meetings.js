@@ -15,10 +15,6 @@ const acuity = Acuity.basic({
   
 // });
 
-function getAllAppointsments(calendarID){
-    
-}
-
 
 function getCalendarId(calendars, email, calendarID){
     let tutorEmail = ""
@@ -123,5 +119,33 @@ function cancelMeeting(req, res){
 
 }
 
+function getAvailability(req, res){
+    const date = req.query.date
+    const id = req.query.appointmentTypeID
+    acuity.request(`availability/times?date=${date}&appointmentTypeID=${id}`, function (err, res, timings) {
+        if (err) return console.error(err);
+        console.log(timings);
+        });
+}
 
-module.exports = { getPreviousMeetings, getUpcomingMeetings, getAllAppointsments, getCalendarId, rescheduleMeeting, cancelMeeting }
+function test(){
+    var options = {
+        method: 'PUT',
+        body: {
+          datetime : '2023-04-18T16:00:00',
+        }
+      };
+    acuity.request('appointments/1021370058/reschedule?admin=true', options, function (err, res, appointments) {
+    if (err) return console.error(err);
+    // for(let i = 0; i < appointments.length; i++){
+    //     if(new Date(appointments[i].datetime) > new Date()){
+    //         console.log(`${appointments[i].type} ${i} ${appointments[i].datetime}`);
+    //     }
+    // }
+    console.log(appointments);
+  //  1021370058
+    });
+}
+
+
+module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, test, getAvailability }
