@@ -45,11 +45,15 @@ function downloadRecording(req, res){
     const downloadUrl = recording.download_url
         
     
-    const dl = new DownloaderHelper(downloadUrl, __dirname, {fileName: req.body.payload.object.topic + " " + new Date(req.body.payload.object.start_time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })});
+    const dl = new DownloaderHelper(downloadUrl, __dirname, {
+        fileName: (req.body.payload.object.topic + " " + new Date(req.body.payload.object.start_time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).replace(" ", "")
+    });
 
     dl.on('end', () => {
         
-        uploadFileAndGetWebLink(req.body.payload.object.topic + " " + new Date(req.body.payload.object.start_time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }), req.body.payload.object.host_email, req.body.payload.object.start_time)
+        uploadFileAndGetWebLink(
+            (req.body.payload.object.topic + " " + new Date(req.body.payload.object.start_time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).replace(" ", "")
+            , req.body.payload.object.host_email, req.body.payload.object.start_time)
         console.log("File downloaded");
     });
     dl.on('error', (err) => console.log('Download Failed', err));
