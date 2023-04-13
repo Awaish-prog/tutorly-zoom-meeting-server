@@ -49,6 +49,7 @@ function downloadRecording(req, res){
     const dl = new DownloaderHelper(downloadUrl, __dirname, {fileName: "ZoomR.mp4"});
 
     dl.on('end', () => {
+        console.log(req.body.payload.object.recording_files[0].meeting_id);
         var options = {
             method: 'GET',
             // A non-existing sample userId is used in the example below.
