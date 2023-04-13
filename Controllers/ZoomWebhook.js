@@ -46,13 +46,13 @@ function downloadRecording(req, res){
         
     
     const dl = new DownloaderHelper(downloadUrl, __dirname, {
-        fileName: (req.body.payload.object.topic + " " + new Date(req.body.payload.object.start_time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).replaceAll(" ", "")
+        fileName: (req.body.payload.object.topic + " " + new Date(req.body.payload.object.start_time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }) + ".mp4").replaceAll(" ", "-")
     });
 
     dl.on('end', () => {
         
         uploadFileAndGetWebLink(
-            (req.body.payload.object.topic + " " + new Date(req.body.payload.object.start_time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).replaceAll(" ", "")
+            (req.body.payload.object.topic + " " + new Date(req.body.payload.object.start_time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }) + ".mp4").replaceAll(" ", "-")
             , req.body.payload.object.host_email, req.body.payload.object.start_time)
         console.log("File downloaded");
     });
