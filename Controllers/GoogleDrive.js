@@ -69,7 +69,7 @@ async function getWebLink(id, fileName, host_email, start_time){
                     const utcDate1 = new Date(localDate1.toUTCString());
                     const localDate2 = new Date(Date.parse(start_time))
                     const utcDate2 = new Date(localDate2.toUTCString());
-                    var diffInMs = utcDate1.getTime() - utcDate2.getTime();
+                    var diffInMs = Math.abs(utcDate1.getTime() - utcDate2.getTime());
                     //console.log(`${utcDate1.toUTCString()} ${utcDate2.toUTCString()}`);
                     if(diffInMs < currMax){
                         id = appointments[i].id
