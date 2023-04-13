@@ -43,14 +43,13 @@ function downloadRecording(req, res){
       req.body.payload.object.recording_files[0] :
       req.body.payload.object.recording_files[1]
     const downloadUrl = recording.download_url
-        console.log(req.body.payload.object);
-        console.log(req.body.payload);
+        
     
-    const dl = new DownloaderHelper(downloadUrl, __dirname, {fileName: "ZoomR.mp4"});
+    const dl = new DownloaderHelper(downloadUrl, __dirname, {fileName: req.body.payload.object.topic + " " + new Date(req.body.payload.object.start_time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })});
 
     dl.on('end', () => {
         
-        uploadFileAndGetWebLink("ZoomR.mp4", req.body.payload.object.host_email, req.body.payload.object.start_time)
+        uploadFileAndGetWebLink(req.body.payload.object.topic + " " + new Date(req.body.payload.object.start_time).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }), req.body.payload.object.host_email, req.body.payload.object.start_time)
         console.log("File downloaded");
     });
     dl.on('error', (err) => console.log('Download Failed', err));
