@@ -115,6 +115,13 @@ function getUpcomingMeetings(req, res){
     }
 }
 
+function rescheduleMeeting(req, res){
+
+}
+
+function cancelMeeting(req, res){
+
+}
 
 
-module.exports = { getPreviousMeetings, getUpcomingMeetings, getAllAppointsments, getCalendarId }
+module.exports = { getPreviousMeetings, getUpcomingMeetings, getAllAppointsments, getCalendarId, rescheduleMeeting, cancelMeeting }
