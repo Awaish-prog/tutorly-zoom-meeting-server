@@ -51,7 +51,7 @@ async function getWebLink(id, fileName, host_email, start_time){
       fileId: id,
       fields: 'webViewLink'
     })
-    let link = JSON.stringify(x.data)
+    let link = x.data.webViewLink
     console.log("file uploaded");
     let calendarID = null
     acuity.request('calendars', function (err, r1, calendars) {
