@@ -51,7 +51,8 @@ async function getWebLink(id, fileName, host_email, start_time){
       fileId: id,
       fields: 'webViewLink'
     })
-    console.log(`web link: ${JSON.stringify(x.data, null, 4)}`);
+    let y = x.data
+    console.log(`web link: ${JSON.stringify(y, null, 4)}`);
     console.log("file uploaded");
     let calendarID = null
     acuity.request('calendars', function (err, r1, calendars) {
@@ -61,26 +62,30 @@ async function getWebLink(id, fileName, host_email, start_time){
             acuity.request(`appointments?calendarID=${calendarID}&max=2147483647`, function (err, res, appointments) {
                 if (err) return console.error(err);
                 console.log(start_time);
+                let id = appointments[0].id
+                let currMax = Number.MAX_VALUE
                 for(let i = 0; i < appointments.length; i++){
                     const localDate1 = new Date(Date.parse(appointments[i].datetime))
                     const utcDate1 = new Date(localDate1.toUTCString());
                     const localDate2 = new Date(Date.parse(start_time))
                     const utcDate2 = new Date(localDate2.toUTCString());
+                    var diffInMs = utcDate1.getTime() - utcDate2.getTime();
                     //console.log(`${utcDate1.toUTCString()} ${utcDate2.toUTCString()}`);
-                    if(utcDate1.toUTCString() === utcDate2.toUTCString()){
-                        console.log("We found the match");
-                        var options = {
-                            method: 'PUT',
-                            body: {
-                              notes: "Link"
-                            }
-                        };
-                        acuity.request(`appointments/${appointments[i].id}?admin=true`, options, function (err, res, appointment) {
-                            if (err) return console.error(err);
-                            console.log(appointment);
-                        });
+                    if(diffInMs < currMax){
+                        id = appointments[i].id
+                        currMax = diffInMs
                     }
                 }
+                var options = {
+                    method: 'PUT',
+                    body: {
+                        notes: "Link"
+                    }
+                };
+                acuity.request(`appointments/${id}?admin=true`, options, function (err, res, appointment) {
+                    if (err) return console.error(err);
+                    console.log(appointment);
+                });
                 
             });
             

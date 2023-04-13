@@ -44,7 +44,31 @@ function makeR(){
 
 //makeR()
 
+// var options = {
+//   method: 'GET',
+//   // A non-existing sample userId is used in the example below.
+//   url: `https://api.zoom.us/v2/meetings/4cmqaOgcRzqkVTdU1n0H0A==/recordings`,
+//   headers: {
+//     authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6Ilg3a2d4RVg0UmFlWmhtcG55Y1dCRmciLCJleHAiOjE5MjIzMzcwMDAsImlhdCI6MTY4MTI3NzEwN30.5Nq4bNDiz4i7wEe_sty4zn7uF1jKYjhLgFWIYj10Llc', // Do not publish or share your token publicly.
+//   },
+// };
 
+// request(options, function (error, response, body) {
+//   if (error) throw new Error(error);
+//   console.log("**********************************************************************");
+//   let b = JSON.parse(body)
+//   console.log(b);
+// });
+
+// const localDate1 = new Date(Date.parse("2023-04-15T14:30:00-0700"))
+// const utcDate1 = new Date(localDate1.toUTCString());
+// const localDate2 = new Date(Date.parse('2023-04-15T14:30:00-0700'))
+// const utcDate2 = new Date(localDate2.toUTCString());
+
+// // Calculate the difference in milliseconds
+// var diffInMs = utcDate1.getTime() - utcDate2.getTime();
+
+// console.log(diffInMs);
 
 app.listen("4005", () => {
   console.log("server running");
