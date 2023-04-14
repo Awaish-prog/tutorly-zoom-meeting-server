@@ -7,7 +7,9 @@ const { downloadRecording } = require('./Controllers/ZoomWebhook');
 
 
 app.use(cors())
+app.use(express.json());
 app.use(bodyParser.json());
+
 
 app.get("/getPreviousMeetings/:email/:role", getPreviousMeetings)
 
@@ -18,9 +20,9 @@ app.post("/getEvent", downloadRecording )
 
 app.get("/getAvailabilty", getAvailability)
 
-app.post("/rescheduleMeeting", rescheduleMeeting)
+app.put("/rescheduleMeeting", rescheduleMeeting)
 
-app.post("/cancelMeeting", cancelMeeting)
+app.put("/cancelMeeting", cancelMeeting)
 
 //test()
 

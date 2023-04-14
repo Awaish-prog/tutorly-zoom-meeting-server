@@ -74,7 +74,6 @@ function getPreviousMeetings(req, res){
         })
     }
     else{
-        console.log(req.params.email);
         acuity.request(`appointments?email=${req.params.email.toLowerCase()}&max=2147483647`, function (err, r, appointments) {
         if (err) return console.error(err);
         const studentMeetings = getMeetingsList(appointments, upcoming)
@@ -112,20 +111,39 @@ function getUpcomingMeetings(req, res){
 }
 
 function rescheduleMeeting(req, res){
-
+    var options = {
+        method: 'PUT',
+        body: {
+          datetime : req.body.datetime
+        }
+      };
+    acuity.request(`/appointments/${req.body.id}/reschedule`, options, function (err, response, appointment) {
+        if (err) return console.error(err);
+        res.json({appointment})
+    });
 }
 
 function cancelMeeting(req, res){
-
+    var options = {
+        method: 'PUT',
+        body: {
+          cancelNote: 'The bridge is out!'
+        }
+      };
+      
+      acuity.request(`appointments/${req.body.id}/cancel`, options, function (err, response, appointment) {
+        if (err) return console.error(err);
+        res.json({appointment})
+      });
 }
 
 function getAvailability(req, res){
     const date = req.query.date
     const id = req.query.appointmentTypeID
-    acuity.request(`availability/times?date=${date}&appointmentTypeID=${id}`, function (err, res, timings) {
+    acuity.request(`availability/times?date=${date}&appointmentTypeID=${id}`, function (err, response, timings) {
         if (err) return console.error(err);
-        console.log(timings);
-        });
+        res.json({ status: 200, timings })
+    });
 }
 
 function test(){
@@ -146,6 +164,8 @@ function test(){
   //  1021370058
     });
 }
+
+
 
 
 module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, test, getAvailability }
