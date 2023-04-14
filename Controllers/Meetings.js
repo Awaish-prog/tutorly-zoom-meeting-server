@@ -17,22 +17,12 @@ const acuity = Acuity.basic({
 
 
 function getCalendarId(calendars, email, calendarID){
-    let tutorEmail = ""
     for(let i = 0; i < calendars.length; i++){
-        tutorEmail = calendars[i].email
-        if(tutorEmail.includes(",")){
-            let emails = tutorEmail.split(",")
-            emails.forEach((emailVal) => {
-                emailVal = emailVal.trim()
-                if(!emailVal.includes("scheduling") && emailVal !== "admin@tutorly.com" &&emailVal !== "admin@mytutorly.com"){
-                    tutorEmail = emailVal
-                }
-            })
+        if(calendars[i].email.includes(email)){
+            calendarID = calendars[i].id
+            return calendarID
         }
-        if(tutorEmail.includes("@my")){
-            tutorEmail = tutorEmail.replace("@my", "@")
-        }
-        if(tutorEmail === email){
+        if(calendars[i].email.includes(email.replace("tutorly", "mytutorly"))){
             calendarID = calendars[i].id
             return calendarID
         }
