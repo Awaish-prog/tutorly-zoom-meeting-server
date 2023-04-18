@@ -69,7 +69,6 @@ async function getWebLink(id, fileName, host_email, start_time){
                     const localDate2 = new Date(Date.parse(start_time))
                     const utcDate2 = new Date(localDate2.toUTCString());
                     var diffInMs = Math.abs(utcDate1.getTime() - utcDate2.getTime());
-                    //console.log(`${utcDate1.toUTCString()} ${utcDate2.toUTCString()}`);
                     if(diffInMs < currMax){
                         id = appointments[i].id
                         currMax = diffInMs
@@ -92,6 +91,27 @@ async function getWebLink(id, fileName, host_email, start_time){
         fs.unlinkSync(path.join(__dirname, fileName))
     })
 }
+
+async function getfolderDetails(){
+    const folderId = '1qjI_N8Po_z7B6ezvLGl9qmXO4n35AyV9'
+    
+    const query = `'${folderId}' in parents and trashed = false`;
+
+
+    const sharedDriveId = '0AOVUj7_3VDFvUk9PVA';
+
+
+    const response = await driveClient.files.list({
+        q: query,
+        driveId: sharedDriveId,
+        corpora: 'drive',
+        includeItemsFromAllDrives: true,
+        supportsAllDrives: true,
+        fields: 'nextPageToken, files(id, name)',
+    });
+
+    console.log(response.data);
+}
   
 
-module.exports = { uploadFileAndGetWebLink }
+module.exports = { uploadFileAndGetWebLink, getfolderDetails }

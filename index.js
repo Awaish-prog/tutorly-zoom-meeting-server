@@ -4,6 +4,8 @@ const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { downloadRecording } = require('./Controllers/ZoomWebhook');
+const { testSheet, getDashboardData } = require('./Controllers/DashboardData');
+const { getfolderDetails } = require('./Controllers/GoogleDrive');
 
 
 app.use(cors())
@@ -15,7 +17,6 @@ app.get("/getPreviousMeetings/:email/:role", getPreviousMeetings)
 
 app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
 
-
 app.post("/getEvent", downloadRecording )
 
 app.get("/getAvailabilty", getAvailability)
@@ -24,7 +25,9 @@ app.put("/rescheduleMeeting", rescheduleMeeting)
 
 app.put("/cancelMeeting", cancelMeeting)
 
-//test()
+app.get("/getDashboardData/:email", getDashboardData)
+
+//getfolderDetails()
 
 app.listen("4005", () => {
   console.log("server running");
