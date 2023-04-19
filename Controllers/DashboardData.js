@@ -1,4 +1,5 @@
 const {google} = require('googleapis');
+const { getFolderDetails } = require('./GoogleDrive');
 
 
 const GOOGLE_DRIVE_CLIENT_ID= "590998069758-nmo7i410ubnqqnvijdabadcb8j8649ti.apps.googleusercontent.com"
@@ -26,7 +27,8 @@ async function getDashboardData(req, res){
     const data = response.data.values
     for(let i = 0; i < data.length; i++){
         if(data[i][1] && data[i][1].toLowerCase().includes(email)){
-            res.json({status: 200, dashboardData: data[i]})
+            const getDriveFolderData = await getFolderDetails(data[i][3])
+            res.json({status: 200, dashboardData: data[i], files: getDriveFolderData.files})
             return
         }
     }

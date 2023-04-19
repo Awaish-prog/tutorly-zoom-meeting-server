@@ -61,7 +61,7 @@ async function getWebLink(id, fileName, host_email, start_time){
             acuity.request(`appointments?calendarID=${calendarID}&max=2147483647`, function (err, res, appointments) {
                 if (err) return console.error(err);
                 console.log(start_time);
-                let id = appointments[0].id
+                let id = ""
                 let currMax = Number.MAX_VALUE
                 for(let i = 0; i < appointments.length; i++){
                     const localDate1 = new Date(Date.parse(appointments[i].datetime))
@@ -72,18 +72,21 @@ async function getWebLink(id, fileName, host_email, start_time){
                     if(diffInMs < currMax){
                         id = appointments[i].id
                         currMax = diffInMs
+                        console.log(diffInMs);
                     }
                 }
-                var options = {
-                    method: 'PUT',
-                    body: {
-                        notes: link
-                    }
-                };
-                acuity.request(`appointments/${id}?admin=true`, options, function (err, res, appointment) {
-                    if (err) return console.error(err);
-                    console.log(appointment);
-                });
+                if(id){
+                    var options = {
+                        method: 'PUT',
+                        body: {
+                            notes: link
+                        }
+                    };
+                    acuity.request(`appointments/${id}?admin=true`, options, function (err, res, appointment) {
+                        if (err) return console.error(err);
+                        console.log(appointment);
+                    });    
+                }
                 
             });
             
@@ -92,8 +95,7 @@ async function getWebLink(id, fileName, host_email, start_time){
     })
 }
 
-async function getfolderDetails(){
-    const folderId = '1qjI_N8Po_z7B6ezvLGl9qmXO4n35AyV9'
+async function getFolderDetails(folderId){
     
     const query = `'${folderId}' in parents and trashed = false`;
 
@@ -110,8 +112,8 @@ async function getfolderDetails(){
         fields: 'nextPageToken, files(id, name)',
     });
 
-    console.log(response.data);
+    return response.data
 }
   
 
-module.exports = { uploadFileAndGetWebLink, getfolderDetails }
+module.exports = { uploadFileAndGetWebLink, getFolderDetails }

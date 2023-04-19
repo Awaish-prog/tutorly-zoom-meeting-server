@@ -27,7 +27,7 @@ app.put("/cancelMeeting", cancelMeeting)
 
 app.get("/getDashboardData/:email", getDashboardData)
 
-//getfolderDetails()
+//getFolderDetails()
 
 app.listen("4005", () => {
   console.log("server running");
