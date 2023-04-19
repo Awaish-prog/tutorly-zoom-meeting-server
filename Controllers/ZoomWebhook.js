@@ -49,9 +49,9 @@ function downloadRecording(req, res){
     const dl = new DownloaderHelper(downloadUrl, __dirname, {fileName: f});
 
     dl.on('end', () => {
-        
+      console.log("File downloaded");
         uploadFileAndGetWebLink(f, req.body.payload.object.host_email, req.body.payload.object.start_time)
-        console.log("File downloaded");
+        
     });
     dl.on('error', (err) => console.log('Download Failed', err));
     dl.start().catch(err => console.error(err));
