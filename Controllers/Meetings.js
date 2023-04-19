@@ -64,10 +64,32 @@ function getPreviousMeetings(req, res){
         })
     }
     else{
-        acuity.request(`appointments?email=${req.params.email.toLowerCase()}&max=2147483647`, function (err, r, appointments) {
-        if (err) return console.error(err);
-        const studentMeetings = getMeetingsList(appointments, upcoming)
-        res.json({status: 200, meetings: studentMeetings})
+        const email = req.params.email.toLowerCase()
+        acuity.request(`appointments?email=${email.toLowerCase()}&max=2147483647`, function (err, r, appointments) {
+            if (err) return console.error(err);
+            if(appointments.length){
+                const studentMeetings = getMeetingsList(appointments, upcoming)
+                res.json({status: 200, meetings: studentMeetings})
+            }
+            else{
+        acuity.request('clients', function (err, r1, clients) {
+            if (err) return console.error(err);
+            for(let i = 0; i < clients.length; i++){
+                if(clients[i].email.includes(email)){
+                    acuity.request(`appointments?email=${clients[i].email}&max=200`, function (err, r2, appointments) {
+                        if (err) return console.error(err);
+                        
+                        const studentMeetings = getMeetingsList(appointments, upcoming)
+                        res.json({status: 200, meetings: studentMeetings})
+                        return
+                      //  1021370058
+                        });
+                }
+            }
+            //console.log(appointments);
+          //  1021370058
+            });
+            }
         });
     }
 }
@@ -92,10 +114,32 @@ function getUpcomingMeetings(req, res){
         })
     }
     else{
-        acuity.request(`appointments?email=${req.params.email.toLowerCase()}&max=2147483647`, function (err, r, appointments) {
-        if (err) return console.error(err);
-        const studentMeetings = getMeetingsList(appointments, upcoming)
-        res.json({status: 200, meetings: studentMeetings})
+        const email = req.params.email.toLowerCase()
+        acuity.request(`appointments?email=${email.toLowerCase()}&max=2147483647`, function (err, r, appointments) {
+            if (err) return console.error(err);
+            if(appointments.length){
+                const studentMeetings = getMeetingsList(appointments, upcoming)
+                res.json({status: 200, meetings: studentMeetings})
+            }
+            else{
+        acuity.request('clients', function (err, r1, clients) {
+            if (err) return console.error(err);
+            for(let i = 0; i < clients.length; i++){
+                if(clients[i].email.includes(email)){
+                    acuity.request(`appointments?email=${clients[i].email}&max=200`, function (err, r2, appointments) {
+                        if (err) return console.error(err);
+                        
+                        const studentMeetings = getMeetingsList(appointments, upcoming)
+                        res.json({status: 200, meetings: studentMeetings})
+                        return
+                      //  1021370058
+                        });
+                }
+            }
+            //console.log(appointments);
+          //  1021370058
+            });
+            }
         });
     }
 }
@@ -143,14 +187,22 @@ function test(){
           datetime : '2023-04-18T16:00:00',
         }
       };
-    acuity.request('appointments/1021370058/reschedule?admin=true', options, function (err, res, appointments) {
+    acuity.request('clients', function (err, res, appointments) {
     if (err) return console.error(err);
-    // for(let i = 0; i < appointments.length; i++){
-    //     if(new Date(appointments[i].datetime) > new Date()){
-    //         console.log(`${appointments[i].type} ${i} ${appointments[i].datetime}`);
-    //     }
-    // }
-    console.log(appointments);
+    for(let i = 0; i < appointments.length; i++){
+        if(appointments[i].email.includes("ishaadhing8407@student.lvusd.org")){
+            console.log(`${appointments[i].email} ${i} ${appointments[i].lastName}`);
+            acuity.request(`appointments?email=${appointments[i].email}&max=200`, function (err, res, appointments) {
+                if (err) return console.error(err);
+                
+                for(let i = 0; i < appointments.length; i++){
+                    console.log(i);
+                }
+              //  1021370058
+                });
+        }
+    }
+    //console.log(appointments);
   //  1021370058
     });
 }

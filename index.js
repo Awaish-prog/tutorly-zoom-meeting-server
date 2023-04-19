@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const { downloadRecording } = require('./Controllers/ZoomWebhook');
 const { testSheet, getDashboardData } = require('./Controllers/DashboardData');
 const { getfolderDetails } = require('./Controllers/GoogleDrive');
+const { login } = require('./Controllers/User');
 
 
 app.use(cors())
@@ -27,7 +28,11 @@ app.put("/cancelMeeting", cancelMeeting)
 
 app.get("/getDashboardData/:email", getDashboardData)
 
+app.post("/login", login)
+
 //getFolderDetails()
+
+//test()
 
 app.listen("4005", () => {
   console.log("server running");
