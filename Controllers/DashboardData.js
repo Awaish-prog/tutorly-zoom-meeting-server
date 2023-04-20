@@ -2,18 +2,18 @@ const {google} = require('googleapis');
 const { getFolderDetails } = require('./GoogleDrive');
 
 
-const GOOGLE_DRIVE_CLIENT_ID= "590998069758-nmo7i410ubnqqnvijdabadcb8j8649ti.apps.googleusercontent.com"
-const GOOGLE_DRIVE_CLIENT_SECRET= "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"
-const GOOGLE_DRIVE_REDIRECT_URI= "https://developers.google.com/oauthplayground"
-const GOOGLE_DRIVE_REFRESH_TOKEN= "1//04xDjWGszNpKnCgYIARAAGAQSNwF-L9IryMHOgOL4Msf-zvfOrNJEXHXq5oguzl0UAj-NXxcEsF5_1Ey9rk2MPbPdNhUhO3829Tc"
+const GOOGLE_SHEET_CLIENT_ID= "590998069758-nmo7i410ubnqqnvijdabadcb8j8649ti.apps.googleusercontent.com"
+const GOOGLE_SHEET_CLIENT_SECRET= "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"
+const GOOGLE_SHEET_REDIRECT_URI= "https://developers.google.com/oauthplayground"
+const GOOGLE_SHEET_REFRESH_TOKEN= "1//04xDjWGszNpKnCgYIARAAGAQSNwF-L9IryMHOgOL4Msf-zvfOrNJEXHXq5oguzl0UAj-NXxcEsF5_1Ey9rk2MPbPdNhUhO3829Tc"
 
 async function getDashboardData(req, res){
 
     const email = req.params.email.toLowerCase()
     
-    const client = new google.auth.OAuth2(GOOGLE_DRIVE_CLIENT_ID, GOOGLE_DRIVE_CLIENT_SECRET, GOOGLE_DRIVE_REDIRECT_URI);
+    const client = new google.auth.OAuth2(GOOGLE_SHEET_CLIENT_ID, GOOGLE_SHEET_CLIENT_SECRET, GOOGLE_SHEET_REDIRECT_URI);
 
-    client.setCredentials({ refresh_token: GOOGLE_DRIVE_REFRESH_TOKEN });
+    client.setCredentials({ refresh_token: GOOGLE_SHEET_REFRESH_TOKEN });
 
     const sheetClient = google.sheets({
         version: "v4",

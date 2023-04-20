@@ -24,14 +24,14 @@ const driveClient = google.drive({
 });
 
 
-function uploadFile(fileName) {
+function uploadFile(fileName, parents) {
     const filePath = path.join(__dirname, fileName)
     const fileMimeType = "video/mp4"
     return driveClient.files.create({
       requestBody: {
         name: fileName,
         mimeType: fileMimeType,
-        parents: [],
+        parents: [parents],
       },
       media: {
         mimeType: fileMimeType,
@@ -41,27 +41,15 @@ function uploadFile(fileName) {
 }
   
 async function uploadFileAndGetWebLink(fileName, host_email, start_time){
-    const x = await uploadFile(fileName)
-    console.log("File uploaded to G-drive");
-    getWebLink(x.data.id, fileName, host_email, start_time);
-}
-  
-async function getWebLink(id, fileName, host_email, start_time){
-    const x = await driveClient.files.get({
-      fileId: id,
-      fields: 'webViewLink'
-    })
-    let link = x.data.webViewLink
-    console.log("file uploaded");
     let calendarID = null
     acuity.request('calendars', function (err, r1, calendars) {
         if (err) return console.error(err);
         calendarID = getCalendarId(calendars, host_email, calendarID)
         if(calendarID){
-            acuity.request(`appointments?calendarID=${calendarID}&max=2147483647`, function (err, res, appointments) {
+            acuity.request(`appointments?calendarID=${calendarID}&max=2147483647`,async function (err, res, appointments) {
                 if (err) return console.error(err);
                 console.log(start_time);
-                let id = ""
+                let appointment = ""
                 let currMax = Number.MAX_VALUE
                 for(let i = 0; i < appointments.length; i++){
                     const localDate1 = new Date(Date.parse(appointments[i].datetime))
@@ -70,19 +58,22 @@ async function getWebLink(id, fileName, host_email, start_time){
                     const utcDate2 = new Date(localDate2.toUTCString());
                     var diffInMs = Math.abs(utcDate1.getTime() - utcDate2.getTime());
                     if(diffInMs < currMax && diffInMs <= 3600000){
-                        id = appointments[i].id
+                        appointment = appointments[i].id
                         currMax = diffInMs
                         console.log(diffInMs);
                     }
                 }
-                if(id){
+                const x = await uploadFile(fileName, "1yg1mW9IBzjdhpa70bPwYv4MN7S732qFp")
+                console.log("File uploaded to G-drive");
+                const link = await getWebLink(x.data.id)
+                if(appointment){
                     var options = {
                         method: 'PUT',
                         body: {
                             notes: link
                         }
                     };
-                    acuity.request(`appointments/${id}?admin=true`, options, function (err, res, appointment) {
+                    acuity.request(`appointments/${appointment.id}?admin=true`, options, function (err, res, appointment) {
                         if (err) return console.error(err);
                         console.log(appointment);
                     });    
@@ -93,6 +84,59 @@ async function getWebLink(id, fileName, host_email, start_time){
         }        
         fs.unlinkSync(path.join(__dirname, fileName))
     })
+    // const x = await uploadFile(fileName)
+    // console.log("File uploaded to G-drive");
+    // getWebLink(x.data.id, fileName, host_email, start_time);
+}
+  
+async function getWebLink(id /*, fileName, host_email, start_time*/){
+    const x = await driveClient.files.get({
+      fileId: id,
+      fields: 'webViewLink'
+    })
+    return x.data.webViewLink
+    //let link = x.data.webViewLink
+    // console.log("file uploaded");
+    // let calendarID = null
+    // acuity.request('calendars', function (err, r1, calendars) {
+    //     if (err) return console.error(err);
+    //     calendarID = getCalendarId(calendars, host_email, calendarID)
+    //     if(calendarID){
+    //         acuity.request(`appointments?calendarID=${calendarID}&max=2147483647`, function (err, res, appointments) {
+    //             if (err) return console.error(err);
+    //             console.log(start_time);
+    //             let id = ""
+    //             let currMax = Number.MAX_VALUE
+    //             for(let i = 0; i < appointments.length; i++){
+    //                 const localDate1 = new Date(Date.parse(appointments[i].datetime))
+    //                 const utcDate1 = new Date(localDate1.toUTCString());
+    //                 const localDate2 = new Date(Date.parse(start_time))
+    //                 const utcDate2 = new Date(localDate2.toUTCString());
+    //                 var diffInMs = Math.abs(utcDate1.getTime() - utcDate2.getTime());
+    //                 if(diffInMs < currMax && diffInMs <= 3600000){
+    //                     id = appointments[i].id
+    //                     currMax = diffInMs
+    //                     console.log(diffInMs);
+    //                 }
+    //             }
+    //             if(id){
+    //                 var options = {
+    //                     method: 'PUT',
+    //                     body: {
+    //                         notes: link
+    //                     }
+    //                 };
+    //                 acuity.request(`appointments/${id}?admin=true`, options, function (err, res, appointment) {
+    //                     if (err) return console.error(err);
+    //                     console.log(appointment);
+    //                 });    
+    //             }
+                
+    //         });
+            
+    //     }        
+    //     fs.unlinkSync(path.join(__dirname, fileName))
+    // })
 }
 
 async function getFolderDetails(folderId){
