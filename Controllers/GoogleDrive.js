@@ -65,7 +65,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     }
                 }
                 console.log(fileName, "1yg1mW9IBzjdhpa70bPwYv4MN7S732qFp");
-                const x = await uploadFile(fileName)
+                const x = await uploadFile(fileName, "1yg1mW9IBzjdhpa70bPwYv4MN7S732qFp")
                 console.log("File uploaded to G-drive");
                 const link = await getWebLink(x.data.id)
                 if(appointment){
