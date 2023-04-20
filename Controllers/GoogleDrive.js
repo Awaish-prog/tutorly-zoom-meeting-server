@@ -25,13 +25,14 @@ const driveClient = google.drive({
 
 
 function uploadFile(fileName, parents) {
+    console.log(parents);
     const filePath = path.join(__dirname, fileName)
     const fileMimeType = "video/mp4"
     return driveClient.files.create({
       requestBody: {
         name: fileName,
         mimeType: fileMimeType,
-        parents: parents,
+        parents: [parents],
       },
       media: {
         mimeType: fileMimeType,
@@ -162,12 +163,12 @@ async function getFolderDetails(folderId){
     return response.data
 }
   
-async function searchFolder(folderName){
+async function searchFolder(folderId){
     
-    const query = `name = '${folderName}'`;
+    const query = `'${folderId}' in parents and trashed = false`;
 
 
-    const sharedDriveId = '0AFb0oGX00O-ZUk9PVA';
+    const sharedDriveId = '0AFKIH2OGGx2pUk9PVA';
 
 
     const response = await driveClient.files.list({
