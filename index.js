@@ -30,7 +30,7 @@ app.get("/getDashboardData/:email", getDashboardData)
 
 app.post("/login", login)
 
-searchFolder("Amanda Wong")
+//searchFolder("Amanda Wong")
 
 app.listen("4005", () => {
   console.log("server running");
