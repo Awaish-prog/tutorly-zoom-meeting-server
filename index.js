@@ -5,7 +5,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 const { downloadRecording } = require('./Controllers/ZoomWebhook');
 const { testSheet, getDashboardData } = require('./Controllers/DashboardData');
-const { getfolderDetails } = require('./Controllers/GoogleDrive');
+const { getfolderDetails, searchFolder } = require('./Controllers/GoogleDrive');
 const { login } = require('./Controllers/User');
 
 
@@ -33,6 +33,8 @@ app.post("/login", login)
 //getFolderDetails()
 
 //test()
+
+//searchFolder("Amanda Wong")
 
 app.listen("4005", () => {
   console.log("server running");

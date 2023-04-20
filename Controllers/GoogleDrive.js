@@ -178,7 +178,7 @@ async function searchFolder(folderName){
         fields: 'nextPageToken, files(id, name)',
     });
 
-    return response.data
+    console.log(response);
 }
 
-module.exports = { uploadFileAndGetWebLink, getFolderDetails }
+module.exports = { uploadFileAndGetWebLink, getFolderDetails, searchFolder }
