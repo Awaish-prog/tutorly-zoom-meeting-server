@@ -31,7 +31,7 @@ function uploadFile(fileName, parents) {
       requestBody: {
         name: fileName,
         mimeType: fileMimeType,
-        parents: [parents],
+        parents: parents,
       },
       media: {
         mimeType: fileMimeType,
@@ -167,7 +167,7 @@ async function searchFolder(folderName){
     const query = `name = '${folderName}'`;
 
 
-    const sharedDriveId = '0AOVUj7_3VDFvUk9PVA';
+    const sharedDriveId = '0AFb0oGX00O-ZUk9PVA';
 
 
     const response = await driveClient.files.list({
