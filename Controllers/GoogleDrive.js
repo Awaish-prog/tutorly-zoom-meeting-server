@@ -76,7 +76,8 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                         }
                     };
                     const id = appointment.id
-                    acuity.request(`appointments/${id}?admin=true`, options, function (err, res, appointment) {
+                    console.log(`appointments/${id}?admin=true`);
+                    acuity.request('appointments/'+ id +'?admin=true', options, function (err, res, appointment) {
                         if (err) return console.error(err);
                         console.log(appointment);
                     });    
