@@ -32,7 +32,7 @@ function uploadFile(fileName, parents) {
       requestBody: {
         name: fileName,
         mimeType: fileMimeType,
-        parents: [parents],
+        parents: parents,
       },
       media: {
         mimeType: fileMimeType,
@@ -65,8 +65,8 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                         console.log(diffInMs);
                     }
                 }
-                console.log(fileName, "1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j");
-                const x = await uploadFile(fileName, "1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j")
+                console.log(fileName, ["0AFb0oGX00O-ZUk9PVA", "1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j"]);
+                const x = await uploadFile(fileName, ["0AFb0oGX00O-ZUk9PVA", "1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j"])
                 console.log("File uploaded to G-drive");
                 const link = await getWebLink(x.data.id)
                 if(appointment){
