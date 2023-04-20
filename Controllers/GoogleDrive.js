@@ -31,7 +31,7 @@ function uploadFile(fileName, parents) {
       requestBody: {
         name: fileName,
         mimeType: fileMimeType,
-        parents: [parents],
+        parents: [],
       },
       media: {
         mimeType: fileMimeType,
@@ -42,6 +42,7 @@ function uploadFile(fileName, parents) {
   
 async function uploadFileAndGetWebLink(fileName, host_email, start_time){
     let calendarID = null
+    console.log(fileName, host_email, start_time);
     acuity.request('calendars', function (err, r1, calendars) {
         if (err) return console.error(err);
         calendarID = getCalendarId(calendars, host_email, calendarID)
@@ -63,7 +64,8 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                         console.log(diffInMs);
                     }
                 }
-                const x = await uploadFile(fileName, "1yg1mW9IBzjdhpa70bPwYv4MN7S732qFp")
+                console.log(fileName);
+                const x = await uploadFile(fileName)
                 console.log("File uploaded to G-drive");
                 const link = await getWebLink(x.data.id)
                 if(appointment){
@@ -159,5 +161,24 @@ async function getFolderDetails(folderId){
     return response.data
 }
   
+async function searchFolder(folderName){
+    
+    const query = `name = '${folderName}'`;
+
+
+    const sharedDriveId = '0AOVUj7_3VDFvUk9PVA';
+
+
+    const response = await driveClient.files.list({
+        q: query,
+        driveId: sharedDriveId,
+        corpora: 'drive',
+        includeItemsFromAllDrives: true,
+        supportsAllDrives: true,
+        fields: 'nextPageToken, files(id, name)',
+    });
+
+    return response.data
+}
 
 module.exports = { uploadFileAndGetWebLink, getFolderDetails }
