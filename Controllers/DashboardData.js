@@ -10,7 +10,7 @@ const GOOGLE_SHEET_REFRESH_TOKEN= "1//04xDjWGszNpKnCgYIARAAGAQSNwF-L9IryMHOgOL4M
 async function getDashboardData(req, res){
 
     const email = req.params.email.toLowerCase()
-    
+    try{
     const client = new google.auth.OAuth2(GOOGLE_SHEET_CLIENT_ID, GOOGLE_SHEET_CLIENT_SECRET, GOOGLE_SHEET_REDIRECT_URI);
 
     client.setCredentials({ refresh_token: GOOGLE_SHEET_REFRESH_TOKEN });
@@ -32,7 +32,14 @@ async function getDashboardData(req, res){
             return
         }
     }
-    res.json({status: 404})
+    }
+    catch(e){
+        console.log(e);
+        res.status(404).json({status: 404})
+    }
+    
+    
+    
 }
 
 module.exports = { getDashboardData }

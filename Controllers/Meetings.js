@@ -33,6 +33,7 @@ function getCalendarId(calendars, email, calendarID){
 function getMeetingsList(appointments, upcoming) {
     const tutorAppointments = []
     appointments.forEach((appointment) => {
+        console.log(appointment.datetime, new Date(appointment.datetime) > new Date());
         if(new Date(appointment.datetime) > new Date() && upcoming){
             tutorAppointments.push(appointment)
         }
@@ -46,6 +47,7 @@ function getMeetingsList(appointments, upcoming) {
 
 function getPreviousMeetings(req, res){
     const upcoming = false
+    const numbers = req.params.number
     if(req.params.role === 'tutor'){
         const email = req.params.email.toLowerCase()
         let calendarID = null
@@ -56,7 +58,7 @@ function getPreviousMeetings(req, res){
                 res.json({status: 404, message: "This Email does not exist"})
                 return
             }
-            acuity.request(`appointments?calendarID=${calendarID}&max=2147483647`, function (err, r2, appointments) {
+            acuity.request(`appointments?calendarID=${calendarID}&max=${numbers}`, function (err, r2, appointments) {
                 if (err) return console.error(err);
                 const tutorMeetings = getMeetingsList(appointments, upcoming)
                 res.json({status: 200, meetings: tutorMeetings})
@@ -65,7 +67,7 @@ function getPreviousMeetings(req, res){
     }
     else{
         const email = req.params.email.toLowerCase()
-        acuity.request(`appointments?email=${email.toLowerCase()}&max=2147483647`, function (err, r, appointments) {
+        acuity.request(`appointments?email=${email.toLowerCase()}&max=${numbers}`, function (err, r, appointments) {
             if (err) return console.error(err);
             if(appointments.length){
                 const studentMeetings = getMeetingsList(appointments, upcoming)
@@ -76,7 +78,7 @@ function getPreviousMeetings(req, res){
             if (err) return console.error(err);
             for(let i = 0; i < clients.length; i++){
                 if(clients[i].email.includes(email)){
-                    acuity.request(`appointments?email=${clients[i].email}&max=200`, function (err, r2, appointments) {
+                    acuity.request(`appointments?email=${clients[i].email}&max=${numbers}`, function (err, r2, appointments) {
                         if (err) return console.error(err);
                         
                         const studentMeetings = getMeetingsList(appointments, upcoming)
@@ -96,6 +98,7 @@ function getPreviousMeetings(req, res){
 
 function getUpcomingMeetings(req, res){
     const upcoming = true
+    const numbers = req.params.number
     if(req.params.role === 'tutor'){
         const email = req.params.email.toLowerCase()
         let calendarID = null
@@ -106,16 +109,17 @@ function getUpcomingMeetings(req, res){
                 res.json({status: 404, message: "This Email does not exist"})
                 return
             }
-            acuity.request(`appointments?calendarID=${calendarID}&max=2147483647`, function (err, r2, appointments) {
+            const date = new Date().toISOString().slice(0, 9)
+            acuity.request(`appointments?calendarID=${calendarID}&max=${numbers}&direction=ASC&minDate=${date}`, function (err, r2, appointments) {
                 if (err) return console.error(err);
-                const tutorMeetings = getMeetingsList(appointments, upcoming)
-                res.json({status: 200, meetings: tutorMeetings})
+                //const tutorMeetings = getMeetingsList(appointments, upcoming)
+                res.json({status: 200, meetings: appointments})
             })
         })
     }
     else{
         const email = req.params.email.toLowerCase()
-        acuity.request(`appointments?email=${email.toLowerCase()}&max=2147483647`, function (err, r, appointments) {
+        acuity.request(`appointments?email=${email.toLowerCase()}&max=${numbers}&direction=ASC`, function (err, r, appointments) {
             if (err) return console.error(err);
             if(appointments.length){
                 const studentMeetings = getMeetingsList(appointments, upcoming)
@@ -126,7 +130,7 @@ function getUpcomingMeetings(req, res){
             if (err) return console.error(err);
             for(let i = 0; i < clients.length; i++){
                 if(clients[i].email.includes(email)){
-                    acuity.request(`appointments?email=${clients[i].email}&max=200`, function (err, r2, appointments) {
+                    acuity.request(`appointments?email=${clients[i].email}&max=${numbers}&direction=ASC`, function (err, r2, appointments) {
                         if (err) return console.error(err);
                         
                         const studentMeetings = getMeetingsList(appointments, upcoming)
@@ -192,7 +196,7 @@ function test(){
     for(let i = 0; i < appointments.length; i++){
         if(appointments[i].email.includes("ishaadhing8407@student.lvusd.org")){
             console.log(`${appointments[i].email} ${i} ${appointments[i].lastName}`);
-            acuity.request(`appointments?email=${appointments[i].email}&max=200`, function (err, res, appointments) {
+            acuity.request(`appointments?email=${appointments[i].email}&max=50`, function (err, res, appointments) {
                 if (err) return console.error(err);
                 
                 for(let i = 0; i < appointments.length; i++){

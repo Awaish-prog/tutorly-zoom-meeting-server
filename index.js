@@ -14,9 +14,9 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 
-app.get("/getPreviousMeetings/:email/:role", getPreviousMeetings)
+app.get("/getPreviousMeetings/:email/:role/:number", getPreviousMeetings)
 
-app.get("/getUpcomingMeetings/:email/:role", getUpcomingMeetings)
+app.get("/getUpcomingMeetings/:email/:role/:number", getUpcomingMeetings)
 
 app.post("/getEvent", downloadRecording )
 
@@ -31,6 +31,7 @@ app.get("/getDashboardData/:email", getDashboardData)
 app.post("/login", login)
 
 //searchFolder("1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j")
+//console.log(new Date().toISOString().slice(0, 9));
 
 app.listen("4005", () => {
   console.log("server running");
