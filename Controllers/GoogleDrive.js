@@ -59,7 +59,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     const utcDate2 = new Date(localDate2.toUTCString());
                     var diffInMs = Math.abs(utcDate1.getTime() - utcDate2.getTime());
                     if(diffInMs < currMax && diffInMs <= 3600000){
-                        appointment = appointments[i].id
+                        appointment = appointments[i]
                         currMax = diffInMs
                         console.log(diffInMs);
                     }
@@ -77,7 +77,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     };
                     const id = appointment.id
                     console.log(`appointments/${id}?admin=true`);
-                    acuity.request('appointments/'+ id +'?admin=true', options, function (err, res, appointment) {
+                    acuity.request(`appointments/${id}?admin=true`, options, function (err, res, appointment) {
                         if (err) return console.error(err);
                         console.log(appointment);
                     });    
