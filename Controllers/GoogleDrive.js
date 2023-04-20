@@ -80,11 +80,10 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                         console.log(appointment);
                     });    
                 }
-                
+                fs.unlinkSync(path.join(__dirname, fileName))
             });
             
         }        
-        fs.unlinkSync(path.join(__dirname, fileName))
     })
     // const x = await uploadFile(fileName)
     // console.log("File uploaded to G-drive");
@@ -178,7 +177,7 @@ async function searchFolder(folderName){
         fields: 'nextPageToken, files(id, name)',
     });
 
-    console.log(response);
+    console.log(response.data.files);
 }
 
 module.exports = { uploadFileAndGetWebLink, getFolderDetails, searchFolder }
