@@ -70,35 +70,35 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     }
                 }
                 let status = 400
-                let x = {}
-                for(let i = 0; i < driveIds.length; i++){
-                    x = await uploadFile(fileName, "1SAQqd33EQVieNA8QNQBGk8CEEkxRGBj", driveIds[i])
+                // let x = {}
+                // for(let i = 0; i < driveIds.length; i++){
+                //     x = await uploadFile(fileName, "1SAQqd33EQVieNA8QNQBGk8CEEkxRGBj", driveIds[i])
+                // }
+                let x = ""
+                try{
+                    x = await uploadFile(fileName, "1SAQqd33EQVieNA8QNQBGk8CEEkxRGBj", driveIds[0])
                 }
-                // let x = ""
-                // try{
-                //     x = await uploadFile(fileName, "1SAQqd33EQVieNA8QNQBGk8CEEkxRGBj", driveIds[0])
-                // }
-                // catch(e){
-
-                // }
+                catch(e){
+                    console.log("error caught");
+                }
                 
                 console.log(x);
                 console.log("File uploaded to G-drive");
-                const link = await getWebLink(x.data.id)
-                if(appointment){
-                    var options = {
-                        method: 'PUT',
-                        body: {
-                            notes: link
-                        }
-                    };
-                    const id = appointment.id
-                    console.log(`appointments/${id}?admin=true`);
-                    acuity.request(`appointments/${id}?admin=true`, options, function (err, res, appointment) {
-                        if (err) return console.error(err);
-                        console.log(appointment);
-                    });    
-                }
+                // const link = await getWebLink(x.data.id)
+                // if(appointment){
+                //     var options = {
+                //         method: 'PUT',
+                //         body: {
+                //             notes: link
+                //         }
+                //     };
+                //     const id = appointment.id
+                //     console.log(`appointments/${id}?admin=true`);
+                //     acuity.request(`appointments/${id}?admin=true`, options, function (err, res, appointment) {
+                //         if (err) return console.error(err);
+                //         console.log(appointment);
+                //     });    
+                // }
                 fs.unlinkSync(path.join(__dirname, fileName))
             });
             
