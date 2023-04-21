@@ -76,9 +76,12 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                 }
                 
                 let x = ""
+                let link = ""
+                let driveId = ""
                 for(let i = 0; i < driveIds.length; i++){
                 try{
                     x = await uploadFile(fileName, folderId, driveIds[i])
+                    driveId = driveIds[i]
                     console.log(x);
                     if(x){
                         break
@@ -94,7 +97,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                 console.log(appointment.id, x.status, x.data.id);
                 if(appointment && x.status === 200){
                     try{
-                        const link = await getWebLink(x.data.id)
+                        link = await getWebLink(x.data.id, driveId)
                     }
                     catch(e){
                         console.log("File upload error");
@@ -135,10 +138,12 @@ function deleteFile(fileName){
     fs.unlinkSync(path.join(__dirname, fileName))
 }
   
-async function getWebLink(id /*, fileName, host_email, start_time*/){
+async function getWebLink(id, driveId /*, fileName, host_email, start_time*/){
     const x = await driveClient.files.get({
+      supportsAllDrives: true,
       fileId: id,
-      fields: 'webViewLink'
+      fields: 'webViewLink',
+      driveId: driveId
     })
     return x.data.webViewLink
     //let link = x.data.webViewLink
