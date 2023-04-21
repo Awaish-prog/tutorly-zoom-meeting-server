@@ -71,10 +71,12 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                 }
                 let folderId = "1zHDm80-ce3FMoYUI7jy9YFZ4OFLxmLI6"
                 if(appointment){
+                    console.log(fileName);
                     try{
                         const newFileName = (appointment.firstName + " " + appointment.lastName + (new Date(start_time)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).replaceAll("/", "-")
                         fs.renameSync(fileName, newFileName)
                         fileName = newFileName
+                        console.log(fileName);
                     }catch(e){
                         console.log("File name error");
                     }
