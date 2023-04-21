@@ -33,7 +33,7 @@ function uploadFile(fileName, parents) {
       requestBody: {
         name: fileName,
         mimeType: fileMimeType,
-        parents: parents,
+        parents: [parents],
         driveId: "0AFb0oGX00O-ZUk9PVA"
       },
       media: {
