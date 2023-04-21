@@ -86,6 +86,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                 let driveId = ""
                 for(let i = 0; i < driveIds.length; i++){
                 try{
+                    console.log(fileName);
                     x = await uploadFile(fileName, folderId, driveIds[i])
                     driveId = driveIds[i]
                     if(x){
