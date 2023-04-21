@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const { getCalendarId } = require('./Meetings');
 const Acuity = require('acuityscheduling');
+const { getRecordingFolderLink } = require('./DashboardData');
 
 const acuity = Acuity.basic({
   userId: 24928536,
@@ -70,7 +71,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     }
                 }
 
-                
+                const folderId = getRecordingFolderLink()
                 let status = 400
                 // let x = {}
                 // for(let i = 0; i < driveIds.length; i++){
@@ -79,7 +80,10 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                 let x = ""
                 for(let i = 0; i < driveIds.length; i++){
                 try{
-                    x = await uploadFile(fileName, "1SAQqd33EQVieNA8QNQBGk8CEEkxRGBj", driveIds[i])
+                    x = await uploadFile(fileName, "1SAQqd33EQVieNA8QNQBGk8CEEkxRGBje", driveIds[i])
+                    if(x){
+                        break
+                    }
                 }
                 catch(e){
                     console.log("error caught");
@@ -87,7 +91,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     continue
                 }
             }
-                console.log(x);
+                console.log(x.status);
                 console.log("File uploaded to G-drive");
                 // const link = await getWebLink(x.data.id)
                 // if(appointment){
