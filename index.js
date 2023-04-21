@@ -7,7 +7,7 @@ const { downloadRecording } = require('./Controllers/ZoomWebhook');
 const { getDashboardData, getRecordingFolderLink } = require('./Controllers/DashboardData');
 const { login } = require('./Controllers/User');
 const { searchFolder, deleteFile } = require('./Controllers/GoogleDrive');
-const crypto = require('crypto');
+const crypto = require('crypto-js');
 const fs = require('fs')
 
 
@@ -39,17 +39,16 @@ app.post("/login", login)
 //const v = "Krystal Navarro's Personal Meeting Room TEST 4-20-2023, 5:48:39 PM"
 //deleteFile(v)
 
-// function hashString(inputString, key) {
-//   const hmac = crypto.createHmac('sha256', key);
-//   hmac.update(inputString);
-//   const hash = hmac.digest('hex');
-//   console.log(hash.substr(0, 10))
-// }
+function hashString(inputString) {
+  const hmac = crypto.HmacSHA1(inputString, "dskfrdsjgk");
+  const hash = hmac.toString(crypto.enc.Hex);
+  console.log(hash.substr(0, 10))
+}
 
 
 
 app.listen("4005", () => {
-  //hashString("bhawanad@aol.com", "shdgsdg")
+  hashString("awaish@tutorly.com")
   
   console.log("server running");
 })
