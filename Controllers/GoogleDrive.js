@@ -79,6 +79,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                 for(let i = 0; i < driveIds.length; i++){
                 try{
                     x = await uploadFile(fileName, folderId, driveIds[i])
+                    console.log(x);
                     if(x){
                         break
                     }
@@ -90,9 +91,15 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                 }
             }
                 console.log("File uploaded to G-drive");
-                    
+                console.log(appointment.id, x.status, x.data.id);
                 if(appointment && x.status === 200){
-                    const link = await getWebLink(x.data.id)
+                    try{
+                        const link = await getWebLink(x.data.id)
+                    }
+                    catch(e){
+                        console.log("File upload error");
+                    }
+                    
                     var options = {
                         method: 'PUT',
                         body: {
@@ -106,10 +113,15 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                         console.log(appointment);
                     });    
                 }
+                try{
+                    console.log(path.join(__dirname, fileName));
+                    fs.unlinkSync(path.join(__dirname, fileName))
+                    console.log("done");
+                }
+                catch(e){
+                    console.log("File delete error");
+                }
                 
-                console.log(path.join(__dirname, fileName));
-                fs.unlinkSync(path.join(__dirname, fileName))
-                console.log("done");
             });
             
         }        
