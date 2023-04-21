@@ -1,5 +1,5 @@
 const express = require('express');
-const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, test, getAvailability } = require('./Controllers/Meetings');
+const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, test, getAvailability, getClients } = require('./Controllers/Meetings');
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
@@ -45,6 +45,7 @@ function hashString(inputString) {
   console.log(hash.substr(0, 10))
 }
 
+getClients()
 
 
 app.listen("4005", () => {

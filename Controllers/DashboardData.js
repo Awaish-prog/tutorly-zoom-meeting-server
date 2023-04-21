@@ -44,6 +44,7 @@ async function getDashboardData(req, res){
 }
 
 async function getRecordingFolderLink(email){
+    email = email.toLowerCase()
     try{
         const client = new google.auth.OAuth2(GOOGLE_SHEET_CLIENT_ID, GOOGLE_SHEET_CLIENT_SECRET, GOOGLE_SHEET_REDIRECT_URI);
     
@@ -60,7 +61,7 @@ async function getRecordingFolderLink(email){
         })
         const data = response.data.values
         for(let i = 0; i < data.length; i++){
-            if(data[i][1] && email.toLowerCase().includes(data[i][1].toLowerCase())){
+            if(data[i][1] && email.includes(data[i][1].toLowerCase())){
                 console.log(data[i][15]);
                 return data[i][15]
             }

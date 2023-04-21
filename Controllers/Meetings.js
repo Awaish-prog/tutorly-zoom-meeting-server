@@ -211,7 +211,14 @@ function test(){
     });
 }
 
+function getClients(){
+    acuity.request(`clients`, function (err, res, appointments) {
+        if (err) return console.error(err);
+        
+        console.log(appointments);
+        });
+}
 
 
 
-module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, test, getAvailability }
+module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, test, getAvailability, getClients }
