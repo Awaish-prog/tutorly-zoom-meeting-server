@@ -45,7 +45,7 @@ function uploadFile(fileName, parents, driveId) {
 }
   
 async function uploadFileAndGetWebLink(fileName, host_email, start_time){
-    const driveIds = [""]
+    const driveIds = ["0AOVUj7_3VDFvUk9PVA", "0AFKIH2OGGx2pUk9PVA", "0AGmJH7nnITy1Uk9PVA", "0AIZWRUJ5gze-Uk9PVA"]
     let calendarID = null
     console.log(fileName, host_email, start_time);
     acuity.request('calendars', function (err, r1, calendars) {
@@ -71,7 +71,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                 }
                 
                 const x = await uploadFile(fileName, "1SAQqd33EQVieNA8QNQBGk8CEEkxRGBje", "0AOVUj7_3VDFvUk9PVA")
-                console.log(x.headers.status);
+                console.log(x);
                 console.log("File uploaded to G-drive");
                 const link = await getWebLink(x.data.id)
                 if(appointment){
