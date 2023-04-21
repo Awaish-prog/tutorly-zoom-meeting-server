@@ -48,7 +48,6 @@ function uploadFile(fileName, parents, driveId) {
 async function uploadFileAndGetWebLink(fileName, host_email, start_time){
     const driveIds = ["0AOVUj7_3VDFvUk9PVA", "0AFKIH2OGGx2pUk9PVA", "0AGmJH7nnITy1Uk9PVA", "0AIZWRUJ5gze-Uk9PVA"]
     let calendarID = null
-    console.log(fileName, host_email, start_time);
     acuity.request('calendars', function (err, r1, calendars) {
         if (err) return console.error(err);
         calendarID = getCalendarId(calendars, host_email, calendarID)
@@ -72,6 +71,13 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                 }
                 let folderId = "1zHDm80-ce3FMoYUI7jy9YFZ4OFLxmLI6"
                 if(appointment){
+                    try{
+                        const newFileName = (appointment.firstName + " " + appointment.lastName + (new Date(start_time)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).replaceAll("/", "-")
+                        fs.renameSync(fileName, newFileName)
+                        fileName = newFileName
+                    }catch(e){
+                        console.log("File name error");
+                    }
                     folderId = await getRecordingFolderLink(appointment.email)
                 }
                 
@@ -82,7 +88,6 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                 try{
                     x = await uploadFile(fileName, folderId, driveIds[i])
                     driveId = driveIds[i]
-                    console.log(x);
                     if(x){
                         break
                     }
@@ -117,9 +122,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     });    
                 }
                 try{
-                    console.log(path.join(__dirname, fileName));
                     fs.unlinkSync(path.join(__dirname, fileName))
-                    console.log("done");
                 }
                 catch(e){
                     console.log("File delete error");
