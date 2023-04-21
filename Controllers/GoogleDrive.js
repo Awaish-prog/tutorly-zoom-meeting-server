@@ -23,7 +23,8 @@ const driveClient = google.drive({
     auth: client,
 });
 
-
+// 0AFb0oGX00O-ZUk9PVA
+// 1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j
 function uploadFile(fileName, parents) {
     console.log(parents);
     const filePath = path.join(__dirname, fileName)
@@ -33,11 +34,13 @@ function uploadFile(fileName, parents) {
         name: fileName,
         mimeType: fileMimeType,
         parents: parents,
+        driveId: "0AFb0oGX00O-ZUk9PVA"
       },
       media: {
         mimeType: fileMimeType,
         body: fs.createReadStream(filePath),
       },
+      supportsAllDrives: true
     });
 }
   
@@ -65,8 +68,8 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                         console.log(diffInMs);
                     }
                 }
-                console.log(fileName, ["0AFb0oGX00O-ZUk9PVA", "1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j"]);
-                const x = await uploadFile(fileName, ["0AFb0oGX00O-ZUk9PVA", "1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j"])
+                console.log(fileName, "1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j");
+                const x = await uploadFile(fileName, "1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j")
                 console.log("File uploaded to G-drive");
                 const link = await getWebLink(x.data.id)
                 if(appointment){

@@ -68,7 +68,7 @@ function getPreviousMeetings(req, res){
     }
     else{
         const email = req.params.email.toLowerCase()
-        acuity.request(`appointments?email=${email.toLowerCase()}&max=${numbers}&maxDate=${date}`, function (err, r, appointments) {
+        acuity.request(`appointments?email=${email}&max=${numbers}&maxDate=${date}`, function (err, r, appointments) {
             if (err) return console.error(err);
             if(appointments.length){
                 const studentMeetings = getMeetingsList(appointments, upcoming, limit)
