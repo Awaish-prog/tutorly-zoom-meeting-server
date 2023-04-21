@@ -107,8 +107,9 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     });    
                 }
                 
-                
+                console.log(path.join(__dirname, fileName));
                 fs.unlinkSync(path.join(__dirname, fileName))
+                console.log("done");
             });
             
         }        
