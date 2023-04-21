@@ -73,8 +73,8 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                 if(appointment){
                     console.log(fileName);
                     try{
-                        const newFileName = (appointment.firstName + " " + appointment.lastName + (new Date(start_time)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).replaceAll("/", "-")
-                        fs.renameSync("./Controllers/" + fileName, "./Controllers/" + newFileName)
+                        const newFileName = (appointment.firstName + " " + appointment.lastName + " " + (new Date(start_time)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).replaceAll("/", "-")
+                        fs.renameSync("./Controllers/" + fileName, "./Controllers/" + newFileName + ".mp4")
                         fileName = newFileName
                         console.log(fileName);
                     }catch(e){
