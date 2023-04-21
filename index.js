@@ -34,8 +34,8 @@ app.post("/login", login)
 //console.log(new Date().toISOString().slice(0, 10));
 
 //getRecordingFolderLink("bangbo221@gmail.com")
-
-deleteFile("Krystal Navarro's Personal Meeting Room TEST 4-20-2023, 5:48:39 PM")
+const v = "Krystal Navarro's Personal Meeting Room TEST 4-20-2023, 5:48:39 PM"
+deleteFile(v)
 
 app.listen("4005", () => {
   console.log("server running");
