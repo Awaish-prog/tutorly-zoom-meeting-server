@@ -61,8 +61,8 @@ async function getRecordingFolderLink(email){
         const data = response.data.values
         for(let i = 0; i < data.length; i++){
             if(data[i][1] && data[i][1].toLowerCase().includes(email)){
-                console.log(data[i]);
-                return ""
+                console.log(data[i][15]);
+                return data[i][15]
             }
         }
         }

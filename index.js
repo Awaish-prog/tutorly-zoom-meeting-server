@@ -33,7 +33,7 @@ app.post("/login", login)
 //searchFolder("1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j")
 //console.log(new Date().toISOString().slice(0, 10));
 
-getRecordingFolderLink("bangbo221@gmail.com")
+//getRecordingFolderLink("bangbo221@gmail.com")
 
 app.listen("4005", () => {
   console.log("server running");
