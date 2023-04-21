@@ -69,8 +69,18 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                         console.log(diffInMs);
                     }
                 }
+                // let status = 400
+                // for(let i = 0; i < driveIds.length; i++){
+                //     const x = await uploadFile(fileName, "1SAQqd33EQVieNA8QNQBGk8CEEkxRGBj", driveIds[i])
+                // }
+                let x = ""
+                try{
+                    x = await uploadFile(fileName, "1SAQqd33EQVieNA8QNQBGk8CEEkxRGBj", driveIds[0])
+                }
+                catch(e){
+
+                }
                 
-                const x = await uploadFile(fileName, "1SAQqd33EQVieNA8QNQBGk8CEEkxRGBj", "0AOVUj7_3VDFvUk9PVA")
                 console.log(x.status);
                 console.log("File uploaded to G-drive");
                 const link = await getWebLink(x.data.id)
