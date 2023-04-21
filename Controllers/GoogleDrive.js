@@ -25,7 +25,7 @@ const driveClient = google.drive({
 
 // 0AFb0oGX00O-ZUk9PVA
 // 1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j
-function uploadFile(fileName, parents) {
+function uploadFile(fileName, parents, driveId) {
     console.log(parents);
     const filePath = path.join(__dirname, fileName)
     const fileMimeType = "video/mp4"
@@ -34,7 +34,7 @@ function uploadFile(fileName, parents) {
         name: fileName,
         mimeType: fileMimeType,
         parents: [parents],
-        driveId: "0AFb0oGX00O-ZUk9PVA"
+        driveId: driveId
       },
       media: {
         mimeType: fileMimeType,
@@ -45,6 +45,7 @@ function uploadFile(fileName, parents) {
 }
   
 async function uploadFileAndGetWebLink(fileName, host_email, start_time){
+    const driveIds = [""]
     let calendarID = null
     console.log(fileName, host_email, start_time);
     acuity.request('calendars', function (err, r1, calendars) {
@@ -68,9 +69,9 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                         console.log(diffInMs);
                     }
                 }
-                console.log(fileName, "1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j");
-                const x = await uploadFile(fileName, "1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j")
-                console.log(x);
+                
+                const x = await uploadFile(fileName, "1SAQqd33EQVieNA8QNQBGk8CEEkxRGBje", "0AOVUj7_3VDFvUk9PVA")
+                console.log(x.headers.status);
                 console.log("File uploaded to G-drive");
                 const link = await getWebLink(x.data.id)
                 if(appointment){

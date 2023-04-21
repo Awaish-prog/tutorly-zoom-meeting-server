@@ -43,6 +43,36 @@ async function getDashboardData(req, res){
     
 }
 
-//async function 
+async function getRecordingFolderLink(email){
+    try{
+        const client = new google.auth.OAuth2(GOOGLE_SHEET_CLIENT_ID, GOOGLE_SHEET_CLIENT_SECRET, GOOGLE_SHEET_REDIRECT_URI);
+    
+        client.setCredentials({ refresh_token: GOOGLE_SHEET_REFRESH_TOKEN });
+    
+        const sheetClient = google.sheets({
+            version: "v4",
+            auth: client
+        })
+    
+        const response = await sheetClient.spreadsheets.values.get({
+            spreadsheetId: "1-wqELarzcQLs8bPNVC_kUiWZMCX6QPX9Acr3rjRov2k",
+            range: 'A:AU'
+        })
+        const data = response.data.values
+        for(let i = 0; i < data.length; i++){
+            if(data[i][1] && data[i][1].toLowerCase().includes(email)){
+                
+                return
+            }
+        }
+        }
+        catch(e){
+            console.log(e);
+            return ""
+        }
+        
+        return ""
+        
+}
 
 module.exports = { getDashboardData }
