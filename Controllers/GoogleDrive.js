@@ -74,7 +74,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     console.log(fileName);
                     try{
                         const newFileName = (appointment.firstName + " " + appointment.lastName + (new Date(start_time)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).replaceAll("/", "-")
-                        fs.renameSync(fileName + ".mp4", newFileName + ".mp4")
+                        fs.renameSync("./Controllers/" + fileName, "./Controllers/" + newFileName)
                         fileName = newFileName
                         console.log(fileName);
                     }catch(e){
@@ -125,7 +125,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     });    
                 }
                 try{
-                    //fs.unlinkSync(path.join(__dirname, fileName))
+                    fs.unlinkSync(path.join(__dirname, fileName))
                 }
                 catch(e){
                     console.log("File delete error");
