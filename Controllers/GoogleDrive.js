@@ -125,7 +125,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     });    
                 }
                 try{
-                    fs.unlinkSync(path.join(__dirname, fileName))
+                    //fs.unlinkSync(path.join(__dirname, fileName))
                 }
                 catch(e){
                     console.log("File delete error");

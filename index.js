@@ -50,7 +50,6 @@ app.post("/login", login)
 
 app.listen("4005", () => {
   //hashString("bhawanad@aol.com", "shdgsdg")
-  // fs.renameSync("name.txt", "new.txt")
-  // console.log("done");
+  
   console.log("server running");
 })
