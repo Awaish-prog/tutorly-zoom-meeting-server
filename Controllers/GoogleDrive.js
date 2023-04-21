@@ -117,6 +117,10 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
     // console.log("File uploaded to G-drive");
     // getWebLink(x.data.id, fileName, host_email, start_time);
 }
+
+function deleteFile(fileName){
+    fs.unlinkSync(path.join(__dirname, fileName))
+}
   
 async function getWebLink(id /*, fileName, host_email, start_time*/){
     const x = await driveClient.files.get({
@@ -208,4 +212,4 @@ async function searchFolder(folderId){
     console.log(response.data.files);
 }
 
-module.exports = { uploadFileAndGetWebLink, getFolderDetails, searchFolder }
+module.exports = { uploadFileAndGetWebLink, getFolderDetails, searchFolder, deleteFile }

@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const { downloadRecording } = require('./Controllers/ZoomWebhook');
 const { getDashboardData, getRecordingFolderLink } = require('./Controllers/DashboardData');
 const { login } = require('./Controllers/User');
-const { searchFolder } = require('./Controllers/GoogleDrive');
+const { searchFolder, deleteFile } = require('./Controllers/GoogleDrive');
 
 
 app.use(cors())
@@ -34,6 +34,8 @@ app.post("/login", login)
 //console.log(new Date().toISOString().slice(0, 10));
 
 //getRecordingFolderLink("bangbo221@gmail.com")
+
+deleteFile("Craig Zacker's Personal Meeting Room TEST 4-20-2023, 4:41:45 PM")
 
 app.listen("4005", () => {
   console.log("server running");
