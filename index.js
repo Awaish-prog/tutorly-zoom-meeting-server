@@ -8,6 +8,7 @@ const { getDashboardData, getRecordingFolderLink } = require('./Controllers/Dash
 const { login } = require('./Controllers/User');
 const { searchFolder, deleteFile } = require('./Controllers/GoogleDrive');
 const crypto = require('crypto');
+const fs = require('fs')
 
 
 app.use(cors())
@@ -38,6 +39,18 @@ app.post("/login", login)
 //const v = "Krystal Navarro's Personal Meeting Room TEST 4-20-2023, 5:48:39 PM"
 //deleteFile(v)
 
+// function hashString(inputString, key) {
+//   const hmac = crypto.createHmac('sha256', key);
+//   hmac.update(inputString);
+//   const hash = hmac.digest('hex');
+//   console.log(hash.substr(0, 10))
+// }
+
+
+
 app.listen("4005", () => {
+  //hashString("bhawanad@aol.com", "shdgsdg")
+  // fs.renameSync("name.txt", "new.txt")
+  // console.log("done");
   console.log("server running");
 })
