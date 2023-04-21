@@ -71,7 +71,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     }
                 }
 
-                const folderId = getRecordingFolderLink()
+                //const folderId = getRecordingFolderLink()
                 let status = 400
                 // let x = {}
                 // for(let i = 0; i < driveIds.length; i++){
