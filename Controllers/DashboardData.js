@@ -68,10 +68,10 @@ async function getRecordingFolderLink(email){
         }
         catch(e){
             console.log(e);
-            return ""
+            return "1zHDm80-ce3FMoYUI7jy9YFZ4OFLxmLI6"
         }
         
-        return ""
+        return "1zHDm80-ce3FMoYUI7jy9YFZ4OFLxmLI6"
         
 }
 
