@@ -30,13 +30,13 @@ function getCalendarId(calendars, email, calendarID){
     return calendarID
 }
 
-function getMeetingsList(appointments, upcoming, limit) {
+function getMeetingsList(appointments, upcoming) {
     const tutorAppointments = []
     appointments.forEach((appointment) => {
-        if(new Date(appointment.datetime) > new Date() && upcoming && tutorAppointments.length < limit){
+        if(new Date(appointment.datetime) > new Date()){
             tutorAppointments.push(appointment)
         }
-        else if(new Date(appointment.datetime) < new Date() && !upcoming && tutorAppointments.length < limit){
+        else if(new Date(appointment.datetime) < new Date()){
             tutorAppointments.push(appointment)
         } 
     })
@@ -47,7 +47,6 @@ function getMeetingsList(appointments, upcoming, limit) {
 function getPreviousMeetings(req, res){
     const upcoming = false
     const numbers = req.params.number
-    const limit = req.params.limit
     const date = new Date().toISOString().slice(0, 10)
     if(req.params.role === 'tutor'){
         const email = req.params.email.toLowerCase()
@@ -61,7 +60,7 @@ function getPreviousMeetings(req, res){
             }
             acuity.request(`appointments?calendarID=${calendarID}&max=${numbers}&maxDate=${date}`, function (err, r2, appointments) {
                 if (err) return console.error(err);
-                const tutorMeetings = getMeetingsList(appointments, upcoming, limit)
+                const tutorMeetings = getMeetingsList(appointments, upcoming)
                 res.json({status: 200, meetings: tutorMeetings})
             })
         })
@@ -71,7 +70,7 @@ function getPreviousMeetings(req, res){
         acuity.request(`appointments?email=${email}&max=${numbers}&maxDate=${date}`, function (err, r, appointments) {
             if (err) return console.error(err);
             if(appointments.length){
-                const studentMeetings = getMeetingsList(appointments, upcoming, limit)
+                const studentMeetings = getMeetingsList(appointments, upcoming)
                 res.json({status: 200, meetings: studentMeetings})
             }
             else{
@@ -82,7 +81,7 @@ function getPreviousMeetings(req, res){
                     acuity.request(`appointments?email=${clients[i].email}&max=${numbers}&maxDate=${date}`, function (err, r2, appointments) {
                         if (err) return console.error(err);
                         
-                        const studentMeetings = getMeetingsList(appointments, upcoming, limit)
+                        const studentMeetings = getMeetingsList(appointments, upcoming)
                         res.json({status: 200, meetings: studentMeetings})
                         return
                     });
@@ -97,7 +96,6 @@ function getPreviousMeetings(req, res){
 function getUpcomingMeetings(req, res){
     const upcoming = true
     const numbers = req.params.number
-    const limit = req.params.limit
     if(req.params.role === 'tutor'){
         const email = req.params.email.toLowerCase()
         let calendarID = null
@@ -111,7 +109,7 @@ function getUpcomingMeetings(req, res){
             const date = new Date().toISOString().slice(0, 10)
             acuity.request(`appointments?calendarID=${calendarID}&max=${numbers}&direction=ASC&minDate=${date}`, function (err, r2, appointments) {
                 if (err) return console.error(err);
-                const tutorMeetings = getMeetingsList(appointments, upcoming, limit)
+                const tutorMeetings = getMeetingsList(appointments, upcoming)
                 res.json({status: 200, meetings: tutorMeetings})
             })
         })
@@ -122,7 +120,7 @@ function getUpcomingMeetings(req, res){
         acuity.request(`appointments?email=${email}&max=${numbers}&direction=ASC&minDate=${date}`, function (err, r, appointments) {
             if (err) return console.error(err);
             if(appointments.length){
-                const studentMeetings = getMeetingsList(appointments, upcoming, limit)
+                const studentMeetings = getMeetingsList(appointments, upcoming)
                 res.json({status: 200, meetings: studentMeetings})
             }
             else{
@@ -133,15 +131,13 @@ function getUpcomingMeetings(req, res){
                     acuity.request(`appointments?email=${clients[i].email}&max=${numbers}&direction=ASC&minDate=${date}`, function (err, r2, appointments) {
                         if (err) return console.error(err);
                         
-                        const studentMeetings = getMeetingsList(appointments, upcoming, limit)
+                        const studentMeetings = getMeetingsList(appointments, upcoming)
                         res.json({status: 200, meetings: studentMeetings})
                         return
                       
-                        });
+                    });
                 }
             }
-            //console.log(appointments);
-          //  1021370058
             });
             }
         });
@@ -184,41 +180,6 @@ function getAvailability(req, res){
     });
 }
 
-function test(){
-    var options = {
-        method: 'PUT',
-        body: {
-          datetime : '2023-04-18T16:00:00',
-        }
-      };
-    acuity.request('clients', function (err, res, appointments) {
-    if (err) return console.error(err);
-    for(let i = 0; i < appointments.length; i++){
-        if(appointments[i].email.includes("ishaadhing8407@student.lvusd.org")){
-            console.log(`${appointments[i].email} ${i} ${appointments[i].lastName}`);
-            acuity.request(`appointments?email=${appointments[i].email}&max=50`, function (err, res, appointments) {
-                if (err) return console.error(err);
-                
-                for(let i = 0; i < appointments.length; i++){
-                    console.log(i);
-                }
-              //  1021370058
-                });
-        }
-    }
-    //console.log(appointments);
-  //  1021370058
-    });
-}
-
-function getClients(){
-    acuity.request(`clients`, function (err, res, appointments) {
-        if (err) return console.error(err);
-        
-        console.log(appointments);
-        });
-}
 
 
-
-module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, test, getAvailability, getClients }
+module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, getAvailability }

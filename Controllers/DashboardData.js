@@ -1,11 +1,44 @@
 const {google} = require('googleapis');
-const { getFolderDetails } = require('./GoogleDrive');
 
 
 const GOOGLE_SHEET_CLIENT_ID= "590998069758-nmo7i410ubnqqnvijdabadcb8j8649ti.apps.googleusercontent.com"
 const GOOGLE_SHEET_CLIENT_SECRET= "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"
 const GOOGLE_SHEET_REDIRECT_URI= "https://developers.google.com/oauthplayground"
 const GOOGLE_SHEET_REFRESH_TOKEN= "1//04xDjWGszNpKnCgYIARAAGAQSNwF-L9IryMHOgOL4Msf-zvfOrNJEXHXq5oguzl0UAj-NXxcEsF5_1Ey9rk2MPbPdNhUhO3829Tc"
+
+const GOOGLE_DRIVE_CLIENT_ID= "590998069758-nmo7i410ubnqqnvijdabadcb8j8649ti.apps.googleusercontent.com"
+const GOOGLE_DRIVE_CLIENT_SECRET= "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"
+const GOOGLE_DRIVE_REDIRECT_URI= "https://developers.google.com/oauthplayground"
+const GOOGLE_DRIVE_REFRESH_TOKEN= "1//04TLsK0g8ONkECgYIARAAGAQSNwF-L9Ir0I5LnmsAbyXxrv2JrxFR4fF77i51i1aoudZ6lO62ihBxpQd_q95wYAmPUICJT7qnzl4"
+
+const client = new google.auth.OAuth2(GOOGLE_DRIVE_CLIENT_ID, GOOGLE_DRIVE_CLIENT_SECRET, GOOGLE_DRIVE_REDIRECT_URI);
+
+client.setCredentials({ refresh_token: GOOGLE_DRIVE_REFRESH_TOKEN });
+
+const driveClient = google.drive({
+    version: 'v3',
+    auth: client,
+});
+
+async function getFolderInfo(folderId){
+    
+    const query = `'${folderId}' in parents and trashed = false`;
+
+
+    const sharedDriveId = '0AOVUj7_3VDFvUk9PVA';
+
+
+    const response = await driveClient.files.list({
+        q: query,
+        driveId: sharedDriveId,
+        corpora: 'drive',
+        includeItemsFromAllDrives: true,
+        supportsAllDrives: true,
+        fields: 'nextPageToken, files(id, name)',
+    });
+
+    return response.data
+}
 
 async function getDashboardData(req, res){
 
@@ -27,7 +60,7 @@ async function getDashboardData(req, res){
     const data = response.data.values
     for(let i = 0; i < data.length; i++){
         if(data[i][1] && data[i][1].toLowerCase().includes(email)){
-            const getDriveFolderData = await getFolderDetails(data[i][3])
+            const getDriveFolderData = await getFolderInfo(data[i][3])
             res.json({status: 200, dashboardData: data[i], files: getDriveFolderData.files})
             return
         }

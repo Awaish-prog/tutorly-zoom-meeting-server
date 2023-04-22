@@ -1,14 +1,12 @@
 const express = require('express');
-const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, test, getAvailability, getClients } = require('./Controllers/Meetings');
+const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, getAvailability } = require('./Controllers/Meetings');
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { downloadRecording } = require('./Controllers/ZoomWebhook');
-const { getDashboardData, getRecordingFolderLink } = require('./Controllers/DashboardData');
+const { getDashboardData } = require('./Controllers/DashboardData');
 const { login } = require('./Controllers/User');
-const { searchFolder, deleteFile } = require('./Controllers/GoogleDrive');
-const crypto = require('crypto-js');
-const fs = require('fs')
+const { authentication } = require('./Middlewares/Authenticate');
 
 
 app.use(cors())
@@ -16,40 +14,23 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 
-app.get("/getPreviousMeetings/:email/:role/:number/:limit", getPreviousMeetings)
+app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
 
-app.get("/getUpcomingMeetings/:email/:role/:number/:limit", getUpcomingMeetings)
+app.get("/getUpcomingMeetings/:email/:role/:number", authentication, getUpcomingMeetings)
 
 app.post("/getEvent", downloadRecording )
 
-app.get("/getAvailabilty", getAvailability)
+app.get("/getAvailabilty", authentication, getAvailability)
 
-app.put("/rescheduleMeeting", rescheduleMeeting)
+app.put("/rescheduleMeeting", authentication, rescheduleMeeting)
 
-app.put("/cancelMeeting", cancelMeeting)
+app.put("/cancelMeeting", authentication, cancelMeeting)
 
-app.get("/getDashboardData/:email", getDashboardData)
+app.get("/getDashboardData/:email", authentication, getDashboardData)
 
 app.post("/login", login)
 
-//searchFolder("1ixfyJKuCLwytxzHBkEVDE66byh37gZ6j")
-//console.log(new Date().toISOString().slice(0, 10));
-
-//getRecordingFolderLink("bangbo221@gmail.com")
-//const v = "Krystal Navarro's Personal Meeting Room TEST 4-20-2023, 5:48:39 PM"
-//deleteFile(v)
-
-function hashString(inputString) {
-  const hmac = crypto.HmacSHA1(inputString, "dskfrdsjgk");
-  const hash = hmac.toString(crypto.enc.Hex);
-  console.log(hash.substr(0, 10))
-}
-
-getClients()
-
 
 app.listen("4005", () => {
-  //hashString("awaish@tutorly.com")
-  
   console.log("server running");
 })
