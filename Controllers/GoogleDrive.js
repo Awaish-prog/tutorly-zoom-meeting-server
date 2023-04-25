@@ -134,10 +134,6 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
         }        
     })
 }
-
-function deleteFile(fileName){
-    fs.unlinkSync(path.join(__dirname, fileName))
-}
   
 async function getWebLink(id, driveId){
     const x = await driveClient.files.get({
@@ -170,4 +166,4 @@ async function searchFolder(folderId){
     console.log(response.data.files);
 }
 
-module.exports = { uploadFileAndGetWebLink, searchFolder, deleteFile }
+module.exports = { uploadFileAndGetWebLink, searchFolder }

@@ -26,6 +26,12 @@ function getCalendarId(calendars, email, calendarID){
             calendarID = calendars[i].id
             return calendarID
         }
+        if(calendars[i].email.includes("@tutorly") && email.includes("mytutorly")){
+            if(calendars[i].email.includes(email.replace("mytutorly", "tutorly"))){
+                calendarID = calendars[i].id
+                return calendarID
+            }
+        }
     }
     return calendarID
 }
@@ -33,10 +39,10 @@ function getCalendarId(calendars, email, calendarID){
 function getMeetingsList(appointments, upcoming) {
     const tutorAppointments = []
     appointments.forEach((appointment) => {
-        if(new Date(appointment.datetime) > new Date()){
+        if(new Date(appointment.datetime) > new Date() && upcoming){
             tutorAppointments.push(appointment)
         }
-        else if(new Date(appointment.datetime) < new Date()){
+        else if(new Date(appointment.datetime) < new Date() && !upcoming){
             tutorAppointments.push(appointment)
         } 
     })
