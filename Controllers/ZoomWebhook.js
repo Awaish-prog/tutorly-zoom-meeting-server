@@ -38,10 +38,14 @@ function downloadRecording(req, res){
 
       res.status(response.status)
       res.json(response)
+      let recording = ""
+      let recordings = req.body.payload.object.recording_files[0]
+      for(let i = 0; i < recordings.length; i++){
+        if(recordings[i].file_extension === 'MP4' || recordings[i].file_extension === 'mp4'){
+          recording = recordings[i]
+        }
+      }
 
-      const recording = req.body.payload.object.recording_files[0].file_extension === 'MP4' ? 
-      req.body.payload.object.recording_files[0] :
-      req.body.payload.object.recording_files[1]
     const downloadUrl = recording.download_url
 
     let f = (String(req.body.payload.object.topic) + " " + (new Date(req.body.payload.object.start_time)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).replaceAll("/", "-")
