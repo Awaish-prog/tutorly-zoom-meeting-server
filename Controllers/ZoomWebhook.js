@@ -39,7 +39,7 @@ function downloadRecording(req, res){
       res.status(response.status)
       res.json(response)
       let recording = ""
-      let recordings = req.body.payload.object.recording_files[0]
+      let recordings = req.body.payload.object.recording_files
       for(let i = 0; i < recordings.length; i++){
         if(recordings[i].file_extension === 'MP4' || recordings[i].file_extension === 'mp4'){
           recording = recordings[i]
