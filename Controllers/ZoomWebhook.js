@@ -50,6 +50,7 @@ function downloadRecording(req, res){
 
     dl.on('end', () => {
       console.log("File downloaded");
+      console.log(req.body.payload.object.host_email);
         uploadFileAndGetWebLink(f, req.body.payload.object.host_email, req.body.payload.object.start_time)
         
     });

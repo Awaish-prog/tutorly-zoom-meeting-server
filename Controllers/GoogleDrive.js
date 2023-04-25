@@ -99,8 +99,11 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     continue
                 }
             }
+                if(x.status !== 200){
+                    x = await uploadFile(fileName, "1zHDm80-ce3FMoYUI7jy9YFZ4OFLxmLI6", "0AOVUj7_3VDFvUk9PVA")
+                }
                 console.log("File uploaded to G-drive");
-                console.log(appointment.id, x.status, x.data.id);
+                console.log(x.status);
                 if(appointment && x.status === 200){
                     try{
                         link = await getWebLink(x.data.id, driveId)
@@ -124,6 +127,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                 }
                 try{
                     fs.unlinkSync(path.join(__dirname, fileName))
+                    console.log(fileName + " deleted");
                 }
                 catch(e){
                     console.log("File delete error");
