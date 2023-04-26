@@ -46,12 +46,49 @@ function uploadFile(fileName, parents, driveId) {
 async function uploadFileAndGetWebLink(fileName, host_email, start_time){
     const driveIds = ["0AOVUj7_3VDFvUk9PVA", "0AFKIH2OGGx2pUk9PVA", "0AGmJH7nnITy1Uk9PVA", "0AIZWRUJ5gze-Uk9PVA"]
     let calendarID = null
-    acuity.request('calendars', function (err, r1, calendars) {
-        if (err) return console.error(err);
+    acuity.request('calendars', async function (err, r1, calendars) {
+        if (err) {
+            try{
+                try{
+                    
+                    const x = await uploadFile(fileName, "1zHDm80-ce3FMoYUI7jy9YFZ4OFLxmLI6", "0AOVUj7_3VDFvUk9PVA")
+                    
+                    console.log("File uploaded to G-drive");
+                }
+                catch(e){
+                    console.log("File upload failed");
+                }
+                fs.unlinkSync(path.join(__dirname, fileName))
+                console.log(fileName + " deleted");
+            }
+            catch(e){
+                console.log("File delete errors");
+            }    
+            return
+        }
         calendarID = getCalendarId(calendars, host_email, calendarID)
+        try{
         if(calendarID){
             acuity.request(`appointments?calendarID=${calendarID}&max=2147483647`,async function (err, res, appointments) {
-                if (err) return console.error(err);
+                if (err) {
+                    try{
+                        try{
+                            
+                            const x = await uploadFile(fileName, "1zHDm80-ce3FMoYUI7jy9YFZ4OFLxmLI6", "0AOVUj7_3VDFvUk9PVA")
+                            
+                            console.log("File uploaded to G-drive");
+                        }
+                        catch(e){
+                            console.log("File upload failed");
+                        }
+                        fs.unlinkSync(path.join(__dirname, fileName))
+                        console.log(fileName + " deleted");
+                    }
+                    catch(e){
+                        console.log("File delete errors");
+                    }    
+                    return
+                }
                 console.log(start_time);
                 let appointment = ""
                 let currMax = Number.MAX_VALUE
@@ -99,11 +136,19 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     continue
                 }
             }
-                if(!x.status || x.status !== 200){
+            try{
+                if(x.status !== 200){
                     x = await uploadFile(fileName, "1zHDm80-ce3FMoYUI7jy9YFZ4OFLxmLI6", "0AOVUj7_3VDFvUk9PVA")
+                    driveId = "0AOVUj7_3VDFvUk9PVA"
                 }
                 console.log("File uploaded to G-drive");
                 console.log(x.status);
+            }
+            catch(e){
+                console.log("Default File upload failed");
+            }
+                
+                
                 if(appointment && x.status === 200){
                     try{
                         link = await getWebLink(x.data.id, driveId)
@@ -121,7 +166,16 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     const id = appointment.id
                     console.log(`appointments/${id}?admin=true`);
                     acuity.request(`appointments/${id}?admin=true`, options, function (err, res, appointment) {
-                        if (err) return console.error(err);
+                        if (err) {
+                            try{
+                                fs.unlinkSync(path.join(__dirname, fileName))
+                                console.log(fileName + " deleted");
+                                return
+                            }
+                            catch(e){
+                                
+                            }
+                        };
                         console.log(appointment);
                     });    
                 }
@@ -130,12 +184,33 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                     console.log(fileName + " deleted");
                 }
                 catch(e){
-                    console.log("File delete error");
+                    
                 }
                 
-            });
-            
-        }        
+            }); 
+        }
+        else{
+            try{
+                fs.unlinkSync(path.join(__dirname, fileName))
+                console.log(fileName + " deleted");
+            }
+            catch(e){
+                console.log("File delete error");
+            }    
+        }
+        }
+        catch(e){
+            console.log("Error during appointment search and file upload on google drive");
+            console.log(e);
+            try{
+                fs.unlinkSync(path.join(__dirname, fileName))
+                console.log(fileName + " deleted");
+            }
+            catch(e){
+                console.log("File delete error");
+            }    
+        }
+          
     })
 }
   
