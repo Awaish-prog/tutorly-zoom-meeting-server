@@ -78,6 +78,7 @@ function getPreviousMeetings(req, res){
             if(appointments.length){
                 const studentMeetings = getMeetingsList(appointments, upcoming)
                 res.json({status: 200, meetings: studentMeetings})
+                return
             }
             else{
         acuity.request('clients', function (err, r1, clients) {
