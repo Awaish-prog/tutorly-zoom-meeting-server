@@ -26,12 +26,6 @@ function getCalendarId(calendars, email, calendarID){
             calendarID = calendars[i].id
             return calendarID
         }
-        if(calendars[i].email.includes("@tutorly") && email.includes("mytutorly")){
-            if(calendars[i].email.includes(email.replace("mytutorly", "tutorly"))){
-                calendarID = calendars[i].id
-                return calendarID
-            }
-        }
     }
     return calendarID
 }
@@ -73,30 +67,32 @@ function getPreviousMeetings(req, res){
     }
     else{
         const email = req.params.email.toLowerCase()
-        acuity.request(`appointments?email=${email}&max=${numbers}&maxDate=${date}`, function (err, r, appointments) {
-            if (err) return console.error(err);
-            if(appointments.length){
-                const studentMeetings = getMeetingsList(appointments, upcoming)
-                res.json({status: 200, meetings: studentMeetings})
-                return
-            }
-            else{
+        // acuity.request(`appointments?email=${email}&max=${numbers}&maxDate=${date}`, function (err, r, appointments) {
+        //     if (err) return console.error(err);
+        //     if(appointments.length){
+        //         const studentMeetings = getMeetingsList(appointments, upcoming)
+        //         res.json({status: 200, meetings: studentMeetings})
+        //         return
+        //     }
+        //     else{
         acuity.request('clients', function (err, r1, clients) {
             if (err) return console.error(err);
             for(let i = 0; i < clients.length; i++){
                 if(clients[i].email.includes(email)){
+                    console.log(clients[i].email);
                     acuity.request(`appointments?email=${clients[i].email}&max=${numbers}&maxDate=${date}`, function (err, r2, appointments) {
                         if (err) return console.error(err);
                         
                         const studentMeetings = getMeetingsList(appointments, upcoming)
                         res.json({status: 200, meetings: studentMeetings})
-                        return
+                        
                     });
+                    break
                 }
             }
             });
-            }
-        });
+           // }
+        //});
     }
 }
 
@@ -124,13 +120,13 @@ function getUpcomingMeetings(req, res){
     else{
         const email = req.params.email.toLowerCase()
         const date = new Date().toISOString().slice(0, 10)
-        acuity.request(`appointments?email=${email}&max=${numbers}&direction=ASC&minDate=${date}`, function (err, r, appointments) {
-            if (err) return console.error(err);
-            if(appointments.length){
-                const studentMeetings = getMeetingsList(appointments, upcoming)
-                res.json({status: 200, meetings: studentMeetings})
-            }
-            else{
+        // acuity.request(`appointments?email=${email}&max=${numbers}&direction=ASC&minDate=${date}`, function (err, r, appointments) {
+        //     if (err) return console.error(err);
+        //     if(appointments.length){
+        //         const studentMeetings = getMeetingsList(appointments, upcoming)
+        //         res.json({status: 200, meetings: studentMeetings})
+        //     }
+        //     else{
         acuity.request('clients', function (err, r1, clients) {
             if (err) return console.error(err);
             for(let i = 0; i < clients.length; i++){
@@ -146,8 +142,8 @@ function getUpcomingMeetings(req, res){
                 }
             }
             });
-            }
-        });
+            //}
+        //});
     }
 }
 

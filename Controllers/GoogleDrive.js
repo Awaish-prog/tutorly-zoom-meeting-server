@@ -45,7 +45,7 @@ function uploadFile(fileName, parents, driveId) {
   
 async function uploadFileAndGetWebLink(fileName, host_email, start_time){
     const driveIds = ["0AOVUj7_3VDFvUk9PVA", "0AFKIH2OGGx2pUk9PVA", "0AGmJH7nnITy1Uk9PVA", "0AIZWRUJ5gze-Uk9PVA"]
-    let calendarID = null
+    let calendarID = ""
     acuity.request('calendars', async function (err, r1, calendars) {
         if (err) {
             try{

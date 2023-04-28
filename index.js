@@ -34,7 +34,7 @@ async function test(){
   console.log(await getRecordingFolderLink("ishaadhing8407@student.lvusd.org"));
 }
 
-test()
+//test()
 
 
 app.listen("4005", () => {
