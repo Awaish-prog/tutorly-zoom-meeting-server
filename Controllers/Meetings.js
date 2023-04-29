@@ -22,7 +22,7 @@ function googleSheetTest(req, res){
     //     res.
   
     // });
-
+    console.log("Received");
     res.json({data: "data"})
 }
 
