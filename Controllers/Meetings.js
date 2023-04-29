@@ -17,13 +17,12 @@ const acuity = Acuity.basic({
 
 
 function googleSheetTest(req, res){
-    // acuity.request('appointments?calendarID=8175425&max=2147483647', function (err, r, appointments) {
-    // if (err) return console.error(err);
-    //     res.
+    acuity.request('appointments?calendarID=8175425&max=2147483647', function (err, r, appointments) {
+    if (err) return console.error(err);
+        res.json({appointments})
   
-    // });
+    });
     console.log("Received");
-    res.json({data: "data"})
 }
 
 
