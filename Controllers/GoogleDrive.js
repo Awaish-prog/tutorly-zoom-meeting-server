@@ -48,6 +48,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
     let calendarID = ""
     acuity.request('calendars', async function (err, r1, calendars) {
         if (err) {
+            console.log("Calendar api error");
             try{
                 try{
                     
@@ -70,6 +71,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
         try{
         if(calendarID){
             acuity.request(`appointments?calendarID=${calendarID}&max=2147483647`,async function (err, res, appointments) {
+                console.log("Appointments api error");
                 if (err) {
                     try{
                         try{
@@ -150,6 +152,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                 
                 
                 if(appointment && x.status === 200){
+                    console.log("Appointment found and file uploaded");
                     try{
                         link = await getWebLink(x.data.id, driveId)
                     }
@@ -190,6 +193,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
             }); 
         }
         else{
+            console.log("Calendar id problem");
             try{
                 fs.unlinkSync(path.join(__dirname, fileName))
                 console.log(fileName + " deleted");
