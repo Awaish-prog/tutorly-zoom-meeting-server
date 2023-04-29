@@ -1,5 +1,5 @@
 const express = require('express');
-const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, getAvailability } = require('./Controllers/Meetings');
+const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, getAvailability, googleSheetTest } = require('./Controllers/Meetings');
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
@@ -30,11 +30,13 @@ app.get("/getDashboardData/:email", authentication, getDashboardData)
 
 app.post("/login", login)
 
-async function test(){
-  console.log(await getRecordingFolderLink("ishaadhing8407@student.lvusd.org"));
-}
+// async function test(){
+//   console.log(await getRecordingFolderLink("ishaadhing8407@student.lvusd.org"));
+// }
 
 //test()
+
+app.get("/getSheetData", googleSheetTest)
 
 
 app.listen("4005", () => {
