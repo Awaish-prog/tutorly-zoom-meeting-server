@@ -17,7 +17,7 @@ const acuity = Acuity.basic({
 
 
 function googleSheetTest(req, res){
-    acuity.request('appointments?max=2147483647&direction=ASC', function (err, r, appointments) {
+    acuity.request('appointments?max=500&direction=ASC', function (err, r, appointments) {
     if (err) return console.error(err);
         console.log("Received");
         res.json({appointments})
