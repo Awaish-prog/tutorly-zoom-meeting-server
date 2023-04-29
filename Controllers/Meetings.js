@@ -17,7 +17,7 @@ const acuity = Acuity.basic({
 
 
 function googleSheetTest(req, res){
-    acuity.request('appointments?calendarID=8175425&max=100', function (err, r, appointments) {
+    acuity.request('appointments?max=100', function (err, r, appointments) {
     if (err) return console.error(err);
         res.json({appointments})
   
