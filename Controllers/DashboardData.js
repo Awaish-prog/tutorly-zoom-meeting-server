@@ -38,6 +38,7 @@ const sheetClient = google.sheets({
 function googleSheetTest(req, res){
     acuity.request('appointments?max=50000&direction=ASC', async function (err, r, appointments) {
     if (err) return console.error(err);
+    console.log("Acuity done");
     const response = await sheetClient.spreadsheets.values.get({
         spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
         range: 'A:B'
