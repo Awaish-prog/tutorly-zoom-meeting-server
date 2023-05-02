@@ -36,6 +36,22 @@ const sheetClient = google.sheets({
 
 
 async function googleSheetTest(req, res){
+
+  sheetClient.spreadsheets.values.clear({
+    spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+    range: 'Clients!A:Q'
+  })
+
+  sheetClient.spreadsheets.values.clear({
+    spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+    range: 'LALA!A:Q'
+  })
+
+  sheetClient.spreadsheets.values.clear({
+    spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+    range: 'Lennox!A:Q'
+  })
+
     acuity.request('appointments?max=50000&direction=ASC', async function (err, r, appointments) {
     if (err) return console.error(err);
     console.log("Acuity done");
@@ -127,7 +143,7 @@ async function googleSheetTest(req, res){
    
     });
     console.log("Received");
-
+    res.json({message: "Done"})
 }
 
 async function getFolderInfo(folderId){
