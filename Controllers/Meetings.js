@@ -23,6 +23,7 @@ function googleSheetTest(req, res){
     //     res.json({appointments})
   
     // });
+    console.log("Received");
     res.json({status : 200})
     
 }
