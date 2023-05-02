@@ -36,7 +36,7 @@ const sheetClient = google.sheets({
 
 
 async function googleSheetTest(req, res){
-    acuity.request('appointments?max=50&direction=ASC', async function (err, r, appointments) {
+    acuity.request('appointments?max=50000&direction=ASC', async function (err, r, appointments) {
     if (err) return console.error(err);
     console.log("Acuity done");
         
