@@ -1,8 +1,10 @@
 const Acuity = require('acuityscheduling');
+require('dotenv').config()
+
 
 const acuity = Acuity.basic({
-  userId: 24928536,
-  apiKey: '3f944e8ea743a039ecaded4245af4f68'
+  userId: process.env.ACUITY_USER_ID,
+  apiKey: process.env.ACUITY_API_KEY
 });
 
 // acuity.request('appointments?calendarID=8175425&max=2147483647', function (err, res, appointments) {
