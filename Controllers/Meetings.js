@@ -7,16 +7,6 @@ const acuity = Acuity.basic({
   apiKey: process.env.ACUITY_API_KEY
 });
 
-// acuity.request('appointments?calendarID=8175425&max=2147483647', function (err, res, appointments) {
-//   if (err) return console.error(err);
-//   for(let i = 0; i < appointments.length; i++){
-//     if(new Date(appointments[i].datetime) > new Date()){
-//             console.log(`${appointments[i].type} ${i} ${appointments[i].datetime}`);
-//     }
-//   }
-  
-// });
-
 
 function getCalendarId(calendars, email, calendarID){
     for(let i = 0; i < calendars.length; i++){
@@ -69,14 +59,6 @@ function getPreviousMeetings(req, res){
     }
     else{
         const email = req.params.email.toLowerCase()
-        // acuity.request(`appointments?email=${email}&max=${numbers}&maxDate=${date}`, function (err, r, appointments) {
-        //     if (err) return console.error(err);
-        //     if(appointments.length){
-        //         const studentMeetings = getMeetingsList(appointments, upcoming)
-        //         res.json({status: 200, meetings: studentMeetings})
-        //         return
-        //     }
-        //     else{
         acuity.request('clients', function (err, r1, clients) {
             if (err) return console.error(err);
             for(let i = 0; i < clients.length; i++){
@@ -93,8 +75,6 @@ function getPreviousMeetings(req, res){
                 }
             }
             });
-           // }
-        //});
     }
 }
 
@@ -122,13 +102,6 @@ function getUpcomingMeetings(req, res){
     else{
         const email = req.params.email.toLowerCase()
         const date = new Date().toISOString().slice(0, 10)
-        // acuity.request(`appointments?email=${email}&max=${numbers}&direction=ASC&minDate=${date}`, function (err, r, appointments) {
-        //     if (err) return console.error(err);
-        //     if(appointments.length){
-        //         const studentMeetings = getMeetingsList(appointments, upcoming)
-        //         res.json({status: 200, meetings: studentMeetings})
-        //     }
-        //     else{
         acuity.request('clients', function (err, r1, clients) {
             if (err) return console.error(err);
             for(let i = 0; i < clients.length; i++){
@@ -144,8 +117,6 @@ function getUpcomingMeetings(req, res){
                 }
             }
             });
-            //}
-        //});
     }
 }
 

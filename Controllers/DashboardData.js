@@ -62,7 +62,6 @@ async function googleSheetTest(req, res){
   var lennox = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID"]];
   var lala = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID"]];
 
-  // (new Date(item.endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-")
    for (var i = 0; i < appointments.length; i++) {
      var item = appointments[i];
      
@@ -119,7 +118,6 @@ async function googleSheetTest(req, res){
       }   
      }
 
-     // Replace with your data fields
   }
 
   console.log("Loop over");

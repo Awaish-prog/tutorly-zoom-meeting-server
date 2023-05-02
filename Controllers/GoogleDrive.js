@@ -196,6 +196,15 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
         else{
             console.log("Calendar id problem");
             try{
+                try{
+                    
+                    const x = await uploadFile(fileName, "1zHDm80-ce3FMoYUI7jy9YFZ4OFLxmLI6", "0AOVUj7_3VDFvUk9PVA")
+                    
+                    console.log("File uploaded to G-drive");
+                }
+                catch(e){
+                    console.log("File upload failed");
+                }
                 fs.unlinkSync(path.join(__dirname, fileName))
                 console.log(fileName + " deleted");
             }

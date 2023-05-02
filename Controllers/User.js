@@ -48,10 +48,5 @@ async function login(req, res){
     }
 
 }
-// bafc19e0e2
-// 57535faed3
-// b4ff72a5a7
-// 53166baeac
-// 7e286f6376
-// 23b8e3eb1e
+
 module.exports = { login }
