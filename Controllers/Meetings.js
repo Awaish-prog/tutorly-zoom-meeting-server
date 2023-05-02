@@ -16,19 +16,6 @@ const acuity = Acuity.basic({
 // });
 
 
-function googleSheetTest(req, res){
-    // acuity.request('appointments?max=50000&direction=ASC', function (err, r, appointments) {
-    // if (err) return console.error(err);
-    //     console.log("Received");
-    //     res.json({appointments})
-  
-    // });
-    console.log("Received");
-    res.json({status : 200})
-    
-}
-
-
 function getCalendarId(calendars, email, calendarID){
     for(let i = 0; i < calendars.length; i++){
         if(calendars[i].email.includes(email)){
@@ -198,4 +185,4 @@ function getAvailability(req, res){
 
 
 
-module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, getAvailability, googleSheetTest }
+module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, getAvailability }

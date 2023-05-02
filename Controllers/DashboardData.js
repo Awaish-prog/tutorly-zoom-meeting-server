@@ -20,6 +20,30 @@ const driveClient = google.drive({
     auth: client,
 });
 
+const clientSheet = new google.auth.OAuth2(GOOGLE_SHEET_CLIENT_ID, GOOGLE_SHEET_CLIENT_SECRET, GOOGLE_SHEET_REDIRECT_URI);
+
+clientSheet.setCredentials({ refresh_token: GOOGLE_SHEET_REFRESH_TOKEN });
+
+const sheetClient = google.sheets({
+    version: "v4",
+    auth: clientSheet
+})
+
+
+function googleSheetTest(req, res){
+    acuity.request('appointments?max=50000&direction=ASC', async function (err, r, appointments) {
+    if (err) return console.error(err);
+    const response = await sheetClient.spreadsheets.values.get({
+        spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+        range: 'A:B'
+    })
+    console.log(response.data.values);
+    });
+    console.log("Received");
+    res.json({status : 200})
+    
+}
+
 async function getFolderInfo(folderId){
     
     const query = `'${folderId}' in parents and trashed = false`;
@@ -44,14 +68,6 @@ async function getDashboardData(req, res){
 
     const email = req.params.email.toLowerCase()
     try{
-    const client = new google.auth.OAuth2(GOOGLE_SHEET_CLIENT_ID, GOOGLE_SHEET_CLIENT_SECRET, GOOGLE_SHEET_REDIRECT_URI);
-
-    client.setCredentials({ refresh_token: GOOGLE_SHEET_REFRESH_TOKEN });
-
-    const sheetClient = google.sheets({
-        version: "v4",
-        auth: client
-    })
 
     const response = await sheetClient.spreadsheets.values.get({
         spreadsheetId: "1-wqELarzcQLs8bPNVC_kUiWZMCX6QPX9Acr3rjRov2k",
@@ -81,14 +97,6 @@ async function getDashboardDataTest(email){
     console.log(await getFolderInfo("1WveMpo2vJqXfQb0LpR3nPyhYssPyTZUl"));
     
     try{
-    const client = new google.auth.OAuth2(GOOGLE_SHEET_CLIENT_ID, GOOGLE_SHEET_CLIENT_SECRET, GOOGLE_SHEET_REDIRECT_URI);
-
-    client.setCredentials({ refresh_token: GOOGLE_SHEET_REFRESH_TOKEN });
-
-    const sheetClient = google.sheets({
-        version: "v4",
-        auth: client
-    })
 
     const response = await sheetClient.spreadsheets.values.get({
         spreadsheetId: "1-wqELarzcQLs8bPNVC_kUiWZMCX6QPX9Acr3rjRov2k",
@@ -116,14 +124,6 @@ async function getDashboardDataTest(email){
 async function getRecordingFolderLink(email){
     email = email.toLowerCase()
     try{
-        const client = new google.auth.OAuth2(GOOGLE_SHEET_CLIENT_ID, GOOGLE_SHEET_CLIENT_SECRET, GOOGLE_SHEET_REDIRECT_URI);
-    
-        client.setCredentials({ refresh_token: GOOGLE_SHEET_REFRESH_TOKEN });
-    
-        const sheetClient = google.sheets({
-            version: "v4",
-            auth: client
-        })
     
         const response = await sheetClient.spreadsheets.values.get({
             spreadsheetId: "1-wqELarzcQLs8bPNVC_kUiWZMCX6QPX9Acr3rjRov2k",
@@ -148,4 +148,4 @@ async function getRecordingFolderLink(email){
 }
 
 
-module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest }
+module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest }

@@ -1,10 +1,10 @@
 const express = require('express');
-const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, getAvailability, googleSheetTest } = require('./Controllers/Meetings');
+const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, getAvailability } = require('./Controllers/Meetings');
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { downloadRecording } = require('./Controllers/ZoomWebhook');
-const { getDashboardData, getDashboardDataTest, getRecordingFolderLink } = require('./Controllers/DashboardData');
+const { getDashboardData, getDashboardDataTest, getRecordingFolderLink, googleSheetTest } = require('./Controllers/DashboardData');
 const { login } = require('./Controllers/User');
 const { authentication } = require('./Middlewares/Authenticate');
 
