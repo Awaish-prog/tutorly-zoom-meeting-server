@@ -123,31 +123,10 @@ async function googleSheetTest(req, res){
         valueInputOption: 'USER_ENTERED',
         resource: {values: lennox}
     })
-    // const response = await sheetClient.spreadsheets.values.get({
-    //     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-    //     range: 'A:B'
-    // })
-    // console.log(response.data);
+   
     });
     console.log("Received");
-    // res.json({status : 200})
-    //2-27-2021, 1:30:00 AM	2-27-2021, 2:30:00 AM	Alexander	Poppema		alexanderpoppema@nestmk12.net	1 Hour Tutoring Session: Sivagami Ramanathan	Sivagami Ramanathan	0	no	0			2021-02-26T09:41:10-0600	status unavailable	No	535021454
-    // const resource = {
-    //     values: [[
-    //         "2-27-2021, 1:30:00 AM", "2-27-2021, 2:30:00 AM", "Alexander", "Poppema", "",	"alexanderpoppema@nestmk12.net", "1 Hour Tutoring Session: Sivagami Ramanathan", "Sivagami Ramanathan",	"0", "no", "0", "", "", "2021-02-26T09:41:10-0600",	"status unavailable",	"No","535021454"
-    //     ],
-    //     [
-    //         "2-27-2021, 1:30:00 AM", "2-27-2021, 2:30:00 AM", "Alexander", "Poppema", "",	"alexanderpoppema@nestmk12.net", "1 Hour Tutoring Session: Sivagami Ramanathan", "Sivagami Ramanathan",	"0", "no", "0", "", "", "2021-02-26T09:41:10-0600",	"status unavailable",	"No","535021454"  
-    //     ]    
-    // ],
-    //   };
-    // const response = await sheetClient.spreadsheets.values.update({
-    //     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-    //     range: 'Clients!A:Q',
-    //     valueInputOption: 'USER_ENTERED',
-    //     resource
-    // })
-    // console.log(response);
+
 }
 
 async function getFolderInfo(folderId){
