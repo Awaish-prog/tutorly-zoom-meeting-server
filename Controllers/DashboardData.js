@@ -1,5 +1,10 @@
 const {google} = require('googleapis');
+const Acuity = require('acuityscheduling');
 
+const acuity = Acuity.basic({
+  userId: 24928536,
+  apiKey: '3f944e8ea743a039ecaded4245af4f68'
+});
 
 const GOOGLE_SHEET_CLIENT_ID= "590998069758-nmo7i410ubnqqnvijdabadcb8j8649ti.apps.googleusercontent.com"
 const GOOGLE_SHEET_CLIENT_SECRET= "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"
