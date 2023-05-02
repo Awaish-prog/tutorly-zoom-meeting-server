@@ -82,7 +82,7 @@ async function googleSheetTest(req, res){
         lala.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "No", appointments[i].id]);
       }
       }
-      else if(appointments[i].type.toLowerCase().includes("lennox")){
+      else if(appointments[i].type.toLowerCase().includes("lennox") || appointments[i].type.toLowerCase().includes("10-minute")){
         if(appointments[i].canceled){
           lennox.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "Yes", appointments[i].id]);
       }
