@@ -43,6 +43,25 @@ async function googleSheetTest(req, res){
   var values = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID"]];
   var lennox = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID"]];
   var lala = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID"]];
+
+  sheetClient.spreadsheets.values.update({
+    spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+    range: 'Clients!A:Q',
+    valueInputOption: 'USER_ENTERED',
+    resource: {values}
+})
+sheetClient.spreadsheets.values.update({
+    spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+    range: 'LALA!A:Q',
+    valueInputOption: 'USER_ENTERED',
+    resource: {values: lala}
+})
+sheetClient.spreadsheets.values.update({
+    spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+    range: 'Lennox!A:Q',
+    valueInputOption: 'USER_ENTERED',
+    resource: {values: lennox}
+})
   // (new Date(item.endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-")
    for (var i = 0; i < appointments.length; i++) {
      var item = appointments[i];
