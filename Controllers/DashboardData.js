@@ -75,7 +75,7 @@ sheetClient.spreadsheets.values.update({
         lala.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "No", appointments[i].id]);
       }
       }
-      else if(appointments[i].type.toLowerCase().includes("lennox ")){
+      else if(appointments[i].type.toLowerCase().includes("lennox ") || appointments[i].type.toLowerCase().includes("10-minute")){
         if(appointments[i].canceled){
           lennox.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "Yes", appointments[i].id]);
       }
@@ -93,7 +93,7 @@ sheetClient.spreadsheets.values.update({
       }   
     }
     else{
-       if(appointments[i].type.toLowerCase().includes("lala")){
+       if(appointments[i].type.toLowerCase().includes("lala ")){
         if(appointments[i].canceled){
           lala.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, item.price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "Yes", appointments[i].id]);
       }
@@ -101,7 +101,7 @@ sheetClient.spreadsheets.values.update({
         lala.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "No", appointments[i].id]);
       }
       }
-      else if(appointments[i].type.toLowerCase().includes("lennox") || appointments[i].type.toLowerCase().includes("10-minute")){
+      else if(appointments[i].type.toLowerCase().includes("lennox ") || appointments[i].type.toLowerCase().includes("10-minute")){
         if(appointments[i].canceled){
           lennox.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "Yes", appointments[i].id]);
       }
