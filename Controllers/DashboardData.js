@@ -35,19 +35,119 @@ const sheetClient = google.sheets({
 })
 
 
-function googleSheetTest(req, res){
+async function googleSheetTest(req, res){
     acuity.request('appointments?max=50000&direction=ASC', async function (err, r, appointments) {
     if (err) return console.error(err);
     console.log("Acuity done");
-    const response = await sheetClient.spreadsheets.values.get({
+        
+  var values = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID"]];
+  var lennox = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID"]];
+  var lala = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID"]];
+  // (new Date(item.endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-")
+   for (var i = 0; i < appointments.length; i++) {
+     var item = appointments[i];
+     
+    if(appointments[i].labels){
+      if(appointments[i].type.toLowerCase().includes("lala ")){
+        if(appointments[i].canceled){
+          lala.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "Yes", appointments[i].id]);
+      }
+      else{
+        lala.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "No", appointments[i].id]);
+      }
+      }
+      else if(appointments[i].type.toLowerCase().includes("lennox ")){
+        if(appointments[i].canceled){
+          lennox.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "Yes", appointments[i].id]);
+      }
+      else{
+        lennox.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "No", appointments[i].id]);
+      }
+      }
+      else{
+        if(item.canceled){
+        values.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "Yes", appointments[i].id]);
+      }
+      else{
+        values.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "No", appointments[i].id]);
+      }
+      }   
+    }
+    else{
+       if(appointments[i].type.toLowerCase().includes("lala")){
+        if(appointments[i].canceled){
+          lala.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, item.price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "Yes", appointments[i].id]);
+      }
+      else{
+        lala.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "No", appointments[i].id]);
+      }
+      }
+      else if(appointments[i].type.toLowerCase().includes("lennox")){
+        if(appointments[i].canceled){
+          lennox.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "Yes", appointments[i].id]);
+      }
+      else{
+        lennox.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "No", appointments[i].id]);
+      }
+      }
+      else{
+        if(appointments[i].canceled){
+        values.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "Yes", appointments[i].id]);
+      }
+      else{
+        values.push([(new Date(appointments[i].datetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), (new Date(appointments[i].endDatetime)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-"), appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "No", appointments[i].id]);
+      }
+      }   
+     }
+
+     // Replace with your data fields
+  }
+
+  console.log("Loop over");
+
+    sheetClient.spreadsheets.values.update({
         spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-        range: 'A:B'
+        range: 'Clients!A:Q',
+        valueInputOption: 'USER_ENTERED',
+        resource: {values}
     })
-    console.log(response.data.values);
+    sheetClient.spreadsheets.values.update({
+        spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+        range: 'LALA!A:Q',
+        valueInputOption: 'USER_ENTERED',
+        resource: {values: lala}
+    })
+    sheetClient.spreadsheets.values.update({
+        spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+        range: 'Lennox!A:Q',
+        valueInputOption: 'USER_ENTERED',
+        resource: {values: lennox}
+    })
+    // const response = await sheetClient.spreadsheets.values.get({
+    //     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+    //     range: 'A:B'
+    // })
+    // console.log(response.data);
     });
     console.log("Received");
-    res.json({status : 200})
-    
+    // res.json({status : 200})
+    //2-27-2021, 1:30:00 AM	2-27-2021, 2:30:00 AM	Alexander	Poppema		alexanderpoppema@nestmk12.net	1 Hour Tutoring Session: Sivagami Ramanathan	Sivagami Ramanathan	0	no	0			2021-02-26T09:41:10-0600	status unavailable	No	535021454
+    // const resource = {
+    //     values: [[
+    //         "2-27-2021, 1:30:00 AM", "2-27-2021, 2:30:00 AM", "Alexander", "Poppema", "",	"alexanderpoppema@nestmk12.net", "1 Hour Tutoring Session: Sivagami Ramanathan", "Sivagami Ramanathan",	"0", "no", "0", "", "", "2021-02-26T09:41:10-0600",	"status unavailable",	"No","535021454"
+    //     ],
+    //     [
+    //         "2-27-2021, 1:30:00 AM", "2-27-2021, 2:30:00 AM", "Alexander", "Poppema", "",	"alexanderpoppema@nestmk12.net", "1 Hour Tutoring Session: Sivagami Ramanathan", "Sivagami Ramanathan",	"0", "no", "0", "", "", "2021-02-26T09:41:10-0600",	"status unavailable",	"No","535021454"  
+    //     ]    
+    // ],
+    //   };
+    // const response = await sheetClient.spreadsheets.values.update({
+    //     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+    //     range: 'Clients!A:Q',
+    //     valueInputOption: 'USER_ENTERED',
+    //     resource
+    // })
+    // console.log(response);
 }
 
 async function getFolderInfo(folderId){
