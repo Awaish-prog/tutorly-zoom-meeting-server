@@ -57,27 +57,27 @@ function updateSheetData(sheetId, range, data) {
 
 async function googleSheetTest(req, res){
 
-  const spreadsheetId = "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4"; // Replace with your own spreadsheet ID
-  try{
-    const sheets = await sheetClient.spreadsheets.get({
-      spreadsheetId: spreadsheetId,
-      fields: "sheets.properties.sheetId,sheets.properties.title"
-    });
+  // const spreadsheetId = "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4"; // Replace with your own spreadsheet ID
+  // try{
+  //   const sheets = await sheetClient.spreadsheets.get({
+  //     spreadsheetId: spreadsheetId,
+  //     fields: "sheets.properties.sheetId,sheets.properties.title"
+  //   });
     
-    for (const sheet of sheets.data.sheets) {
-      const sheetId = sheet.properties.sheetId;
-      const sheetTitle = sheet.properties.title;
+  //   for (const sheet of sheets.data.sheets) {
+  //     const sheetId = sheet.properties.sheetId;
+  //     const sheetTitle = sheet.properties.title;
       
-      await sheetClient.spreadsheets.values.clear({
-        spreadsheetId: spreadsheetId,
-        range: `${sheetTitle}!A:Q`
-      });
-      console.log(`Cleared sheet "${sheetTitle}" (ID: ${sheetId})`);
-    }
-  }
-  catch(e){
-    console.log("Error in getting all spread sheets");
-  }
+  //     await sheetClient.spreadsheets.values.clear({
+  //       spreadsheetId: spreadsheetId,
+  //       range: `${sheetTitle}!A:Q`
+  //     });
+  //     console.log(`Cleared sheet "${sheetTitle}" (ID: ${sheetId})`);
+  //   }
+  // }
+  // catch(e){
+  //   console.log("Error in getting all spread sheets");
+  // }
   
     acuity.request('appointments?minDate=2023-04-01&max=50000&direction=ASC', async function (err, r, appointments) {
     if (err) return console.error(err);
