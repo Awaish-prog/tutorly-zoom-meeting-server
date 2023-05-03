@@ -36,6 +36,10 @@ const sheetClient = google.sheets({
     auth: clientSheet
 })
 
+async function deleteSheetData(req, res){
+  console.log("Delete");
+}
+
 
 async function googleSheetTest(req, res){
 
@@ -288,4 +292,4 @@ async function getRecordingFolderLink(email){
 }
 
 
-module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest }
+module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, deleteSheetData }
