@@ -54,7 +54,7 @@ async function googleSheetTest(req, res){
     range: 'Lennox!A:Q'
   })
 
-    acuity.request('appointments?minDate=2023-03-01&max=50000&direction=ASC', async function (err, r, appointments) {
+    acuity.request('appointments?minDate=2023-04-01&max=50000&direction=ASC', async function (err, r, appointments) {
     if (err) return console.error(err);
     console.log("Acuity done");
         
