@@ -7,11 +7,13 @@ const { downloadRecording } = require('./Controllers/ZoomWebhook');
 const { getDashboardData, googleSheetTest } = require('./Controllers/DashboardData');
 const { login } = require('./Controllers/User');
 const { authentication } = require('./Middlewares/Authenticate');
+const path = require('path')
 
 
 app.use(cors())
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'build')))
 
 
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
@@ -31,6 +33,10 @@ app.get("/getDashboardData/:email", authentication, getDashboardData)
 app.post("/login", login)
 
 app.get("/getSheetData", googleSheetTest)
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build/index.html"))
+})
 
 
 app.listen("4005", () => {

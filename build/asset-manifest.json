@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.0c95d87c.css",
+    "main.js": "/static/js/main.b0c78056.js",
+    "static/media/tutorly-logo.png": "/static/media/tutorly-logo.96f0e2cef73f7a6de374.png",
+    "static/media/_NeueMontreal-Regular.otf": "/static/media/_NeueMontreal-Regular.a386af5501c02b65221c.otf",
+    "static/media/_PPWoodland-Regular.otf": "/static/media/_PPWoodland-Regular.fd321d9999934a397967.otf",
+    "index.html": "/index.html",
+    "main.0c95d87c.css.map": "/static/css/main.0c95d87c.css.map",
+    "main.b0c78056.js.map": "/static/js/main.b0c78056.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0c95d87c.css",
+    "static/js/main.b0c78056.js"
+  ]
+}
