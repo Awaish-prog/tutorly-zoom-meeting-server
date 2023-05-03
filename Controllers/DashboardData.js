@@ -317,4 +317,4 @@ async function getRecordingFolderLink(email){
 }
 
 
-module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, deleteSheetData }
+module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest }

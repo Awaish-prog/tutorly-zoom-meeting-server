@@ -4,7 +4,7 @@ const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { downloadRecording } = require('./Controllers/ZoomWebhook');
-const { getDashboardData, googleSheetTest, deleteSheetData } = require('./Controllers/DashboardData');
+const { getDashboardData, googleSheetTest } = require('./Controllers/DashboardData');
 const { login } = require('./Controllers/User');
 const { authentication } = require('./Middlewares/Authenticate');
 const path = require('path')
@@ -34,7 +34,6 @@ app.post("/login", login)
 
 app.get("/getSheetData", googleSheetTest)
 
-app.get("/deleteSheetData", deleteSheetData)
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build/index.html"))
