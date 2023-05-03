@@ -38,6 +38,7 @@ const sheetClient = google.sheets({
 
 async function deleteSheetData(req, res){
   console.log("Delete");
+  res.json({m: "message"})
 }
 
 
