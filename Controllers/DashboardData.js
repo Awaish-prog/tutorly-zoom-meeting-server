@@ -41,18 +41,18 @@ async function googleSheetTest(req, res){
 
   sheetClient.spreadsheets.values.clear({
     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-    range: 'A:Q'
+    range: 'Clients!A:Q'
   })
 
-  // sheetClient.spreadsheets.values.clear({
-  //   spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-  //   range: 'LALA!A:Q'
-  // })
+  sheetClient.spreadsheets.values.clear({
+    spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+    range: 'LALA!A:Q'
+  })
 
-  // sheetClient.spreadsheets.values.clear({
-  //   spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-  //   range: 'Lennox!A:Q'
-  // })
+  sheetClient.spreadsheets.values.clear({
+    spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+    range: 'Lennox!A:Q'
+  })
 
     acuity.request('appointments?minDate=2023-04-01&max=50000&direction=ASC', async function (err, r, appointments) {
     if (err) return console.error(err);
@@ -160,6 +160,20 @@ async function googleSheetTest(req, res){
         valueInputOption: 'USER_ENTERED',
         resource: {values: lennox}
     })
+
+    
+
+    for(const tutor in tutors){
+      try{
+        sheetClient.spreadsheets.values.clear({
+          spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+          range: `${tutor}!A:Q`
+        })
+      }
+      catch(e){
+        console.log(`Error in ${tutor}`);
+      }
+    }
 
     for(const tutor in tutors){
       try{
