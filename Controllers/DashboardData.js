@@ -83,8 +83,6 @@ async function googleSheetTest(req, res){
       }
       }
       else{
-        console.log(appointments[i].date + " " + appointments[i].time);
-        console.log(appointments[i].date + " " + appointments[i].endTime);
         if(item.canceled){
         values.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "Yes", appointments[i].id]);
       }
