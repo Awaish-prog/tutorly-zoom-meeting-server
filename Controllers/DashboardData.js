@@ -65,21 +65,28 @@ async function deleteSheetData(req, res){
 
 async function googleSheetTest(req, res){
 
-  // sheetClient.spreadsheets.values.clear({
-  //   spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-  //   range: 'Clients!A:Q'
-  // })
-
-  // sheetClient.spreadsheets.values.clear({
-  //   spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-  //   range: 'LALA!A:Q'
-  // })
-
-  // sheetClient.spreadsheets.values.clear({
-  //   spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-  //   range: 'Lennox!A:Q'
-  // })
-
+  const spreadsheetId = "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4"; // Replace with your own spreadsheet ID
+  try{
+    const sheets = await sheetClient.spreadsheets.get({
+      spreadsheetId: spreadsheetId,
+      fields: "sheets.properties.sheetId,sheets.properties.title"
+    });
+    
+    for (const sheet of sheets.data.sheets) {
+      const sheetId = sheet.properties.sheetId;
+      const sheetTitle = sheet.properties.title;
+      
+      await sheetClient.spreadsheets.values.clear({
+        spreadsheetId: spreadsheetId,
+        range: `${sheetTitle}!A:Q`
+      });
+      console.log(`Cleared sheet "${sheetTitle}" (ID: ${sheetId})`);
+    }
+  }
+  catch(e){
+    console.log("Error in getting all spread sheets");
+  }
+  
     acuity.request('appointments?minDate=2023-04-01&max=50000&direction=ASC', async function (err, r, appointments) {
     if (err) return console.error(err);
     console.log("Acuity done");
@@ -146,16 +153,6 @@ async function googleSheetTest(req, res){
      }
     if(!tutors[appointments[i].calendar]){
       tutors[appointments[i].calendar] = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID"]]
-      // try{
-      //   await sheetClient.spreadsheets.values.clear({
-      //     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-      //     range: `${appointments[i].calendar}!A:Q`
-      //   });
-      // }
-      // catch(e){
-      //   console.log(`${appointments[i].calendar} sheet error`);
-      // }
-      
     }
     if(appointments[i].labels){
       if(appointments[i].canceled){
@@ -178,19 +175,19 @@ async function googleSheetTest(req, res){
   
   console.log("Loop over");
 
-    sheetClient.spreadsheets.values.update({
+    await sheetClient.spreadsheets.values.update({
         spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
         range: 'Clients!A:Q',
         valueInputOption: 'USER_ENTERED',
         resource: {values}
     })
-    sheetClient.spreadsheets.values.update({
+    await sheetClient.spreadsheets.values.update({
         spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
         range: 'LALA!A:Q',
         valueInputOption: 'USER_ENTERED',
         resource: {values: lala}
     })
-    sheetClient.spreadsheets.values.update({
+    await sheetClient.spreadsheets.values.update({
         spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
         range: 'Lennox!A:Q',
         valueInputOption: 'USER_ENTERED',
@@ -201,7 +198,7 @@ async function googleSheetTest(req, res){
 
     for(const tutor in tutors){
       try{
-        sheetClient.spreadsheets.values.update({
+        await sheetClient.spreadsheets.values.update({
           spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
           range: `${tutor}!A:Q`,
           valueInputOption: 'USER_ENTERED',
