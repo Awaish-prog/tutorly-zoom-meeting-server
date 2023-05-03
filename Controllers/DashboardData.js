@@ -37,7 +37,28 @@ const sheetClient = google.sheets({
 })
 
 async function deleteSheetData(req, res){
-  console.log("Delete");
+  const spreadsheetId = "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4"; // Replace with your own spreadsheet ID
+  try{
+    const sheets = await sheetClient.spreadsheets.get({
+      spreadsheetId: spreadsheetId,
+      fields: "sheets.properties.sheetId,sheets.properties.title"
+    });
+    
+    for (const sheet of sheets.data.sheets) {
+      const sheetId = sheet.properties.sheetId;
+      const sheetTitle = sheet.properties.title;
+      
+      sheetClient.spreadsheets.values.clear({
+        spreadsheetId: spreadsheetId,
+        range: `${sheetTitle}!A:Q`
+      });
+      console.log(`Cleared sheet "${sheetTitle}" (ID: ${sheetId})`);
+    }
+  }
+  catch(e){
+    console.log("Error in getting all spread sheets");
+  }
+  
   res.json({m: "message"})
 }
 
@@ -125,6 +146,16 @@ async function googleSheetTest(req, res){
      }
     if(!tutors[appointments[i].calendar]){
       tutors[appointments[i].calendar] = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID"]]
+      // try{
+      //   await sheetClient.spreadsheets.values.clear({
+      //     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+      //     range: `${appointments[i].calendar}!A:Q`
+      //   });
+      // }
+      // catch(e){
+      //   console.log(`${appointments[i].calendar} sheet error`);
+      // }
+      
     }
     if(appointments[i].labels){
       if(appointments[i].canceled){
