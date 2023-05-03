@@ -36,30 +36,23 @@ const sheetClient = google.sheets({
     auth: clientSheet
 })
 
-async function deleteSheetData(req, res){
-  const spreadsheetId = "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4"; // Replace with your own spreadsheet ID
-  try{
-    const sheets = await sheetClient.spreadsheets.get({
-      spreadsheetId: spreadsheetId,
-      fields: "sheets.properties.sheetId,sheets.properties.title"
+function updateSheetData(sheetId, range, data) {
+  return new Promise((resolve, reject) => {
+    const sheetClient = google.sheets({ version: 'v4', auth: authClient });
+
+    sheetClient.spreadsheets.values.update({
+      spreadsheetId: sheetId,
+      range: range,
+      valueInputOption: 'USER_ENTERED',
+      resource: { values: data },
+    }, (err, response) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(response);
+      }
     });
-    
-    for (const sheet of sheets.data.sheets) {
-      const sheetId = sheet.properties.sheetId;
-      const sheetTitle = sheet.properties.title;
-      
-      await sheetClient.spreadsheets.values.clear({
-        spreadsheetId: spreadsheetId,
-        range: `${sheetTitle}!A:Q`
-      });
-      console.log(`Cleared sheet "${sheetTitle}" (ID: ${sheetId})`);
-    }
-  }
-  catch(e){
-    console.log("Error in getting all spread sheets");
-  }
-  
-  res.json({m: "message"})
+  });
 }
 
 
@@ -174,36 +167,39 @@ async function googleSheetTest(req, res){
   }
   
   console.log("Loop over");
-
-    await sheetClient.spreadsheets.values.update({
-        spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-        range: 'Clients!A:Q',
-        valueInputOption: 'USER_ENTERED',
-        resource: {values}
-    })
-    await sheetClient.spreadsheets.values.update({
-        spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-        range: 'LALA!A:Q',
-        valueInputOption: 'USER_ENTERED',
-        resource: {values: lala}
-    })
-    await sheetClient.spreadsheets.values.update({
-        spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-        range: 'Lennox!A:Q',
-        valueInputOption: 'USER_ENTERED',
-        resource: {values: lennox}
-    })
+    await updateSheetData("1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4", 'Clients!A:Q', values)
+    await updateSheetData("1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4", 'LALA!A:Q', lala)
+    await updateSheetData("1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4", 'Lennox!A:Q', lennox)
+    // await sheetClient.spreadsheets.values.update({
+    //     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+    //     range: 'Clients!A:Q',
+    //     valueInputOption: 'USER_ENTERED',
+    //     resource: {values}
+    // })
+    // await sheetClient.spreadsheets.values.update({
+    //     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+    //     range: 'LALA!A:Q',
+    //     valueInputOption: 'USER_ENTERED',
+    //     resource: {values: lala}
+    // })
+    // await sheetClient.spreadsheets.values.update({
+    //     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+    //     range: 'Lennox!A:Q',
+    //     valueInputOption: 'USER_ENTERED',
+    //     resource: {values: lennox}
+    // })
 
     
 
     for(const tutor in tutors){
       try{
-        await sheetClient.spreadsheets.values.update({
-          spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-          range: `${tutor}!A:Q`,
-          valueInputOption: 'USER_ENTERED',
-          resource: {values: tutors[tutor]}
-      })
+        await updateSheetData("1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4", `${tutor}!A:Q`, tutors[tutor])
+      //   await sheetClient.spreadsheets.values.update({
+      //     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+      //     range: `${tutor}!A:Q`,
+      //     valueInputOption: 'USER_ENTERED',
+      //     resource: {values: tutors[tutor]}
+      // })
       }
       catch(e){
         console.log(`Error in ${tutor}`);
