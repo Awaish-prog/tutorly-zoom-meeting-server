@@ -38,7 +38,6 @@ const sheetClient = google.sheets({
 
 function updateSheetData(sheetId, range, data) {
   return new Promise((resolve, reject) => {
-    const sheetClient = google.sheets({ version: 'v4', auth: authClient });
 
     sheetClient.spreadsheets.values.update({
       spreadsheetId: sheetId,
