@@ -41,18 +41,18 @@ async function googleSheetTest(req, res){
 
   sheetClient.spreadsheets.values.clear({
     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-    range: 'Clients!A:Q'
+    range: 'A:Q'
   })
 
-  sheetClient.spreadsheets.values.clear({
-    spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-    range: 'LALA!A:Q'
-  })
+  // sheetClient.spreadsheets.values.clear({
+  //   spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+  //   range: 'LALA!A:Q'
+  // })
 
-  sheetClient.spreadsheets.values.clear({
-    spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-    range: 'Lennox!A:Q'
-  })
+  // sheetClient.spreadsheets.values.clear({
+  //   spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+  //   range: 'Lennox!A:Q'
+  // })
 
     acuity.request('appointments?minDate=2023-04-01&max=50000&direction=ASC', async function (err, r, appointments) {
     if (err) return console.error(err);
