@@ -34,7 +34,7 @@ app.post("/login", login)
 
 app.get("/getSheetData", googleSheetTest)
 
-app.delete("/deleteSheetData", deleteSheetData)
+app.get("/deleteSheetData", deleteSheetData)
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build/index.html"))
