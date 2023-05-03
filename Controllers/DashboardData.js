@@ -139,7 +139,7 @@ async function googleSheetTest(req, res){
     }
      
   }
-  console.log(tutors);
+  
   console.log("Loop over");
 
     sheetClient.spreadsheets.values.update({
@@ -160,6 +160,20 @@ async function googleSheetTest(req, res){
         valueInputOption: 'USER_ENTERED',
         resource: {values: lennox}
     })
+
+    for(const tutor in tutors){
+      try{
+        sheetClient.spreadsheets.values.update({
+          spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+          range: `${tutor}!A:Q`,
+          valueInputOption: 'USER_ENTERED',
+          resource: {values: tutors[tutor]}
+      })
+      }
+      catch(e){
+        console.log(`Error in ${tutor}`);
+      }
+    }
    
     });
     console.log("Received");
