@@ -48,7 +48,7 @@ async function deleteSheetData(req, res){
       const sheetId = sheet.properties.sheetId;
       const sheetTitle = sheet.properties.title;
       
-      sheetClient.spreadsheets.values.clear({
+      await sheetClient.spreadsheets.values.clear({
         spreadsheetId: spreadsheetId,
         range: `${sheetTitle}!A:Q`
       });
@@ -65,20 +65,20 @@ async function deleteSheetData(req, res){
 
 async function googleSheetTest(req, res){
 
-  sheetClient.spreadsheets.values.clear({
-    spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-    range: 'Clients!A:Q'
-  })
+  // sheetClient.spreadsheets.values.clear({
+  //   spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+  //   range: 'Clients!A:Q'
+  // })
 
-  sheetClient.spreadsheets.values.clear({
-    spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-    range: 'LALA!A:Q'
-  })
+  // sheetClient.spreadsheets.values.clear({
+  //   spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+  //   range: 'LALA!A:Q'
+  // })
 
-  sheetClient.spreadsheets.values.clear({
-    spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-    range: 'Lennox!A:Q'
-  })
+  // sheetClient.spreadsheets.values.clear({
+  //   spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+  //   range: 'Lennox!A:Q'
+  // })
 
     acuity.request('appointments?minDate=2023-04-01&max=50000&direction=ASC', async function (err, r, appointments) {
     if (err) return console.error(err);
