@@ -120,6 +120,15 @@ async function googleSheetTest(req, res){
      }
     if(!tutors[appointments[i].calendar]){
       tutors[appointments[i].calendar] = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID"]]
+      try{
+        sheetClient.spreadsheets.values.clear({
+          spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+          range: `${appointments[i].calendar}!A:Q`
+        })
+      }
+      catch(e){
+        console.log(`Error in ${appointments[i].calendar}`);
+      }
     }
     if(appointments[i].labels){
       if(appointments[i].canceled){
@@ -162,18 +171,6 @@ async function googleSheetTest(req, res){
     })
 
     
-
-    for(const tutor in tutors){
-      try{
-        sheetClient.spreadsheets.values.clear({
-          spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-          range: `${tutor}!A:Q`
-        })
-      }
-      catch(e){
-        console.log(`Error in ${tutor}`);
-      }
-    }
 
     for(const tutor in tutors){
       try{
