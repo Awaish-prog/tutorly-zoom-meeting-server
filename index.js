@@ -32,7 +32,7 @@ app.put("/rescheduleMeeting", authentication, rescheduleMeeting)
 
 app.put("/cancelMeeting", authentication, cancelMeeting)
 
-app.get("/getDashboardData/:email", authentication, getDashboardData)
+app.get("/getDashboardData/:email/:role", authentication, getDashboardData)
 
 app.post("/login", login)
 

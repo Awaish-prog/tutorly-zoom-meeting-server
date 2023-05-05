@@ -232,9 +232,7 @@ async function getFolderInfo(folderId){
     return response.data
 }
 
-async function getDashboardData(req, res){
-
-    const email = req.params.email.toLowerCase()
+async function getDashboardDataStudent(email){
     try{
 
     const response = await sheetClient.spreadsheets.values.get({
@@ -245,18 +243,52 @@ async function getDashboardData(req, res){
     for(let i = 0; i < data.length; i++){
         if(data[i][1] && data[i][1].toLowerCase().includes(email)){
             const getDriveFolderData = await getFolderInfo(data[i][3])
-            res.json({status: 200, dashboardData: data[i], files: getDriveFolderData.files})
-            return
+            return {status: 200, dashboardData: data[i], files: getDriveFolderData.files}
         }
     }
     }
     catch(e){
         console.log(e);
-        res.status(404).json({status: 404})
-        return
+        return {status: 404}
     }
     
-    res.status(404).json({status: 404})
+    return {status: 404}
+}
+
+async function getDashboardDataTutor(email){
+  try{
+    const studentsList = []
+    const response = await sheetClient.spreadsheets.values.get({
+        spreadsheetId: "1-wqELarzcQLs8bPNVC_kUiWZMCX6QPX9Acr3rjRov2k",
+        range: 'A:AU'
+    })
+    const data = response.data.values
+    for(let i = 0; i < data.length; i++){
+        if(data[i][18] && data[i][18].toLowerCase().includes(email)){
+            studentsList.push(data[i])
+        }
+    }
+    return { status: 200, studentsList }
+    }
+    catch(e){
+        console.log(e);
+        return {status: 404}
+    }
+    
+    return {status: 404}
+}
+
+async function getDashboardData(req, res){
+    const role = req.params.role
+    const email = req.params.email.toLowerCase()
+    if(role === 'tutor'){
+      const response = await getDashboardDataTutor(email)
+      res.json(response)
+    }
+    else{
+      const response = await getDashboardDataStudent(email)
+      res.json(response)
+    }
     
 }
 
