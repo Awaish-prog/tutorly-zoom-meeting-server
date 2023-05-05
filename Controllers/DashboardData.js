@@ -262,7 +262,7 @@ async function getDashboardData(req, res){
 
 async function getDashboardDataTest(email){
 
-    console.log(await getFolderInfo("1WveMpo2vJqXfQb0LpR3nPyhYssPyTZUl"));
+    // console.log(await getFolderInfo("1WveMpo2vJqXfQb0LpR3nPyhYssPyTZUl"));
     
     try{
 
@@ -275,18 +275,19 @@ async function getDashboardDataTest(email){
         if(data[i][1] && data[i][1].toLowerCase().includes(email)){
             console.log(data[i][3]);
             const getDriveFolderData = await getFolderInfo(data[i][3])
-            console.log(getDriveFolderData);
-            return
+            getDriveFolderData["meetingLink"] = data[i][46]
+            getDriveFolderData['studentName'] = data[i][0]
+            return getDriveFolderData
         }
     }
     }
     catch(e){
         console.log(e);
-        return
+        return {}
     }
     
     console.log("Not found");
-    
+    return {}
 }
 
 async function getRecordingFolderLink(email){

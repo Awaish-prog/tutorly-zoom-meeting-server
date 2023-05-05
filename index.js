@@ -7,7 +7,11 @@ const { downloadRecording } = require('./Controllers/ZoomWebhook');
 const { getDashboardData, googleSheetTest } = require('./Controllers/DashboardData');
 const { login } = require('./Controllers/User');
 const { authentication } = require('./Middlewares/Authenticate');
-const path = require('path')
+const path = require('path');
+const { createNotionPageWithEmail } = require('./Controllers/Notion');
+
+
+
 
 
 app.use(cors())
@@ -35,11 +39,13 @@ app.post("/login", login)
 app.get("/getSheetData", googleSheetTest)
 
 
+
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build/index.html"))
 })
 
 
 app.listen("4005", () => {
+  //createNotionPageWithEmail("surneepa@yahoo.com")
   console.log("server running");
 })
