@@ -1,10 +1,11 @@
 require('dotenv').config()
 
 const { Client } = require('@notionhq/client');
-const { getDashboardDataTest } = require('./DashboardData');
+const { getDashboardDataTest, appendRowInSheet } = require('./DashboardData');
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 async function createNotionPage(keyTakeaways, sessionLink, homeworkLink, resourcelink, recordingsLink, studentName){
+    try{
     const viewKeyTakeaways = {
       object: "block",
       type: "callout",
@@ -311,6 +312,10 @@ async function createNotionPage(keyTakeaways, sessionLink, homeworkLink, resourc
     });
   
     return response
+    }
+    catch(e){
+        console.log(e);
+    }
 }
 
 async function createNotionPageWithEmail(email){
@@ -325,7 +330,7 @@ async function createNotionPageWithEmail(email){
     // const responseP = await notion.pages.retrieve({ page_id: pageId });
     // const databaseId = 'd4c16cca66494a86ab62f9169254e6d9';
     // const response = await notion.databases.retrieve({ database_id: databaseId });
-    
+    try{
     const studentData = await getDashboardDataTest(email);
     const notionData = {}
     notionData["studentName"] = studentData['studentName']
@@ -350,8 +355,16 @@ async function createNotionPageWithEmail(email){
       }
     }
     
+    const page = await createNotionPage(notionData["keyTakeaways"], notionData["meetinglink"], notionData["homeworkLink"], notionData["resourcesLink"], notionData["recordingLink"], notionData["studentName"])
     
-    console.log(await createNotionPage(notionData["keyTakeaways"], notionData["meetinglink"], notionData["homeworkLink"], notionData["resourcesLink"], notionData["recordingLink"], notionData["studentName"]));
+    const link = page.url.replace("https://www.notion.so", "https://mytutorly.notion.site")
+
+
+    appendRowInSheet("1-_UmQM3Q06anjIMxIzDoSE8_jtaXixCPqxtgqY7qqdg", [[notionData["studentName"], email, link]], "A:C")
+    }
+    catch(e){
+        console.log(e);
+    }
     
 } 
 

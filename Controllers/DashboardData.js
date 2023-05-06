@@ -54,6 +54,27 @@ function updateSheetData(sheetId, range, data) {
   });
 }
 
+function appendRow(sheetId, row, range){
+  return new Promise((resolve, reject) => {
+    sheetClient.spreadsheets.values.append({
+      spreadsheetId: sheetId,
+      range: range,
+      valueInputOption: 'USER_ENTERED',
+      resource: { values: row },
+    }, (err, response) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(response);
+      }
+    })
+  })
+}
+
+async function appendRowInSheet(sheetId, row, range){
+  const response = await appendRow(sheetId, row, range)
+  console.log(response);
+}
 
 async function googleSheetTest(req, res){
 
@@ -349,4 +370,4 @@ async function getRecordingFolderLink(email){
 }
 
 
-module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest }
+module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, appendRowInSheet }
