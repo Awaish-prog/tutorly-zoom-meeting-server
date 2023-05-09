@@ -116,6 +116,14 @@ function getUpcomingMeetings(req, res){
                     });
                 }
             }
+            let present = false
+            for(let i = 0; i < clients.length; i++){
+                if(clients[i].email.includes(email)){
+                    present = true
+                }
+            }
+            if(!present)
+                res.json({status: 404})
             });
     }
 }
