@@ -9,7 +9,7 @@ const acuity = Acuity.basic({
 });
 
 function hashString(inputString) {
-  const hmac = crypto.HmacSHA1(inputString, "dskfrdsjgk");
+  const hmac = crypto.HmacSHA1(inputString, process.env.HASH_KEY);
   const hash = hmac.toString(crypto.enc.Hex);
   return hash.substr(0, 10)
 }
@@ -49,4 +49,4 @@ async function login(req, res){
 
 }
 
-module.exports = { login }
+module.exports = { login, hashString }

@@ -1,6 +1,8 @@
 const {google} = require('googleapis');
 const Acuity = require('acuityscheduling');
+const { hashString } = require('./User');
 require('dotenv').config()
+
 
 
 const acuity = Acuity.basic({
@@ -35,6 +37,37 @@ const sheetClient = google.sheets({
     version: "v4",
     auth: clientSheet
 })
+
+async function updateStudentIds(){
+  try{
+
+    const responseInfo = await sheetClient.spreadsheets.values.get({
+        spreadsheetId: "1-wqELarzcQLs8bPNVC_kUiWZMCX6QPX9Acr3rjRov2k",
+        range: 'A:C'
+    })
+    const dataInfo = responseInfo.data.values
+    const responseIds = await sheetClient.spreadsheets.values.get({
+      spreadsheetId: "1ggPG2XgHa0TaiYzTEuih1xSDkUKOQzxCm9hZdECmCp8",
+      range: 'A:C'
+    })
+    const dataIds = responseIds.data.values
+    const dataIdsWrite = []
+    const diff = dataInfo.length - dataIds.length
+    for(let i = 0; i < diff - 1; i++){
+      dataInfo[dataInfo.length - i - 1][2] = hashString(dataInfo[dataInfo.length - i - 1][1])
+      dataIdsWrite.unshift(dataInfo[dataInfo.length - i - 1])
+    }
+    //for(let i = 0; i < dataIdsWrite.length; i++){
+      await appendRow("1ggPG2XgHa0TaiYzTEuih1xSDkUKOQzxCm9hZdECmCp8", dataIdsWrite, "A:C")
+      console.log(`Appended rows`);
+    //}
+    // 1ggPG2XgHa0TaiYzTEuih1xSDkUKOQzxCm9hZdECmCp8
+    }
+    catch(e){
+        console.log(e);
+     
+    }
+}
 
 function updateSheetData(sheetId, range, data) {
   return new Promise((resolve, reject) => {
@@ -78,27 +111,22 @@ async function appendRowInSheet(sheetId, row, range){
 
 async function googleSheetTest(req, res){
 
-  // const spreadsheetId = "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4"; // Replace with your own spreadsheet ID
-  // try{
-  //   const sheets = await sheetClient.spreadsheets.get({
-  //     spreadsheetId: spreadsheetId,
-  //     fields: "sheets.properties.sheetId,sheets.properties.title"
-  //   });
+  const spreadsheetId = "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4"; // Replace with your own spreadsheet ID
+  try{
+    const sheets = ["Clients", "LALA", "Lennox"]
     
-  //   for (const sheet of sheets.data.sheets) {
-  //     const sheetId = sheet.properties.sheetId;
-  //     const sheetTitle = sheet.properties.title;
+    for (const sheet of sheets) {
       
-  //     await sheetClient.spreadsheets.values.clear({
-  //       spreadsheetId: spreadsheetId,
-  //       range: `${sheetTitle}!A:Q`
-  //     });
-  //     console.log(`Cleared sheet "${sheetTitle}" (ID: ${sheetId})`);
-  //   }
-  // }
-  // catch(e){
-  //   console.log("Error in getting all spread sheets");
-  // }
+      await sheetClient.spreadsheets.values.clear({
+        spreadsheetId: spreadsheetId,
+        range: `${sheet}!A:Q`
+      });
+      console.log(`Cleared sheet "${sheet}"`);
+    }
+  }
+  catch(e){
+    console.log("Error in getting all spread sheets");
+  }
   
     acuity.request('appointments?minDate=2023-04-01&max=50000&direction=ASC', async function (err, r, appointments) {
     if (err) return console.error(err);
@@ -211,20 +239,20 @@ async function googleSheetTest(req, res){
 
     
 
-    for(const tutor in tutors){
-      try{
-        await updateSheetData("1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4", `${tutor}!A:Q`, tutors[tutor])
-      //   await sheetClient.spreadsheets.values.update({
-      //     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
-      //     range: `${tutor}!A:Q`,
-      //     valueInputOption: 'USER_ENTERED',
-      //     resource: {values: tutors[tutor]}
-      // })
-      }
-      catch(e){
-        console.log(`Error in ${tutor}`);
-      }
-    }
+    // for(const tutor in tutors){
+    //   try{
+    //     await updateSheetData("1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4", `${tutor}!A:Q`, tutors[tutor])
+    //   //   await sheetClient.spreadsheets.values.update({
+    //   //     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
+    //   //     range: `${tutor}!A:Q`,
+    //   //     valueInputOption: 'USER_ENTERED',
+    //   //     resource: {values: tutors[tutor]}
+    //   // })
+    //   }
+    //   catch(e){
+    //     console.log(`Error in ${tutor}`);
+    //   }
+    // }
    
     });
     console.log("Received");
@@ -370,4 +398,4 @@ async function getRecordingFolderLink(email){
 }
 
 
-module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, appendRowInSheet }
+module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, appendRowInSheet, updateStudentIds }

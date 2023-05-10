@@ -4,7 +4,7 @@ const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { downloadRecording } = require('./Controllers/ZoomWebhook');
-const { getDashboardData, googleSheetTest } = require('./Controllers/DashboardData');
+const { getDashboardData, googleSheetTest, updateStudentIds } = require('./Controllers/DashboardData');
 const { login } = require('./Controllers/User');
 const { authentication } = require('./Middlewares/Authenticate');
 const path = require('path');
@@ -47,5 +47,6 @@ app.get("*", (req, res) => {
 
 app.listen("4005", () => {
   //createNotionPageWithEmail("e.mondesir2001@yahoo.com")
+  //updateStudentIds()
   console.log("server running");
 })
