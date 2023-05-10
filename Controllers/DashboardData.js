@@ -57,11 +57,10 @@ async function updateStudentIds(){
       dataInfo[dataInfo.length - i - 1][2] = hashString(dataInfo[dataInfo.length - i - 1][1])
       dataIdsWrite.unshift(dataInfo[dataInfo.length - i - 1])
     }
-    //for(let i = 0; i < dataIdsWrite.length; i++){
-      await appendRow("1ggPG2XgHa0TaiYzTEuih1xSDkUKOQzxCm9hZdECmCp8", dataIdsWrite, "A:C")
-      console.log(`Appended rows`);
-    //}
-    // 1ggPG2XgHa0TaiYzTEuih1xSDkUKOQzxCm9hZdECmCp8
+    
+    await appendRow("1ggPG2XgHa0TaiYzTEuih1xSDkUKOQzxCm9hZdECmCp8", dataIdsWrite, "A:C")
+    console.log(`Appended rows`);
+    
     }
     catch(e){
         console.log(e);
