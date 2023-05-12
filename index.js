@@ -1,10 +1,10 @@
 const express = require('express');
-const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, getAvailability } = require('./Controllers/Meetings');
+const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId } = require('./Controllers/Meetings');
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { downloadRecording } = require('./Controllers/ZoomWebhook');
-const { getDashboardData, googleSheetTest, updateStudentIds } = require('./Controllers/DashboardData');
+const { getDashboardData, googleSheetTest, updateStudentIds, googleSheetDataTutor } = require('./Controllers/DashboardData');
 const { login } = require('./Controllers/User');
 const { authentication } = require('./Middlewares/Authenticate');
 const path = require('path');
@@ -38,6 +38,8 @@ app.post("/login", login)
 
 app.get("/getSheetData", googleSheetTest)
 
+app.get("/getSheetDataTutor", googleSheetDataTutor)
+
 
 
 app.get("*", (req, res) => {
@@ -48,5 +50,7 @@ app.get("*", (req, res) => {
 app.listen("4005", () => {
   //createNotionPageWithEmail("e.mondesir2001@yahoo.com")
   //updateStudentIds()
+  //printCalenderId("awaish@tutorly.com")
+  //googleSheetDataTutor(null, null)
   console.log("server running");
 })

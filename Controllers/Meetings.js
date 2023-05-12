@@ -7,6 +7,15 @@ const acuity = Acuity.basic({
   apiKey: process.env.ACUITY_API_KEY
 });
 
+function printCalenderId(email){
+    let calendarID = null
+    acuity.request('calendars', function (err, r1, calendars) {
+        if (err) return console.error(err);
+        calendarID = getCalendarId(calendars, email, calendarID)
+        console.log(calendarID);
+    })
+}
+
 
 function getCalendarId(calendars, email, calendarID){
     for(let i = 0; i < calendars.length; i++){
@@ -166,4 +175,4 @@ function getAvailability(req, res){
 
 
 
-module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, getAvailability }
+module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId }

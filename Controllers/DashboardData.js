@@ -108,6 +108,42 @@ async function appendRowInSheet(sheetId, row, range){
   console.log(response);
 }
 
+async function googleSheetDataTutor(req, res){
+  const id = "1CyJPPyvPx7ObRcbVIoK3nLF2hLYbuZY5AUs-FySjNnY"
+  const calenderId = 6360410
+  const data = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID"]]; 
+  acuity.request(`appointments?calendarID=${calenderId}&minDate=2023-05-01&max=5000&direction=ASC`, async function (err, r, appointments) {
+    if (err) return console.error(err);
+    console.log("Acuity done");
+    await sheetClient.spreadsheets.values.clear({
+      spreadsheetId: id,
+      range: `A:Q`
+    });
+    console.log(`Cleared sheet ${calenderId}`);
+    for (var i = 0; i < appointments.length; i++) {
+      if(appointments[i].labels){
+        if(appointments[i].canceled){
+          data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "Yes", appointments[i].id]);
+      }
+      else{
+        data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "No", appointments[i].id]);
+      }
+      }
+      else{
+        if(appointments[i].canceled){
+          data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "Yes", appointments[i].id]);
+      }
+      else{
+        data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "No", appointments[i].id]);
+      }
+      }
+    }
+
+    const response = await updateSheetData(id, "A:Q", data)
+    console.log(response);
+  })
+}
+
 async function googleSheetTest(req, res){
 
   const spreadsheetId = "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4"; // Replace with your own spreadsheet ID
@@ -397,4 +433,4 @@ async function getRecordingFolderLink(email){
 }
 
 
-module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, appendRowInSheet, updateStudentIds }
+module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, appendRowInSheet, updateStudentIds, googleSheetDataTutor }
