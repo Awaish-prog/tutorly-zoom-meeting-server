@@ -348,7 +348,7 @@ async function getDashboardDataTutor(email){
     })
     const data = response.data.values
     for(let i = 0; i < data.length; i++){
-        if(data[i][18] && data[i][18].toLowerCase().includes(email)){
+        if(data[i][18] && (data[i][18].toLowerCase().includes(email) || data[i][18].toLowerCase().includes(email.repalce("@", "@my")))){
             studentsList.push(data[i])
         }
     }
