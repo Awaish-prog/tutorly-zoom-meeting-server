@@ -108,18 +108,32 @@ async function appendRowInSheet(sheetId, row, range){
   console.log(response);
 }
 
+function monthIndex(month) {
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  return monthNames.indexOf(month);
+}
+
 async function googleSheetDataTutor(req, res){
-  const id = "1CyJPPyvPx7ObRcbVIoK3nLF2hLYbuZY5AUs-FySjNnY"
-  const calenderId = 6360410
-  const data = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID"]]; 
-  acuity.request(`appointments?calendarID=${calenderId}&minDate=2023-05-01&max=5000&direction=ASC`, async function (err, r, appointments) {
+  try{
+    const id = req.params.driveId
+  const calenderId = req.params.tutor
+  const startDate = req.params.from
+  const endDate = req.params.to
+  const data = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID", "LALA sessions", "Lennox sessions", "Tutoring sessions", "Total", "Total Pay"]]; 
+  acuity.request(`appointments?calendarID=${calenderId}&minDate=${startDate}&maxDate=${endDate}&max=5000&direction=ASC`, async function (err, r, appointments) {
     if (err) return console.error(err);
     console.log("Acuity done");
     await sheetClient.spreadsheets.values.clear({
       spreadsheetId: id,
-      range: `A:Q`
+      range: `A:V`
     });
     console.log(`Cleared sheet ${calenderId}`);
+    let sessionCountLala = 0
+    let sessionCount = 0
+    let sessionCountLennox = 0
     for (var i = 0; i < appointments.length; i++) {
       if(appointments[i].labels){
         if(appointments[i].canceled){
@@ -137,11 +151,43 @@ async function googleSheetDataTutor(req, res){
         data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "No", appointments[i].id]);
       }
       }
+      if(appointments[i].type.toLowerCase().includes("lala")){
+        sessionCountLala += Number(appointments[i].duration)
+      }
+      else if(appointments[i].type.toLowerCase().includes("lennox") || appointments[i].type.toLowerCase().includes("minute check")){
+        sessionCountLennox += Number(appointments[i].duration)
+      }
+      else{
+        sessionCount += Number(appointments[i].duration)
+      }
     }
 
-    const response = await updateSheetData(id, "A:Q", data)
-    console.log(response);
+
+    const totalSessions = (sessionCountLala / 50) + (sessionCount / 60) + (sessionCountLennox / 60)
+    let totalPay = totalSessions * 25
+    if(appointments[0] && appointments[0].calendar === "Ryan"){
+      totalPay = totalSessions * 35
+      console.log("It's Ryan");
+    }
+    if(appointments[0]){
+      console.log(`${appointments[0].calendar}'s Payroll`);
+    }
+    if(data.length > 1){
+      data[1].push(sessionCountLala / 50)
+      data[1].push(sessionCountLennox / 60)
+      data[1].push(sessionCount / 60)
+      data[1].push(totalSessions)
+      data[1].push(totalPay)
+    }
+    const response = await updateSheetData(id, "A:V", data)
+    res.json({status: response.status})
   })
+  }
+  catch(e){
+    console.log(e);
+    res.json({status: 400})
+  }
+  
 }
 
 async function googleSheetTest(req, res){

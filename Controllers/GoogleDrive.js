@@ -72,8 +72,8 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
         try{
         if(calendarID){
             acuity.request(`appointments?calendarID=${calendarID}&max=2147483647`,async function (err, res, appointments) {
-                console.log("Appointments api error");
                 if (err) {
+                    console.log("Appointments api error");
                     try{
                         try{
                             

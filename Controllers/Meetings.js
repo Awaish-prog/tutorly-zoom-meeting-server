@@ -21,10 +21,17 @@ function getCalendarId(calendars, email, calendarID){
     for(let i = 0; i < calendars.length; i++){
         if(calendars[i].email.includes(email)){
             calendarID = calendars[i].id
+            console.log(`${calendarID} found for ${calendars[i].email}`);
             return calendarID
         }
         if(calendars[i].email.includes(email.replace("tutorly", "mytutorly"))){
             calendarID = calendars[i].id
+            console.log(`${calendarID} found for ${calendars[i].email}`);
+            return calendarID
+        }
+        if(calendars[i].email.includes(email.replace("mytutorly", "tutorly"))){
+            calendarID = calendars[i].id
+            console.log(`${calendarID} found for ${calendars[i].email}`);
             return calendarID
         }
     }

@@ -18,6 +18,7 @@ app.use(cors())
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'build')))
+app.use(express.static(path.join(__dirname, 'tutorly-sheet-update-build')))
 
 
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
@@ -38,7 +39,11 @@ app.post("/login", login)
 
 app.get("/getSheetData", googleSheetTest)
 
-app.get("/getSheetDataTutor", googleSheetDataTutor)
+app.get("/getSheetDataTutor/:tutor/:driveId/:from/:to", googleSheetDataTutor)
+
+app.get("/updateTutorSheets", (req, res) => {
+  res.sendFile(path.join(__dirname, "tutorly-sheet-update-build/index.html"))
+})
 
 
 
