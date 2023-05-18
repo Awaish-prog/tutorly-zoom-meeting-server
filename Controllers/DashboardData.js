@@ -70,7 +70,7 @@ async function updateStudentIds(){
 
 function updateSheetData(sheetId, range, data) {
   return new Promise((resolve, reject) => {
-
+    console.log(data);
     sheetClient.spreadsheets.values.update({
       spreadsheetId: sheetId,
       range: range,
@@ -116,12 +116,112 @@ function monthIndex(month) {
   return monthNames.indexOf(month);
 }
 
+async function googleSheetDataTutorAll(req, res){
+  try{
+    console.log(req.params);
+    const id = req.params.driveId
+    const calenderId = req.params.tutor
+    const startDate = req.params.from
+    const endDate = req.params.to
+    console.log(endDate);
+    const sheetData = [["Tutor Name", "LALA tutoring",	"Lennox CC",	"Lennox additional hours and Orientation",	"IC tutoring",	"Training/Other",	"Total hours", 	"Rate",	"Total",	"LiveScan/TB",	"Grand Total"]]
+
+    const tutors = { 
+    "Aaron": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Aeffia Feuerstein": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "EJ Gaal": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0], 
+    "Antonia S": [0, 0, 0, 0, 0, 0, 50, 0, 0, 0],
+    "Ben": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Cameron Marchese": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Craig Zacker": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Eleni S": [0, 0, 0, 0, 0, 0, 50, 0, 0, 0],
+    "Frank": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Jack Gillespie": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Jacqueline Penn": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Jake Lansberg": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Jarett Bigej": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Kaitlyn Eng": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Krystal Navarro": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Ky Huynh": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Mark": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Mahrosh Gealani": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Nathan Bussey": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Razaaq": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "Ryan": [0, 0, 0, 0, 0, 0, 35, 0, 0, 0],
+    "Zibaa Adil": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    "William Henderson": [0, 0, 0, 0, 0, 0, 25, 0, 0, 0],
+    }
+    console.log("Request sent for meetings");
+    acuity.request(`appointments?max=10000&minDate=${startDate}&maxDate=${endDate}&direction=ASC`, async function (err, r, appointments) {
+      if (err) return console.error(err);
+      console.log("Acuity done");
+      await sheetClient.spreadsheets.values.clear({
+        spreadsheetId: id,
+        range: `A:K`
+      });
+      
+      for(let i = 0; i < appointments.length; i++){
+        if(tutors.hasOwnProperty(appointments[i].calendar)){
+          if(appointments[i].type.toLowerCase().includes("lala")){
+            tutors[appointments[i].calendar][0] += Number(appointments[i].duration)
+          }
+          else if(appointments[i].type.toLowerCase().includes("lennox") || appointments[i].type.toLowerCase().includes("minute check")){
+            tutors[appointments[i].calendar][1] += Number(appointments[i].duration)
+          }
+          else{
+            tutors[appointments[i].calendar][3] += Number(appointments[i].duration)
+          }
+        }
+      }
+      const tutorKeys = Object.keys(tutors)
+      for(let i = 0; i < tutorKeys.length; i++){
+        tutors[tutorKeys[i]][0] /= 50;
+        tutors[tutorKeys[i]][1] /= 60;
+        tutors[tutorKeys[i]][3] /= 60;
+        tutors[tutorKeys[i]][5] = tutors[tutorKeys[i]][0] + tutors[tutorKeys[i]][1] + tutors[tutorKeys[i]][3];
+        tutors[tutorKeys[i]][7] = tutors[tutorKeys[i]][5] * tutors[tutorKeys[i]][6]
+        tutors[tutorKeys[i]][9] = tutors[tutorKeys[i]][7]
+        tutors[tutorKeys[i]].unshift(tutorKeys[i])
+        sheetData.push(tutors[tutorKeys[i]])
+      }
+
+      const total = ["Total", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+      for(let i = 1; i < sheetData.length; i++){
+        total[1] += sheetData[i][1]
+        total[2] += sheetData[i][2]
+        total[3] += sheetData[i][3]
+        total[4] += sheetData[i][4]
+        total[5] += sheetData[i][5]
+        total[6] += sheetData[i][6]
+        total[7] += sheetData[i][7]
+        total[8] += sheetData[i][8]
+        total[9] += sheetData[i][9]
+        total[10] += sheetData[i][10]
+      }
+
+      sheetData.push(total)
+
+      
+      const response = await updateSheetData(id, "A:K", sheetData)
+      res.json({status: response.status})
+    })
+  }
+  catch(e){
+    console.log(e);
+  }
+}
+
 async function googleSheetDataTutor(req, res){
   try{
     const id = req.params.driveId
   const calenderId = req.params.tutor
   const startDate = req.params.from
   const endDate = req.params.to
+  if(calenderId === "AllTutors"){
+    await googleSheetDataTutorAll(req, res)
+    return
+  }
   const data = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID", "LALA sessions", "Lennox sessions", "Tutoring sessions", "Total", "Total Pay"]]; 
   acuity.request(`appointments?calendarID=${calenderId}&minDate=${startDate}&maxDate=${endDate}&max=5000&direction=ASC`, async function (err, r, appointments) {
     if (err) return console.error(err);
