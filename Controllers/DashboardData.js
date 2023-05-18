@@ -70,7 +70,6 @@ async function updateStudentIds(){
 
 function updateSheetData(sheetId, range, data) {
   return new Promise((resolve, reject) => {
-    console.log(data);
     sheetClient.spreadsheets.values.update({
       spreadsheetId: sheetId,
       range: range,
