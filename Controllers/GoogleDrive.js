@@ -109,6 +109,7 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                 }
                 let folderId = "1zHDm80-ce3FMoYUI7jy9YFZ4OFLxmLI6"
                 if(appointment){
+                    console.log("Appointment was found");
                     console.log(fileName);
                     try{
                         const newFileName = (appointment.firstName + " " + appointment.lastName + " " + (new Date(start_time)).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })).replaceAll("/", "-")
@@ -119,6 +120,10 @@ async function uploadFileAndGetWebLink(fileName, host_email, start_time){
                         console.log("File name error");
                     }
                     folderId = await getRecordingFolderLink(appointment.email)
+                }
+
+                if(folderId !== "1zHDm80-ce3FMoYUI7jy9YFZ4OFLxmLI6"){
+                    console.log("File will uploaded in student's folder");
                 }
                 
                 let x = ""
