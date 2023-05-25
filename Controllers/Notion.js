@@ -2,6 +2,8 @@ require('dotenv').config()
 
 const { Client } = require('@notionhq/client');
 const { getDashboardDataTest, appendRowInSheet } = require('./DashboardData');
+const { acuity } = require('./User');
+const { getMeetingsList } = require('./Meetings');
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 async function createNotionPage(keyTakeaways, sessionLink, homeworkLink, resourcelink, recordingsLink, studentName){
@@ -50,7 +52,7 @@ async function createNotionPage(keyTakeaways, sessionLink, homeworkLink, resourc
         },
         {
           type: 'text',
-          text: { content: 'Zoom Link', link: {url: sessionLink } },
+          text: { content: 'Zoom Link', link: sessionLink === null ? null : {url: sessionLink } },
           annotations: {
             bold: true,
             italic: false,
@@ -231,7 +233,23 @@ async function createNotionPage(keyTakeaways, sessionLink, homeworkLink, resourc
       }    
     ], color: 'default' }
   }
-    const column1 = {
+
+  const ixlHeading = {
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [{
+        "type": "text",
+        "text": {
+          "content": "IXL Login Info",
+          "link": null
+        }
+      }],
+      "color": "default",
+      "is_toggleable": false
+    }
+  }
+
+  const column1 = {
       type: "column",
       column: {
         children: [
@@ -272,11 +290,6 @@ async function createNotionPage(keyTakeaways, sessionLink, homeworkLink, resourc
         "children": [
           joinZoom,
           divider,
-          messageTeam,
-          divider,
-          homeworkFolder,
-          divider,
-          listItem,
           resourcesFolder,
           divider,
           recordingsFolder,
@@ -289,6 +302,82 @@ async function createNotionPage(keyTakeaways, sessionLink, homeworkLink, resourc
         "children": [
           column1,
           column2
+        ]
+      }
+    }
+
+    const ixlLoginPage = {
+      object: "block",
+      type: "callout",
+      callout: {
+        rich_text: [ {
+          type: 'text',
+          text: { content: 'Login to IXL', link: { url: "https://in.ixl.com/?partner=google&campaign=248380048&adGroup=129630696407&gclid=CjwKCAjw67ajBhAVEiwA2g_jENds_fToYWcm2DNOGi1nNRX11LHICxCIdWdygTMwotPkBbfv-ajn6xoCiakQAvD_BwE" } },
+          annotations: {
+            bold: false,
+            italic: false,
+            strikethrough: false,
+            underline: false,
+            code: false,
+            color: 'default'
+          },
+          plain_text: 'Login to IXL',
+          href: "https://in.ixl.com/?partner=google&campaign=248380048&adGroup=129630696407&gclid=CjwKCAjw67ajBhAVEiwA2g_jENds_fToYWcm2DNOGi1nNRX11LHICxCIdWdygTMwotPkBbfv-ajn6xoCiakQAvD_BwE"
+        }
+      ],
+        icon: { type: 'emoji', emoji:  '🧑‍💻'  },
+        color: 'gray_background',
+      }
+    }
+    // 🗝️
+    const ixlLoginCredentials = {
+      object: "block",
+      type: "callout",
+      callout: {
+        rich_text: [ {
+          type: 'text',
+          text: { content: 'Your credentials:\n\tLogin Id: 23456\n\tPassword: shrgdsbrfdjs', link: null },
+          annotations: {
+            bold: false,
+            italic: false,
+            strikethrough: false,
+            underline: false,
+            code: false,
+            color: 'default'
+          },
+          plain_text: 'Your credentials:\n\tLogin Id: 23456\n\tPassword: shrgdsbrfdjs',
+          href: null
+        }
+      ],
+        icon: { type: 'emoji', emoji:  '🔑'  },
+        color: 'gray_background',
+      }
+    }
+
+    const ixlColumn1 = {
+      "type": "column",
+      "column": {
+        "children": [
+          ixlLoginPage
+        ]
+      }
+    }
+
+    const ixlColumn2 = {
+      "type": "column",
+      "column": {
+        "children": [
+          ixlLoginCredentials
+        ]
+      }
+    }
+
+    const ixlColumnList = {
+      "type": "column_list",
+      "column_list": {
+        "children": [
+          ixlColumn1,
+          ixlColumn2
         ]
       }
     }
@@ -307,7 +396,10 @@ async function createNotionPage(keyTakeaways, sessionLink, homeworkLink, resourc
       },
       properties: properties,
       children : [
-        columnList
+        columnList,
+        ixlHeading,
+        divider,
+        ixlColumnList
       ]
     });
   
@@ -354,13 +446,46 @@ async function createNotionPageWithEmail(email){
         notionData["keyTakeaways"].push(studentData.files[i])
       }
     }
+
+    let date = (new Date()).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-")
+    date = date.substring(0, date.indexOf(","))
+    if(date[1] == "-"){
+      date = "0" + date
+    }
+    const year = date.substring(6, 10)
+    const day = date.substring(3, 5)
+    const month = date.substring(0, 2)
+
+    const formattedDate = `${year}-${month}-${day}`;
     
-    const page = await createNotionPage(notionData["keyTakeaways"], notionData["meetinglink"], notionData["homeworkLink"], notionData["resourcesLink"], notionData["recordingLink"], notionData["studentName"])
+    let meetingsList = []
+
     
-    const link = page.url.replace("https://www.notion.so", "https://mytutorly.notion.site")
+  
+    acuity.request(`appointments?email=${email}&minDate=${formattedDate}&max=10&direction=ASC`, async function (err, r, appointments) {
+      if (err) return console.error(err);
+      meetingsList = getMeetingsList(appointments, true)
+
+      if(notionData["meetinglink"].includes("VALUE")){
+        notionData["meetinglink"] = null
+      }
+
+      if(meetingsList.length){
+        notionData["meetinglink"] = meetingsList[0].location.substring(5, meetingsList[0].location.indexOf(" ", 5));
+      }
+
+      
+      const page = await createNotionPage(notionData["keyTakeaways"], notionData["meetinglink"], notionData["homeworkLink"], notionData["resourcesLink"], notionData["recordingLink"], notionData["studentName"])
+
+    
+      // const link = page.url.replace("https://www.notion.so", "https://mytutorly.notion.site")
 
 
-    appendRowInSheet("1-_UmQM3Q06anjIMxIzDoSE8_jtaXixCPqxtgqY7qqdg", [[notionData["studentName"], email, link]], "A:C")
+      // appendRowInSheet("1-_UmQM3Q06anjIMxIzDoSE8_jtaXixCPqxtgqY7qqdg", [[notionData["studentName"], email, link]], "A:C")
+    })
+
+    
+
     }
     catch(e){
         console.log(e);

@@ -49,4 +49,4 @@ async function login(req, res){
 
 }
 
-module.exports = { login, hashString }
+module.exports = { login, hashString, acuity }
