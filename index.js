@@ -8,7 +8,7 @@ const { getDashboardData, googleSheetTest, updateStudentIds, googleSheetDataTuto
 const { login } = require('./Controllers/User');
 const { authentication } = require('./Middlewares/Authenticate');
 const path = require('path');
-const { createNotionPageWithEmail } = require('./Controllers/Notion');
+const { createNotionPageWithEmail, getPage } = require('./Controllers/Notion');
 
 
 
@@ -53,6 +53,8 @@ app.get("*", (req, res) => {
 
 
 app.listen("4005", () => {
+  // 4f9e229effac4b2a86f2a874c9c849e1
+  //getPage("f57e6d5fb3304cbb9d2c9f86f99e8dbd", "jcastro2023@laleadership.org")
   //createNotionPageWithEmail("gracebernal@mapleschool.org")
   //updateStudentIds()
   //printCalenderId("awaish@tutorly.com")

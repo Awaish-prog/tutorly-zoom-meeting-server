@@ -477,6 +477,8 @@ async function createNotionPageWithEmail(email){
       
       const page = await createNotionPage(notionData["keyTakeaways"], notionData["meetinglink"], notionData["homeworkLink"], notionData["resourcesLink"], notionData["recordingLink"], notionData["studentName"])
 
+      console.log(page);
+
     
       // const link = page.url.replace("https://www.notion.so", "https://mytutorly.notion.site")
 
@@ -493,4 +495,77 @@ async function createNotionPageWithEmail(email){
     
 } 
 
-module.exports = { createNotionPageWithEmail }
+async function getPage(blockId, email){
+  const pageContent = await notion.blocks.children.list({
+    block_id: blockId,
+    page_size: 50,
+  });
+  console.log(pageContent.results[0].id);
+  const firstBlock = await notion.blocks.children.list({
+    block_id: pageContent.results[0].id,
+  });
+  console.log(firstBlock.results[1].id);
+  const firstBlockSecondColumn = await notion.blocks.children.list({
+    block_id: firstBlock.results[1].id,
+  });
+  console.log(firstBlockSecondColumn.results[0].callout);
+
+  let date = (new Date()).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-")
+    date = date.substring(0, date.indexOf(","))
+    if(date[1] == "-"){
+      date = "0" + date
+    }
+    const year = date.substring(6, 10)
+    const day = date.substring(3, 5)
+    const month = date.substring(0, 2)
+
+    const formattedDate = `${year}-${month}-${day}`;
+
+  acuity.request(`appointments?email=${email}&minDate=${formattedDate}&max=10&direction=ASC`, async function (err, r, appointments) {
+    if (err) return console.error(err);
+    const meetingsList = getMeetingsList(appointments, true)
+
+    const firstBlockSecondColumnFirstBlock = await notion.blocks.update({
+      "block_id": firstBlockSecondColumn.results[0].id,
+      callout: {
+        rich_text: [{
+          type: 'text',
+          text: { content: 'Join Your Session: ', link: null },
+          annotations: {
+            bold: true,
+            italic: false,
+            strikethrough: false,
+            underline: false,
+            code: false,
+            color: 'default'
+          },
+          plain_text: 'Join Your Session: ',
+          href: null
+        },
+        {
+          type: 'text',
+          text: { content: 'Zoom Link', link: {url: meetingsList[0].location.substring(5, meetingsList[0].location.indexOf(" ", 5)) } },
+          annotations: {
+            bold: true,
+            italic: false,
+            strikethrough: false,
+            underline: false,
+            code: false,
+            color: 'default'
+          },
+          plain_text: 'Zoom Link',
+          href: meetingsList[0].location.substring(5, meetingsList[0].location.indexOf(" ", 5))
+        }
+      ],
+        icon: { type: 'emoji', emoji: '💻' },
+        color: 'gray_background',
+      }
+    });
+    console.log(firstBlockSecondColumnFirstBlock);
+
+  })
+
+  
+}
+
+module.exports = { createNotionPageWithEmail, getPage }
