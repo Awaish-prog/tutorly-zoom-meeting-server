@@ -415,7 +415,7 @@ async function googleSheetTest(req, res){
     await updateSheetData("1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4", 'Clients!A:Q', values)
     await updateSheetData("1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4", 'LALA!A:Q', lala)
     await updateSheetData("1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4", 'Lennox!A:Q', lennox)
-    await updateSheetData("1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4", 'Maple!A:Q', lennox)
+    await updateSheetData("1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4", 'Maple!A:Q', maple)
     // await sheetClient.spreadsheets.values.update({
     //     spreadsheetId: "1TglazHXQIQWRONCUVpySJRRpcBSrbI4rv8Cb1YmZhU4",
     //     range: 'Clients!A:Q',
