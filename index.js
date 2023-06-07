@@ -4,11 +4,11 @@ const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { downloadRecording } = require('./Controllers/ZoomWebhook');
-const { getDashboardData, googleSheetTest, updateStudentIds, googleSheetDataTutor } = require('./Controllers/DashboardData');
+const { getDashboardData, googleSheetTest, updateStudentIds, googleSheetDataTutor, getMapleStudent } = require('./Controllers/DashboardData');
 const { login } = require('./Controllers/User');
 const { authentication } = require('./Middlewares/Authenticate');
 const path = require('path');
-const { createNotionPageWithEmail, getPage } = require('./Controllers/Notion');
+const { createNotionPageWithEmail, createNotionPages, updateNotionPages } = require('./Controllers/Notion');
 
 
 
@@ -54,10 +54,11 @@ app.get("*", (req, res) => {
 
 app.listen("4005", () => {
   // 4f9e229effac4b2a86f2a874c9c849e1
-  //getPage("f57e6d5fb3304cbb9d2c9f86f99e8dbd", "jcastro2023@laleadership.org")
   //createNotionPageWithEmail("gracebernal@mapleschool.org")
   //updateStudentIds()
   //printCalenderId("awaish@tutorly.com")
   //googleSheetDataTutor(null, null)
+  //createNotionPages()
+  //updateNotionPages()
   console.log("server running");
 })

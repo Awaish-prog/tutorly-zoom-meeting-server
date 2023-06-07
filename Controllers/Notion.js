@@ -1,12 +1,12 @@
 require('dotenv').config()
 
 const { Client } = require('@notionhq/client');
-const { getDashboardDataTest, appendRowInSheet } = require('./DashboardData');
+const { getDashboardDataTest, appendRowInSheet, getMapleStudent } = require('./DashboardData');
 const { acuity } = require('./User');
 const { getMeetingsList } = require('./Meetings');
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
-async function createNotionPage(keyTakeaways, sessionLink, homeworkLink, resourcelink, recordingsLink, studentName){
+async function createNotionPage(keyTakeaways, sessionLink, homeworkLink, resourcelink, recordingsLink, studentName, userId, password){
     try{
     const viewKeyTakeaways = {
       object: "block",
@@ -336,7 +336,7 @@ async function createNotionPage(keyTakeaways, sessionLink, homeworkLink, resourc
       callout: {
         rich_text: [ {
           type: 'text',
-          text: { content: 'Your credentials:\n\tLogin Id: 23456\n\tPassword: shrgdsbrfdjs', link: null },
+          text: { content: `Your credentials:\n\tLogin Id: ${userId}\n\tpassword: ${password}`, link: null },
           annotations: {
             bold: false,
             italic: false,
@@ -345,7 +345,7 @@ async function createNotionPage(keyTakeaways, sessionLink, homeworkLink, resourc
             code: false,
             color: 'default'
           },
-          plain_text: 'Your credentials:\n\tLogin Id: 23456\n\tPassword: shrgdsbrfdjs',
+          plain_text: `Your credentials:\n\tLogin Id: ${userId}\n\tpassword: ${password}`,
           href: null
         }
       ],
@@ -382,11 +382,12 @@ async function createNotionPage(keyTakeaways, sessionLink, homeworkLink, resourc
       }
     }
     
+    // https://www.notion.so/mytutorly/3c7278b9619a418ba23476324ea2d715?v=f2c32a19364146b9af3c78b9cd318be2&pvs=4
    
     const response = await notion.pages.create({
       "parent": {
           "type": "database_id",
-          "database_id": "71763a2cb1cb41e59a123511defeedef"
+          "database_id": "3c7278b9619a418ba23476324ea2d715"
       },
       "cover": {
         "type": "external",
@@ -410,7 +411,7 @@ async function createNotionPage(keyTakeaways, sessionLink, homeworkLink, resourc
     }
 }
 
-async function createNotionPageWithEmail(email){
+async function createNotionPageWithEmail(email, userId, password){
     
     // const blockId = '9094313be5344dc7891fc6205d35a530';
     // const response = await notion.blocks.retrieve({
@@ -461,30 +462,32 @@ async function createNotionPageWithEmail(email){
     let meetingsList = []
 
     
+    setTimeout(() => {
+      acuity.request(`appointments?email=${email}&minDate=${formattedDate}&max=10&direction=ASC`, async function (err, r, appointments) {
+        if (err) return console.error(err);
+        meetingsList = getMeetingsList(appointments, true)
   
-    acuity.request(`appointments?email=${email}&minDate=${formattedDate}&max=10&direction=ASC`, async function (err, r, appointments) {
-      if (err) return console.error(err);
-      meetingsList = getMeetingsList(appointments, true)
-
-      if(notionData["meetinglink"].includes("VALUE")){
-        notionData["meetinglink"] = null
-      }
-
-      if(meetingsList.length){
-        notionData["meetinglink"] = meetingsList[0].location.substring(5, meetingsList[0].location.indexOf(" ", 5));
-      }
-
+        if(notionData["meetinglink"].includes("VALUE")){
+          notionData["meetinglink"] = null
+        }
+  
+        if(meetingsList.length){
+          notionData["meetinglink"] = meetingsList[0].location.substring(5, meetingsList[0].location.indexOf(" ", 5));
+        }
+  
+        
+        const page = await createNotionPage(notionData["keyTakeaways"], notionData["meetinglink"], notionData["homeworkLink"], notionData["resourcesLink"], notionData["recordingLink"], notionData["studentName"], userId, password)
+  
+  
       
-      const page = await createNotionPage(notionData["keyTakeaways"], notionData["meetinglink"], notionData["homeworkLink"], notionData["resourcesLink"], notionData["recordingLink"], notionData["studentName"])
-
-      console.log(page);
-
-    
-      // const link = page.url.replace("https://www.notion.so", "https://mytutorly.notion.site")
-
-
-      // appendRowInSheet("1-_UmQM3Q06anjIMxIzDoSE8_jtaXixCPqxtgqY7qqdg", [[notionData["studentName"], email, link]], "A:C")
-    })
+        const link = page.url.replace("https://www.notion.so", "https://mytutorly.notion.site")
+  
+  
+        appendRowInSheet("1-_UmQM3Q06anjIMxIzDoSE8_jtaXixCPqxtgqY7qqdg", [[notionData["studentName"], email, link]], "A:C")
+  
+        console.log(`Notion page created for ${email}`);
+      })
+    }, 10000)
 
     
 
@@ -495,20 +498,20 @@ async function createNotionPageWithEmail(email){
     
 } 
 
-async function getPage(blockId, email){
+async function updateNotionPage(blockId, email){
   const pageContent = await notion.blocks.children.list({
     block_id: blockId,
     page_size: 50,
   });
-  console.log(pageContent.results[0].id);
+  
   const firstBlock = await notion.blocks.children.list({
     block_id: pageContent.results[0].id,
   });
-  console.log(firstBlock.results[1].id);
+  
   const firstBlockSecondColumn = await notion.blocks.children.list({
     block_id: firstBlock.results[1].id,
   });
-  console.log(firstBlockSecondColumn.results[0].callout);
+  
 
   let date = (new Date()).toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).replaceAll("/", "-")
     date = date.substring(0, date.indexOf(","))
@@ -525,47 +528,74 @@ async function getPage(blockId, email){
     if (err) return console.error(err);
     const meetingsList = getMeetingsList(appointments, true)
 
-    const firstBlockSecondColumnFirstBlock = await notion.blocks.update({
-      "block_id": firstBlockSecondColumn.results[0].id,
-      callout: {
-        rich_text: [{
-          type: 'text',
-          text: { content: 'Join Your Session: ', link: null },
-          annotations: {
-            bold: true,
-            italic: false,
-            strikethrough: false,
-            underline: false,
-            code: false,
-            color: 'default'
+    if(meetingsList.length){
+      const firstBlockSecondColumnFirstBlock = await notion.blocks.update({
+        "block_id": firstBlockSecondColumn.results[0].id,
+        callout: {
+          rich_text: [{
+            type: 'text',
+            text: { content: 'Join Your Session: ', link: null },
+            annotations: {
+              bold: true,
+              italic: false,
+              strikethrough: false,
+              underline: false,
+              code: false,
+              color: 'default'
+            },
+            plain_text: 'Join Your Session: ',
+            href: null
           },
-          plain_text: 'Join Your Session: ',
-          href: null
-        },
-        {
-          type: 'text',
-          text: { content: 'Zoom Link', link: {url: meetingsList[0].location.substring(5, meetingsList[0].location.indexOf(" ", 5)) } },
-          annotations: {
-            bold: true,
-            italic: false,
-            strikethrough: false,
-            underline: false,
-            code: false,
-            color: 'default'
-          },
-          plain_text: 'Zoom Link',
-          href: meetingsList[0].location.substring(5, meetingsList[0].location.indexOf(" ", 5))
+          {
+            type: 'text',
+            text: { content: 'Zoom Link', link: {url: meetingsList[0].location.substring(5, meetingsList[0].location.indexOf(" ", 5)) } },
+            annotations: {
+              bold: true,
+              italic: false,
+              strikethrough: false,
+              underline: false,
+              code: false,
+              color: 'default'
+            },
+            plain_text: 'Zoom Link',
+            href: meetingsList[0].location.substring(5, meetingsList[0].location.indexOf(" ", 5))
+          }
+        ],
+          icon: { type: 'emoji', emoji: '💻' },
+          color: 'gray_background',
         }
-      ],
-        icon: { type: 'emoji', emoji: '💻' },
-        color: 'gray_background',
-      }
-    });
-    console.log(firstBlockSecondColumnFirstBlock);
+      });
+      console.log(`Page updated for ${email} ${meetingsList[0]}`);
+    }
+    else{
+      console.log(`Page update failed for ${email}, because this student does not have any upcoming meetings`);
+    }
+    
 
   })
 
   
 }
 
-module.exports = { createNotionPageWithEmail, getPage }
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function createNotionPages(){
+  const studentsData = await getMapleStudent()
+  for(let i = 1; i < studentsData.length; i++){
+    await createNotionPageWithEmail(studentsData[i][6], studentsData[i][4], studentsData[i][5]);
+    await sleep(5000);
+  }
+
+  //await createNotionPageWithEmail("emelysolis@mapleschool.org", "emelysolis3", "solis3")
+}
+
+async function updateNotionPages(){
+  const studentsData = await getMapleStudent()
+  for(let i = 1; i < studentsData.length; i++){
+    await updateNotionPage(studentsData[i][1].substring(studentsData[i][1].length - 32 ,studentsData[i][1].length), studentsData[i][0])
+    await sleep(5000);
+  }
+}
+module.exports = { createNotionPageWithEmail, createNotionPages, updateNotionPages }
