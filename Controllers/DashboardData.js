@@ -308,7 +308,7 @@ async function googleSheetTest(req, res){
     console.log("Error in getting all spread sheets");
   }
   
-    acuity.request('appointments?minDate=2023-04-01&max=50000&direction=ASC', async function (err, r, appointments) {
+    acuity.request('appointments?minDate=2023-06-01&max=50000&direction=ASC', async function (err, r, appointments) {
     if (err) return console.error(err);
     console.log("Acuity done");
 
