@@ -46,8 +46,8 @@ app.get("/updateTutorSheets", (req, res) => {
 })
 
 app.get("/updateMapleSheets", (req, res) => {
-  console.log("Request received");
-  res.send("Maple Sheets are updated")
+  mapleSheetUpdate()
+  res.send("Please check Maple sessions sheet, it will update in few seconds..")
 })
 
 
