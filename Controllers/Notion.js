@@ -597,5 +597,7 @@ async function updateNotionPages(){
     await updateNotionPage(studentsData[i][1].substring(studentsData[i][1].length - 32 ,studentsData[i][1].length), studentsData[i][0])
     await sleep(5000);
   }
+
+  console.log("All pages are updated...");
 }
 module.exports = { createNotionPageWithEmail, createNotionPages, updateNotionPages }
