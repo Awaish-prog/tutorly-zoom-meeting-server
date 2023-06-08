@@ -4,7 +4,7 @@ const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { downloadRecording } = require('./Controllers/ZoomWebhook');
-const { getDashboardData, googleSheetTest, updateStudentIds, googleSheetDataTutor, getMapleStudent } = require('./Controllers/DashboardData');
+const { getDashboardData, googleSheetTest, updateStudentIds, googleSheetDataTutor, getMapleStudent, mapleSheetUpdate } = require('./Controllers/DashboardData');
 const { login } = require('./Controllers/User');
 const { authentication } = require('./Middlewares/Authenticate');
 const path = require('path');
@@ -45,6 +45,10 @@ app.get("/updateTutorSheets", (req, res) => {
   res.sendFile(path.join(__dirname, "tutorly-sheet-update-build/index.html"))
 })
 
+app.get("/updateMapleSheets", (req, res) => {
+  console.log("Request received");
+})
+
 
 
 app.get("*", (req, res) => {
@@ -60,5 +64,6 @@ app.listen("4005", () => {
   //googleSheetDataTutor(null, null)
   //createNotionPages()
   //updateNotionPages()
+  //mapleSheetUpdate()
   console.log("server running");
 })

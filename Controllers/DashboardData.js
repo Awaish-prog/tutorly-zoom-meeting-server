@@ -609,4 +609,96 @@ async function getMapleStudent(){
 }
 
 
-module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, appendRowInSheet, updateStudentIds, googleSheetDataTutor, getMapleStudent }
+async function mapleSheetUpdate(){
+  acuity.request('appointments?minDate=2023-06-01&max=5000&direction=ASC', async function (err, r, appointments) {
+    if(err){
+      console.log(err);
+      return
+    }
+    const mapleData = [["Date/Time", "Student Name", "Subject", "Tutor", "Status", "Recording Link"]]
+
+    const mapleDateWise = [["Date/Time", "Scheduled", "Completed", "Total"]]
+
+    const mapleStudentWise = [["Date/Time", "Scheduled", "Completed", "Total"]]
+
+    const mapleDateWiseData = { }
+
+    const mapleStudentWiseData = { }
+   
+    for(let i = 0; i < appointments.length; i++){
+      appointments[i].type.toLowerCase().includes("maple") && 
+      mapleData.push([`${appointments[i].date} ${appointments[i].time}-${appointments[i].endTime}`, `${appointments[i].firstName} ${appointments[i].lastName}`, appointments[i].type.substring(17, appointments[i].type.indexOf(" ", 17)), appointments[i].calendar, appointments[i].labels ? appointments[i].labels[0].name : "Scheduled", appointments[i].notes])        
+    }
+
+    
+
+    for(let i = 0; i < appointments.length; i++){
+      if(appointments[i].type.toLowerCase().includes("maple")){
+        if(!mapleDateWiseData[appointments[i].date]){
+          mapleDateWiseData[appointments[i].date] = [appointments[i].date, 0, 0, 0]
+        }
+  
+        appointments[i].labels && appointments[i].labels[0].name === "Completed" ?
+        mapleDateWiseData[appointments[i].date][2] += 1 :
+        mapleDateWiseData[appointments[i].date][1] += 1
+  
+        mapleDateWiseData[appointments[i].date][3] += 1
+      }
+      
+    }
+
+    for(let i = 0; i < appointments.length; i++){
+      if(appointments[i].type.toLowerCase().includes("maple")){
+        if(!mapleStudentWiseData[`${appointments[i].firstName} ${appointments[i].lastName}`]){
+          mapleStudentWiseData[`${appointments[i].firstName} ${appointments[i].lastName}`] = [`${appointments[i].firstName} ${appointments[i].lastName}`, 0, 0, 0]
+        }
+
+        appointments[i].labels && appointments[i].labels[0].name === "Completed" ?
+        mapleStudentWiseData[`${appointments[i].firstName} ${appointments[i].lastName}`][2] += 1 :
+        mapleStudentWiseData[`${appointments[i].firstName} ${appointments[i].lastName}`][1] += 1
+  
+        mapleStudentWiseData[`${appointments[i].firstName} ${appointments[i].lastName}`][3] += 1
+      }
+      
+    }
+
+    const mapleDateKeys = Object.keys(mapleDateWiseData)
+    const mapleStudentKeys = Object.keys(mapleStudentWiseData)
+
+    for(let i = 0; i < mapleDateKeys.length; i++){
+      mapleDateWise.push(mapleDateWiseData[mapleDateKeys[i]])
+    }
+
+    for(let i = 0; i < mapleStudentKeys.length; i++){
+      mapleStudentWise.push(mapleStudentWiseData[mapleStudentKeys[i]])
+    }
+
+    console.log("Data Formatting complete...");
+
+    await sheetClient.spreadsheets.values.clear({
+      spreadsheetId: "1kE24CNQZA69GO0AlAbeMS-Zz4O9mgKntEIgwFwO66JY",
+      range: `Sessions Info!A:F`
+    });
+
+    await updateSheetData("1kE24CNQZA69GO0AlAbeMS-Zz4O9mgKntEIgwFwO66JY", 'Sessions Info!A:F', mapleData)
+
+    await sheetClient.spreadsheets.values.clear({
+      spreadsheetId: "1kE24CNQZA69GO0AlAbeMS-Zz4O9mgKntEIgwFwO66JY",
+      range: `Sessions (Date wise)!A:D`
+    });
+
+    await updateSheetData("1kE24CNQZA69GO0AlAbeMS-Zz4O9mgKntEIgwFwO66JY", 'Sessions (Date wise)!A:D', mapleDateWise)
+
+    await sheetClient.spreadsheets.values.clear({
+      spreadsheetId: "1kE24CNQZA69GO0AlAbeMS-Zz4O9mgKntEIgwFwO66JY",
+      range: `Sessions (Student wise)!A:D`
+    });
+
+    await updateSheetData("1kE24CNQZA69GO0AlAbeMS-Zz4O9mgKntEIgwFwO66JY", 'Sessions (Student wise)!A:D', mapleStudentWise)
+
+    console.log("Maple sessions sheet updated");
+  })
+}
+
+
+module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, appendRowInSheet, updateStudentIds, googleSheetDataTutor, getMapleStudent, mapleSheetUpdate }
