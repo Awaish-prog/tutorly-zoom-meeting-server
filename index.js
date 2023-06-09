@@ -8,7 +8,7 @@ const { getDashboardData, googleSheetTest, updateStudentIds, googleSheetDataTuto
 const { login } = require('./Controllers/User');
 const { authentication } = require('./Middlewares/Authenticate');
 const path = require('path');
-const { createNotionPageWithEmail, createNotionPages, updateNotionPages } = require('./Controllers/Notion');
+const { createNotionPageWithEmail, createNotionPages, updateNotionPages, updateNotionPage } = require('./Controllers/Notion');
 
 
 

@@ -617,50 +617,43 @@ async function mapleSheetUpdate(){
     }
     const mapleData = [["Date/Time", "Student Name", "Subject", "Tutor", "Status", "Recording Link"]]
 
-    const mapleDateWise = [["Date/Time", "Scheduled", "Completed", "Total"]]
+    const mapleDateWise = [["Date", "Scheduled", "Completed", "Cancelled", "Total"]]
 
-    const mapleStudentWise = [["Date/Time", "Scheduled", "Completed", "Total"]]
+    const mapleStudentWise = [["Student Name", "Scheduled", "Completed", "Cancelled", "Total"]]
 
     const mapleDateWiseData = { }
 
     const mapleStudentWiseData = { }
    
     for(let i = 0; i < appointments.length; i++){
-      appointments[i].type.toLowerCase().includes("maple") && 
-      mapleData.push([`${appointments[i].date} ${appointments[i].time}-${appointments[i].endTime}`, `${appointments[i].firstName} ${appointments[i].lastName}`, appointments[i].type.substring(17, appointments[i].type.indexOf(" ", 17)), appointments[i].calendar, appointments[i].labels ? appointments[i].labels[0].name : "Scheduled", appointments[i].notes])        
-    }
-
-    
-
-    for(let i = 0; i < appointments.length; i++){
-      if(appointments[i].type.toLowerCase().includes("maple")){
+      appointments[i].type.toLowerCase().includes("maple tutoring") && 
+      mapleData.push([`${appointments[i].date} ${appointments[i].time}-${appointments[i].endTime}`, `${appointments[i].firstName} ${appointments[i].lastName}`, appointments[i].type.substring(17, appointments[i].type.indexOf(" ", 17)), appointments[i].calendar, appointments[i].labels ? appointments[i].labels[0].name : "Scheduled", appointments[i].notes])
+      
+      if(appointments[i].type.toLowerCase().includes("maple tutoring")){
         if(!mapleDateWiseData[appointments[i].date]){
-          mapleDateWiseData[appointments[i].date] = [appointments[i].date, 0, 0, 0]
+          mapleDateWiseData[appointments[i].date] = [appointments[i].date, 0, 0, 0, 0]
         }
   
         appointments[i].labels && appointments[i].labels[0].name === "Completed" ?
         mapleDateWiseData[appointments[i].date][2] += 1 :
+        appointments[i].labels ? mapleDateWiseData[appointments[i].date][3] += 1 :
         mapleDateWiseData[appointments[i].date][1] += 1
   
-        mapleDateWiseData[appointments[i].date][3] += 1
-      }
-      
-    }
+        mapleDateWiseData[appointments[i].date][4] += 1
 
-    for(let i = 0; i < appointments.length; i++){
-      if(appointments[i].type.toLowerCase().includes("maple")){
         if(!mapleStudentWiseData[`${appointments[i].firstName} ${appointments[i].lastName}`]){
-          mapleStudentWiseData[`${appointments[i].firstName} ${appointments[i].lastName}`] = [`${appointments[i].firstName} ${appointments[i].lastName}`, 0, 0, 0]
+          mapleStudentWiseData[`${appointments[i].firstName} ${appointments[i].lastName}`] = [`${appointments[i].firstName} ${appointments[i].lastName}`, 0, 0, 0, 0]
         }
 
         appointments[i].labels && appointments[i].labels[0].name === "Completed" ?
         mapleStudentWiseData[`${appointments[i].firstName} ${appointments[i].lastName}`][2] += 1 :
+        appointments[i].labels ? mapleStudentWiseData[`${appointments[i].firstName} ${appointments[i].lastName}`][3] += 1 :
         mapleStudentWiseData[`${appointments[i].firstName} ${appointments[i].lastName}`][1] += 1
   
-        mapleStudentWiseData[`${appointments[i].firstName} ${appointments[i].lastName}`][3] += 1
+        mapleStudentWiseData[`${appointments[i].firstName} ${appointments[i].lastName}`][4] += 1
       }
-      
     }
+
 
     const mapleDateKeys = Object.keys(mapleDateWiseData)
     const mapleStudentKeys = Object.keys(mapleStudentWiseData)
@@ -676,25 +669,25 @@ async function mapleSheetUpdate(){
     console.log("Data Formatting complete...");
 
     await sheetClient.spreadsheets.values.clear({
-      spreadsheetId: "1kE24CNQZA69GO0AlAbeMS-Zz4O9mgKntEIgwFwO66JY",
+      spreadsheetId: "1xFyLJo9NpfCMbU2vb9eL-Xt9qeYcBNklI0hoWTKrNDQ",
       range: `Sessions Info!A:F`
     });
 
-    await updateSheetData("1kE24CNQZA69GO0AlAbeMS-Zz4O9mgKntEIgwFwO66JY", 'Sessions Info!A:F', mapleData)
+    await updateSheetData("1xFyLJo9NpfCMbU2vb9eL-Xt9qeYcBNklI0hoWTKrNDQ", 'Sessions Info!A:F', mapleData)
 
     await sheetClient.spreadsheets.values.clear({
-      spreadsheetId: "1kE24CNQZA69GO0AlAbeMS-Zz4O9mgKntEIgwFwO66JY",
-      range: `Sessions (Date wise)!A:D`
+      spreadsheetId: "1xFyLJo9NpfCMbU2vb9eL-Xt9qeYcBNklI0hoWTKrNDQ",
+      range: `Sessions (Date wise)!A:E`
     });
 
-    await updateSheetData("1kE24CNQZA69GO0AlAbeMS-Zz4O9mgKntEIgwFwO66JY", 'Sessions (Date wise)!A:D', mapleDateWise)
+    await updateSheetData("1xFyLJo9NpfCMbU2vb9eL-Xt9qeYcBNklI0hoWTKrNDQ", 'Sessions (Date wise)!A:E', mapleDateWise)
 
     await sheetClient.spreadsheets.values.clear({
-      spreadsheetId: "1kE24CNQZA69GO0AlAbeMS-Zz4O9mgKntEIgwFwO66JY",
-      range: `Sessions (Student wise)!A:D`
+      spreadsheetId: "1xFyLJo9NpfCMbU2vb9eL-Xt9qeYcBNklI0hoWTKrNDQ",
+      range: `Sessions (Student wise)!A:E`
     });
 
-    await updateSheetData("1kE24CNQZA69GO0AlAbeMS-Zz4O9mgKntEIgwFwO66JY", 'Sessions (Student wise)!A:D', mapleStudentWise)
+    await updateSheetData("1xFyLJo9NpfCMbU2vb9eL-Xt9qeYcBNklI0hoWTKrNDQ", 'Sessions (Student wise)!A:E', mapleStudentWise)
 
     console.log("Maple sessions sheet updated");
   })
