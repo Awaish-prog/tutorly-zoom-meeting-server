@@ -479,6 +479,29 @@ async function getFolderInfo(folderId){
     return response.data
 }
 
+async function getIXLCredentials(email){
+  // 1sqN58pApv1jcDiSMSf_bhiRm8jtYNJdDxuQaRqbQR3Y
+
+  try{
+    const response = await sheetClient.spreadsheets.values.get({
+      spreadsheetId: "1sqN58pApv1jcDiSMSf_bhiRm8jtYNJdDxuQaRqbQR3Y",
+      range: 'A:G'
+    })
+    const data = response.data.values
+
+    for(let i = 0; i < data.length; i++){
+      if(data[i][6].toLowerCase() === email){
+        return { userName: data[i][4], password: data[i][5] }
+      }
+    }
+    return null
+  }
+  catch(e){
+    console.log(e);
+    return null
+  }
+}
+
 async function getDashboardDataStudent(email){
     try{
 
@@ -490,7 +513,8 @@ async function getDashboardDataStudent(email){
     for(let i = 0; i < data.length; i++){
         if(data[i][1] && data[i][1].toLowerCase().includes(email)){
             const getDriveFolderData = await getFolderInfo(data[i][3])
-            return {status: 200, dashboardData: data[i], files: getDriveFolderData.files}
+            const ixlCredentials = await getIXLCredentials(email)
+            return {status: 200, dashboardData: data[i], files: getDriveFolderData.files, ixlCredentials}
         }
     }
     }
