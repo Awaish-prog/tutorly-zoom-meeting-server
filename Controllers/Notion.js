@@ -499,15 +499,16 @@ async function createNotionPageWithEmail(email, userId, password){
 } 
 
 async function updateNotionPage(blockId, email){
+  await sleep(2000)
   const pageContent = await notion.blocks.children.list({
     block_id: blockId,
     page_size: 50,
   });
-  
+  await sleep(2000)
   const firstBlock = await notion.blocks.children.list({
     block_id: pageContent.results[0].id,
   });
-  
+  await sleep(2000)
   const firstBlockSecondColumn = await notion.blocks.children.list({
     block_id: firstBlock.results[1].id,
   });
@@ -523,12 +524,13 @@ async function updateNotionPage(blockId, email){
     const month = date.substring(0, 2)
 
     const formattedDate = `${year}-${month}-${day}`;
-
+    await sleep(10000)
   acuity.request(`appointments?email=${email}&minDate=${formattedDate}&max=10&direction=ASC`, async function (err, r, appointments) {
     if (err) return console.error(err);
     const meetingsList = getMeetingsList(appointments, true)
 
     if(meetingsList.length){
+      await sleep(2000)
       const firstBlockSecondColumnFirstBlock = await notion.blocks.update({
         "block_id": firstBlockSecondColumn.results[0].id,
         callout: {
@@ -593,9 +595,9 @@ async function createNotionPages(){
 
 async function updateNotionPages(){
   const studentsData = await getMapleStudent()
-  for(let i = 1; i < studentsData.length; i++){
+  for(let i = 35; i < studentsData.length; i++){
     await updateNotionPage(studentsData[i][1].substring(studentsData[i][1].length - 32 ,studentsData[i][1].length), studentsData[i][0])
-    await sleep(5000);
+    await sleep(15000);
   }
 
   console.log("All pages are updated...");
