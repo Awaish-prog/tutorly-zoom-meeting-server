@@ -8,10 +8,13 @@ const { getDashboardData, googleSheetTest, updateStudentIds, googleSheetDataTuto
 const { login } = require('./Controllers/User');
 const { authentication } = require('./Middlewares/Authenticate');
 const path = require('path');
-const { createNotionPageWithEmail, createNotionPages, updateNotionPages, updateNotionPage } = require('./Controllers/Notion');
+const { createNotionPageWithEmail, createNotionPages, updateNotionPages } = require('./Controllers/Notion');
 
-
-
+const io = require("socket.io")(8080, {
+  cors: {
+      origin: "*"
+  }
+});
 
 
 app.use(cors())
@@ -19,6 +22,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'build')))
 app.use(express.static(path.join(__dirname, 'tutorly-sheet-update-build')))
+app.use(express.static(path.join(__dirname, 'white-board')))
 
 
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
@@ -45,6 +49,10 @@ app.get("/updateTutorSheets", (req, res) => {
   res.sendFile(path.join(__dirname, "tutorly-sheet-update-build/index.html"))
 })
 
+app.get("/joinWhiteboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "white-board/index.html"))
+})
+
 app.get("/updateMapleSheets", (req, res) => {
   mapleSheetUpdate()
   res.send("Please check Maple sessions sheet, it will update in few seconds..")
@@ -54,6 +62,20 @@ app.get("/updateMapleSheets", (req, res) => {
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build/index.html"))
+})
+
+io.on("connection", (socket) => {
+  socket.on("syncBoard", (dataURL) => {
+      console.log("Board data received on server..");
+      socket.to("board").emit("received", { dataURL });
+  })
+  socket.on("syncErasedData", (eraserData) => {
+    socket.to("board").emit("eraseData", { eraserData });
+})
+  socket.on("joinWhiteBoard", (board) => {
+      socket.join(board);
+      console.log("Joined board");
+  })  
 })
 
 
