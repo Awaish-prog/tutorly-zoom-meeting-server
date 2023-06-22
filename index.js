@@ -9,11 +9,12 @@ const { login } = require('./Controllers/User');
 const { authentication } = require('./Middlewares/Authenticate');
 const path = require('path');
 const { createNotionPageWithEmail, createNotionPages, updateNotionPages } = require('./Controllers/Notion');
-const http = require('http');
-const socketIO = require('socket.io');
-const server = http.createServer(app);
-const io = socketIO(server);
 
+const io = require("socket.io")(8080, {
+  cors: {
+      origin: "*"
+  }
+});
 
 
 app.use(cors())
