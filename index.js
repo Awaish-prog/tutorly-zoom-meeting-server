@@ -10,11 +10,6 @@ const { authentication } = require('./Middlewares/Authenticate');
 const path = require('path');
 const { createNotionPageWithEmail, createNotionPages, updateNotionPages } = require('./Controllers/Notion');
 
-const io = require("socket.io")(8080, {
-  cors: {
-      origin: "*"
-  }
-});
 
 
 app.use(cors())
@@ -64,19 +59,7 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build/index.html"))
 })
 
-io.on("connection", (socket) => {
-  socket.on("syncBoard", (dataURL) => {
-      console.log("Board data received on server..");
-      socket.to("board").emit("received", { dataURL });
-  })
-  socket.on("syncErasedData", (eraserData) => {
-    socket.to("board").emit("eraseData", { eraserData });
-})
-  socket.on("joinWhiteBoard", (board) => {
-      socket.join(board);
-      console.log("Joined board");
-  })  
-})
+
 
 
 app.listen("4005", () => {
