@@ -595,9 +595,10 @@ async function createNotionPages(){
 
 async function updateNotionPages(){
   const studentsData = await getMapleStudent()
-  for(let i = 1; i < studentsData.length; i++){
+  for(let i = 30; i < studentsData.length; i++){
     await updateNotionPage(studentsData[i][1].substring(studentsData[i][1].length - 32 ,studentsData[i][1].length), studentsData[i][0])
     await sleep(15000);
+    console.log(i);
   }
 
   console.log("All pages are updated...");
