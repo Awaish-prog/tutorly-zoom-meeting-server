@@ -83,15 +83,15 @@ app.get("*", (req, res) => {
 //       socket.join(board);
 //       console.log("Joined board");
 //   })  
-//   socket.on("undo", (dataURL, currentPageSource, x, y, index) => {
+//   socket.on("undo", (dataURL, currentPageSource, x, y, index, obj) => {
 //     console.log(currentPageSource, x, y, index);
-//     socket.to("board").emit("undo", { dataURL, currentPageSource, x, y, index });
+//     socket.to("board").emit("undo", { dataURL, currentPageSource, x, y, index, obj });
 //   })
-//   socket.on("redo", (undoObj) => {
-//     socket.to("board").emit("redo", { undoObj });
+//   socket.on("redo", (undoObj, index) => {
+//     socket.to("board").emit("redo", { undoObj, index });
 //   })
-//   socket.on("syncImage", (imageUrl, currentPageSource) => {
-//     socket.to("board").emit("syncImage", { imageUrl, currentPageSource });
+//   socket.on("syncImage", (imageData, currentPageSource, imageX, imageY, imageWidth, imageHeight, dataURL) => {
+//     socket.to("board").emit("syncImage", { imageData, currentPageSource, imageX, imageY, imageWidth, imageHeight, dataURL });
 //   })
 // })
 
