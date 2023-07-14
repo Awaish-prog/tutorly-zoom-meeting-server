@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.79f7749d.css",
-    "main.js": "/static/js/main.c0b02193.js",
+    "main.js": "/static/js/main.69bdae2a.js",
     "static/media/_NeueMontreal-Regular.otf": "/static/media/_NeueMontreal-Regular.a386af5501c02b65221c.otf",
     "static/media/_PPWoodland-Regular.otf": "/static/media/_PPWoodland-Regular.fd321d9999934a397967.otf",
     "index.html": "/index.html",
     "main.79f7749d.css.map": "/static/css/main.79f7749d.css.map",
-    "main.c0b02193.js.map": "/static/js/main.c0b02193.js.map"
+    "main.69bdae2a.js.map": "/static/js/main.69bdae2a.js.map"
   },
   "entrypoints": [
     "static/css/main.79f7749d.css",
-    "static/js/main.c0b02193.js"
+    "static/js/main.69bdae2a.js"
   ]
 }
