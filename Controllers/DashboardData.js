@@ -739,5 +739,23 @@ async function mapleSheetUpdate(){
   })
 }
 
+async function saveWhiteboardData(data, board){
+  try{
+    // const response = await sheetClient.spreadsheets.values.get({
+    //   spreadsheetId: "159tDgyhJ2PQnhelGcfWddjc0T0QFhRf7ZVS9hlfxZO0",
+    //   range: 'A:B'
+    // })
+    // const boardData = response.data.values
+    // boardData[1][1] = JSON.stringify(data)
+    console.log(Buffer.byteLength(JSON.stringify(data), 'utf8'));
+    console.log("-------------------------------------------------------------------------------------------------------------------------------");
+    //await updateSheetData("159tDgyhJ2PQnhelGcfWddjc0T0QFhRf7ZVS9hlfxZO0", 'whiteboard!A:B', boardData)
+    
+  }
+  catch(e){
+    console.log(e);
+  }
+}
 
-module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, appendRowInSheet, updateStudentIds, googleSheetDataTutor, getMapleStudent, mapleSheetUpdate }
+
+module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, appendRowInSheet, updateStudentIds, googleSheetDataTutor, getMapleStudent, mapleSheetUpdate, saveWhiteboardData }
