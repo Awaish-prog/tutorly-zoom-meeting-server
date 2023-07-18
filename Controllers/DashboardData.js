@@ -749,7 +749,7 @@ async function saveWhiteboardData(data, board){
     // boardData[1][1] = JSON.stringify(data)
     console.log(Buffer.byteLength(data, 'utf8'));
     console.log("-------------------------------------------------------------------------------------------------------------------------------");
-    await updateSheetData("159tDgyhJ2PQnhelGcfWddjc0T0QFhRf7ZVS9hlfxZO0", 'whiteboard!A:AZ', [["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n" ,"o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n" ,"o", "p", "q", "r", "s", "t", "u", "v", "w1", "x1", "y1", "z1"]])
+    await updateSheetData("159tDgyhJ2PQnhelGcfWddjc0T0QFhRf7ZVS9hlfxZO0", 'whiteboard!A:DZ', [["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n" ,"o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n" ,"o", "p", "q", "r", "s", "t", "u", "v", "w1", "x1", "y1", "z1", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n" ,"o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n" ,"o", "p", "q", "r", "s", "t", "u", "v", "w1", "x1", "y1", "z1", "h", "i", "j", "k", "l", "m", "n" ,"o", "p", "q", "r", "s", "t", "u", "v", "w1", "x1", "y1", "z1"]])
     
   }
   catch(e){

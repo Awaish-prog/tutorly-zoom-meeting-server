@@ -10,8 +10,9 @@ const { authentication } = require('./Middlewares/Authenticate');
 const path = require('path');
 const { createNotionPageWithEmail, createNotionPages, updateNotionPages } = require('./Controllers/Notion');
 const { searchFolder } = require('./Controllers/GoogleDrive');
-const zlib = require('zlib');
-const UglifyJS = require('uglify-js');
+const axios = require('axios');
+
+
 
 
 
@@ -47,7 +48,7 @@ app.get("/updateTutorSheets", (req, res) => {
   res.sendFile(path.join(__dirname, "tutorly-sheet-update-build/index.html"))
 })
 
-app.get("/joinWhiteboard", (req, res) => {
+app.get("/joinWhiteboard*", (req, res) => {
   res.sendFile(path.join(__dirname, "white-board/index.html"))
 })
 
@@ -151,39 +152,7 @@ io.on("connection", (socket) => {
   socket.on("saveData", (board) => {
     saveWhiteboardData(JSON.stringify(boards[board]), board)
     const jsonString = JSON.stringify(boards[board]);
-
-
-// Compress the data using zlib
-    zlib.deflate(jsonString, (err, compressedData) => {
-      if (err) {
-        console.error('Compression error:', err);
-        return;
-      }
-
-  
-      //console.log(JSON.parse(jsonString));
-// Decompress the compressed data using zlib
-    const compressedString = compressedData.toString('base64');
-    const compressedData1 = Buffer.from(compressedString, 'base64');
-
-// Decompress the compressed data using zlib
-zlib.inflate(compressedData1, (err, decompressedData) => {
-  if (err) {
-    console.error('Decompression error:', err);
-    return;
-  }
-  const jsonString = decompressedData.toString('utf8');
-
-  // Parse the JSON string to retrieve the original JSON data
-  //const jsonData = JSON.parse(jsonString);
-
-  // Display the retrieved JSON data
-  //console.log(JSON.parse(jsonString));
-});
-
-    saveWhiteboardData(compressedString, board);
-    console.log(compressedString.length);
-    });
+    //getDataFromGoogleAppsScript(jsonString)
   })
 
   socket.on("undo", (dataURL, currentPageSource, x, y, index, obj) => {
@@ -219,6 +188,19 @@ zlib.inflate(compressedData1, (err, decompressedData) => {
 })
 
 
+const scriptUrl = 'https://script.google.com/macros/s/AKfycby2LH78iIegdMZg97j_XzIGuvTkCeGwH0tjCC05k0pA3Dt2EptGIkaovOfgwOGFqLC_/exec' // Replace with your actual script URL
+
+async function getDataFromGoogleAppsScript() {
+  try {
+    const response = await axios.post(scriptUrl, {operation: "append", paperData: ["paper", "http", "@tutor", "@student", "July 12", "data"]});
+    console.log('Response:', response.data);
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+}
+
+
+
 
 app.listen("4005", () => {
   // 4f9e229effac4b2a86f2a874c9c849e1
@@ -229,5 +211,7 @@ app.listen("4005", () => {
   //createNotionPages()
   //updateNotionPages()
   //mapleSheetUpdate()
+  //getDataFromGoogleAppsScript();
+  // https://script.google.com/macros/s/AKfycbwSBXVjJCPcpLFE1UhE-hWSkTpxBqZLJNgdUCKNIx4XcP9MldjNB1DgUfPwsvmG9ovJ/exec
   console.log("server running");
 })
