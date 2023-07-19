@@ -3,14 +3,15 @@ const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeti
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
-const { downloadRecording } = require('./Controllers/ZoomWebhook');
-const { getDashboardData, googleSheetTest, updateStudentIds, googleSheetDataTutor, getMapleStudent, mapleSheetUpdate, getDashboardDataTest, saveWhiteboardData } = require('./Controllers/DashboardData');
-const { login } = require('./Controllers/User');
-const { authentication } = require('./Middlewares/Authenticate');
+const { downloadRecording } = require('./Controllers/ZoomWebhook.js');
+const { getDashboardData, googleSheetTest, updateStudentIds, googleSheetDataTutor, getMapleStudent, mapleSheetUpdate, getDashboardDataTest, saveWhiteboardData } = require('./Controllers/DashboardData.js');
+const { login } = require('./Controllers/User.js');
+const { authentication } = require('./Middlewares/Authenticate.js');
 const path = require('path');
-const { createNotionPageWithEmail, createNotionPages, updateNotionPages } = require('./Controllers/Notion');
-const { searchFolder } = require('./Controllers/GoogleDrive');
-const axios = require('axios');
+const { createNotionPageWithEmail, createNotionPages, updateNotionPages } = require('./Controllers/Notion.js');
+const { searchFolder } = require('./Controllers/GoogleDrive.js');
+const { createWhiteboardData, updateWhiteboard, getWhiteboardData, deleteWhiteboardData } = require('./Controllers/WhiteBoardAppScripts.js');
+
 
 
 
@@ -29,6 +30,8 @@ app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPrevious
 app.get("/getUpcomingMeetings/:email/:role/:number", authentication, getUpcomingMeetings)
 
 app.post("/getEvent", downloadRecording )
+
+app.post("/createWhiteboardData", authentication, createWhiteboardData )
 
 app.get("/getAvailabilty", authentication, getAvailability)
 
@@ -85,6 +88,23 @@ io.on("connection", (socket) => {
       return 0;
     }
   }
+
+  function breakStringIntoSections(str, sectionLength) {
+    var sections = [];
+    for (var i = 0; i < str.length; i += sectionLength) {
+      sections.push(str.substr(i, sectionLength));
+    }
+    return sections;
+  }
+  
+  function recreateString(stringArr){
+    let str = ""
+    for(let i = 0; i < stringArr.length; i++){
+      str += stringArr[i]
+    }
+    return str
+  }
+  
   
   socket.on("syncBoard", (dataURL, currentPageSource) => {
       socket.to("board").emit("received", { dataURL, currentPageSource });
@@ -128,10 +148,12 @@ io.on("connection", (socket) => {
     
   })
 
-  socket.on("joinWhiteBoard", (board) => {
+  socket.on("joinWhiteBoard", async (board) => {
       socket.join(board);
+      socket.emit("Joined", await getWhiteboardData("http://localhost:4005/joinWhiteboard/U2FsdGVkX1/mdJeS6NNL1gyXqB8USjWQpZ5qfvjuac5Z3Kka5+9QggQ9Zi3dxkklj/mlgSXX03HmNAMTSUp1hnODSjm8GQ3HB1g8kWraokc="))
       if(board in boards){
-        socket.emit("Joined", boards[board])
+        
+        
       }
       else{
         b = board
@@ -152,7 +174,13 @@ io.on("connection", (socket) => {
   socket.on("saveData", (board) => {
     saveWhiteboardData(JSON.stringify(boards[board]), board)
     const jsonString = JSON.stringify(boards[board]);
-    //getDataFromGoogleAppsScript(jsonString)
+    console.log("String length: " + jsonString.length);
+    const arr = breakStringIntoSections(jsonString, 49990)
+    const val = recreateString(arr)
+    console.log("cells required: " + arr.length);
+    console.log("Recreated string length: " + val.length);
+    console.log(val === jsonString);
+    updateWhiteboard("http://localhost:4005/joinWhiteboard/U2FsdGVkX1/mdJeS6NNL1gyXqB8USjWQpZ5qfvjuac5Z3Kka5+9QggQ9Zi3dxkklj/mlgSXX03HmNAMTSUp1hnODSjm8GQ3HB1g8kWraokc=", arr)
   })
 
   socket.on("undo", (dataURL, currentPageSource, x, y, index, obj) => {
@@ -188,17 +216,6 @@ io.on("connection", (socket) => {
 })
 
 
-const scriptUrl = 'https://script.google.com/macros/s/AKfycby2LH78iIegdMZg97j_XzIGuvTkCeGwH0tjCC05k0pA3Dt2EptGIkaovOfgwOGFqLC_/exec' // Replace with your actual script URL
-
-async function getDataFromGoogleAppsScript() {
-  try {
-    const response = await axios.post(scriptUrl, {operation: "append", paperData: ["paper", "http", "@tutor", "@student", "July 12", "data"]});
-    console.log('Response:', response.data);
-  } catch (error) {
-    console.error('Error:', error.message);
-  }
-}
-
 
 
 
@@ -212,6 +229,9 @@ app.listen("4005", () => {
   //updateNotionPages()
   //mapleSheetUpdate()
   //getDataFromGoogleAppsScript();
+  // console.log("fivefivefivefivefivefivefivefiv");
+  // console.log(recreateString(breakStringIntoSections("fivefivefivefivefivefivefivefiv", 4)));
+  //deleteWhiteboardData("ddd")
   // https://script.google.com/macros/s/AKfycbwSBXVjJCPcpLFE1UhE-hWSkTpxBqZLJNgdUCKNIx4XcP9MldjNB1DgUfPwsvmG9ovJ/exec
   console.log("server running");
 })
