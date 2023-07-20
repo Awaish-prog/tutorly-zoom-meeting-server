@@ -4,13 +4,13 @@ const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { downloadRecording } = require('./Controllers/ZoomWebhook.js');
-const { getDashboardData, googleSheetTest, updateStudentIds, googleSheetDataTutor, getMapleStudent, mapleSheetUpdate, getDashboardDataTest, saveWhiteboardData } = require('./Controllers/DashboardData.js');
+const { getDashboardData, googleSheetTest, updateStudentIds, googleSheetDataTutor, getMapleStudent, mapleSheetUpdate, getDashboardDataTest } = require('./Controllers/DashboardData.js');
 const { login } = require('./Controllers/User.js');
 const { authentication } = require('./Middlewares/Authenticate.js');
 const path = require('path');
 const { createNotionPageWithEmail, createNotionPages, updateNotionPages } = require('./Controllers/Notion.js');
 const { searchFolder } = require('./Controllers/GoogleDrive.js');
-const { createWhiteboardData, updateWhiteboard, getWhiteboardData, deleteWhiteboardData } = require('./Controllers/WhiteBoardAppScripts.js');
+const { createWhiteboardData, updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink, getBoardsList } = require('./Controllers/WhiteBoardAppScripts.js');
 
 
 
@@ -32,6 +32,8 @@ app.get("/getUpcomingMeetings/:email/:role/:number", authentication, getUpcoming
 app.post("/getEvent", downloadRecording )
 
 app.post("/createWhiteboardData", authentication, createWhiteboardData )
+
+app.post("/getBoardsList", authentication, getBoardsList )
 
 app.get("/getAvailabilty", authentication, getAvailability)
 
@@ -106,73 +108,65 @@ io.on("connection", (socket) => {
   }
   
   
-  socket.on("syncBoard", (dataURL, currentPageSource) => {
-      socket.to("board").emit("received", { dataURL, currentPageSource });
-      boards[b].contexts[currentPageSource] = dataURL
-      const undoObj = {
-        dataURL: dataURL,
-        page: currentPageSource,
-        x: -1,
-        y: -1
-      }
-      
+  socket.on("syncBoard", (dataURL, currentPageSource, board) => {
+      socket.to(board).emit("received", { dataURL, currentPageSource });
+      boards[board].contexts[currentPageSource] = dataURL
   })
 
-  socket.on("syncErasedData", (eraserData, currentPageSource, dataURL) => {
-    socket.to("board").emit("eraseData", { eraserData, currentPageSource, dataURL });
-    const undoObj = {
-      dataURL: dataURL,
-      page: currentPageSource,
-      x: -1,
-      y: -1
-    }
-    boards[b].contexts[currentPageSource] = dataURL
-    
+  socket.on("syncErasedData", (eraserData, currentPageSource, dataURL, board) => {
+    socket.to(board).emit("eraseData", { eraserData, currentPageSource, dataURL });
+    boards[board].contexts[currentPageSource] = dataURL
   })
-  socket.on("addText", (currentPageSource, dataURL) => {
-    socket.to("board").emit("addText", { currentPageSource, dataURL });
-    const undoObj = {
-      dataURL: dataURL,
-      page: currentPageSource,
-      x: -1,
-      y: -1
-    }
-    boards[b].contexts[currentPageSource] = dataURL
-    
+  socket.on("addText", (currentPageSource, dataURL, board) => {
+    socket.to(board).emit("addText", { currentPageSource, dataURL });
+    boards[board].contexts[currentPageSource] = dataURL
   })
 
-  socket.on("addPage", () => {
-    socket.to("board").emit("addPage");
-    boards[b].contexts.push(null)
-    boards[b].pages.push(boards[b].pages[boards[b].pages.length - 1] + 1)
+  socket.on("addPage", (board) => {
+    socket.to(board).emit("addPage");
+    boards[board].contexts.push(null)
+    boards[board].pages.push(boards[board].pages[boards[board].pages.length - 1] + 1)
     
   })
 
   socket.on("joinWhiteBoard", async (board) => {
+      const joinStatus = await checkLink(board)
+      if(joinStatus !== 200){
+        socket.emit("wrongLink")
+        return
+      }
       socket.join(board);
-      socket.emit("Joined", await getWhiteboardData("http://localhost:4005/joinWhiteboard/U2FsdGVkX1/mdJeS6NNL1gyXqB8USjWQpZ5qfvjuac5Z3Kka5+9QggQ9Zi3dxkklj/mlgSXX03HmNAMTSUp1hnODSjm8GQ3HB1g8kWraokc="))
+      
       if(board in boards){
-        
-        
+        socket.emit("Joined", boards[board])
       }
       else{
-        b = board
-        boards[board] = { contexts: [null], pages: [0], images: [] }
+        const boardData = await getWhiteboardData(board)
+        if(boardData){
+          socket.emit("Joined", boardData)
+          boards[board] = boardData
+        }
+        else{
+          boards[board] = { contexts: [null], pages: [0], images: [] }
+          socket.emit("Joined", boards[board])
+        }
       }
      
       const boardKeys = Object.keys(boards)
-      console.log(Object.keys(boards));
+
       for(let i = 0; i < boardKeys.length; i++){
         if(!getNumberOfClients(boardKeys[i])){
+          const jsonString = JSON.stringify(boards[boardKeys[i]]);
+          const arr = breakStringIntoSections(jsonString, 49990)
+          updateWhiteboard(boardKeys[i], arr)
           delete boards[boardKeys[i]]
         }
       }
-      console.log(getNumberOfClients("board"));
+      console.log(Object.keys(boards));
       console.log("Joined board"); 
   }) 
   
   socket.on("saveData", (board) => {
-    saveWhiteboardData(JSON.stringify(boards[board]), board)
     const jsonString = JSON.stringify(boards[board]);
     console.log("String length: " + jsonString.length);
     const arr = breakStringIntoSections(jsonString, 49990)
@@ -180,16 +174,16 @@ io.on("connection", (socket) => {
     console.log("cells required: " + arr.length);
     console.log("Recreated string length: " + val.length);
     console.log(val === jsonString);
-    updateWhiteboard("http://localhost:4005/joinWhiteboard/U2FsdGVkX1/mdJeS6NNL1gyXqB8USjWQpZ5qfvjuac5Z3Kka5+9QggQ9Zi3dxkklj/mlgSXX03HmNAMTSUp1hnODSjm8GQ3HB1g8kWraokc=", arr)
+    updateWhiteboard(board, arr)
   })
 
-  socket.on("undo", (dataURL, currentPageSource, x, y, index, obj) => {
-    socket.to("board").emit("undo", { dataURL, currentPageSource, x, y, index, obj });
-    boards[b].contexts[currentPageSource] = dataURL
-    console.log(x, y);
-    for(let i = 0; i < boards[b].images.length; i++){
-      if(boards[b].images[i].x === x && boards[b].images[i].y === y && boards[b].images[i].page === currentPageSource){
-        boards[b].images.splice(i, 1)
+  socket.on("undo", (dataURL, currentPageSource, x, y, index, obj, board) => {
+    socket.to(board).emit("undo", { dataURL, currentPageSource, x, y, index, obj });
+    boards[board].contexts[currentPageSource] = dataURL
+    
+    for(let i = 0; i < boards[board].images.length; i++){
+      if(boards[board].images[i].x === x && boards[board].images[i].y === y && boards[board].images[i].page === currentPageSource){
+        boards[board].images.splice(i, 1)
         console.log("found");
         break;
       }
@@ -197,20 +191,14 @@ io.on("connection", (socket) => {
     
   })
 
-  socket.on("redo", (undoObj, index) => {
-    socket.to("board").emit("redo", { undoObj, index });
-    boards[b].contexts[undoObj.page] = undoObj.dataURL
+  socket.on("redo", (undoObj, index, board) => {
+    socket.to(board).emit("redo", { undoObj, index });
+    boards[board].contexts[undoObj.page] = undoObj.dataURL
   })
 
-  socket.on("syncImage", (imageData, currentPageSource, imageX, imageY, imageWidth, imageHeight, dataURL) => {
-    socket.to("board").emit("syncImage", { imageData, currentPageSource, imageX, imageY, imageWidth, imageHeight, dataURL });
-    boards[b].images.push({ imageData, x : imageX, y : imageY, page: currentPageSource, imageWidth, imageHeight })
-    const undoObj = {
-      dataURL: dataURL,
-      page: currentPageSource,
-      x: imageX,
-      y: imageY
-    }
+  socket.on("syncImage", (imageData, currentPageSource, imageX, imageY, imageWidth, imageHeight, dataURL, board) => {
+    socket.to(board).emit("syncImage", { imageData, currentPageSource, imageX, imageY, imageWidth, imageHeight, dataURL });
+    boards[board].images.push({ imageData, x : imageX, y : imageY, page: currentPageSource, imageWidth, imageHeight })
   })
   
 })
@@ -219,8 +207,8 @@ io.on("connection", (socket) => {
 
 
 
-app.listen("4005", () => {
-  // 4f9e229effac4b2a86f2a874c9c849e1
+app.listen("4005", async () => {
+  
   //createNotionPageWithEmail("gracebernal@mapleschool.org")
   //updateStudentIds()
   //printCalenderId("awaish@tutorly.com")
@@ -228,10 +216,6 @@ app.listen("4005", () => {
   //createNotionPages()
   //updateNotionPages()
   //mapleSheetUpdate()
-  //getDataFromGoogleAppsScript();
-  // console.log("fivefivefivefivefivefivefivefiv");
-  // console.log(recreateString(breakStringIntoSections("fivefivefivefivefivefivefivefiv", 4)));
-  //deleteWhiteboardData("ddd")
-  // https://script.google.com/macros/s/AKfycbwSBXVjJCPcpLFE1UhE-hWSkTpxBqZLJNgdUCKNIx4XcP9MldjNB1DgUfPwsvmG9ovJ/exec
+  
   console.log("server running");
 })
