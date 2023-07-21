@@ -1,6 +1,7 @@
 const axios = require('axios');
+require('dotenv').config()
 
-const scriptUrl = 'https://script.google.com/macros/s/AKfycbxfAhkG2mk2yCCvJn21ehMb6ZEnxavV2MdXdzq6viXM_Kk7Mg3aLkaUBsQKqEjsl7kC/exec' // Replace with your actual script URL
+const scriptUrl = process.env.SCRIPT_URL // Replace with your actual script URL
 
 async function createWhiteboardData(req, res) {
     const { paperName, paperLink, tutorEmail, studentEmail, dateAndTime, paperData } = req.body
