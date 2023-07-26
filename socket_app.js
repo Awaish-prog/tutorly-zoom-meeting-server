@@ -13,8 +13,8 @@ const io = require("socket.io")(8080, {
   
   
   
-  io.on("connection", (socket) => {
-  
+io.on("connection", (socket) => {
+
     const dataLimit = 5000000
     function getObjectSize(object) {
       const serializedObject = v8.serialize(object);
@@ -107,7 +107,12 @@ const io = require("socket.io")(8080, {
       socket.to(board).emit("addPage");
       boards[board].contexts.push(null)
       boards[board].pages.push(boards[board].pages[boards[board].pages.length - 1] + 1)
-      
+      boards[board].grid.push(0)
+    })
+  
+    socket.on("lock", (board) => {
+  
+      socket.to(board).emit("lock");
     })
   
     socket.on("joinWhiteBoard", async (board) => {
@@ -128,7 +133,7 @@ const io = require("socket.io")(8080, {
             boards[board] = boardData
           }
           else{
-            boards[board] = { contexts: [null], pages: [0], images: [] }
+            boards[board] = { contexts: [null], pages: [0], images: [], grid: [0] }
             socket.emit("Joined", boards[board])
           }
         }
@@ -204,6 +209,20 @@ const io = require("socket.io")(8080, {
       }
       socket.to(board).emit("syncImage", { imageData, currentPageSource, imageX, imageY, imageWidth, imageHeight, dataURL });
       boards[board].images.push({ imageData, x : imageX, y : imageY, page: currentPageSource, imageWidth, imageHeight })
+    })
+  
+    socket.on("Grid", (page, grid, board) => {
+      if(getObjectSize(boards[board]) > dataLimit){
+        socket.to(board).emit("dataLimit");
+        socket.emit("dataLimit");
+        const jsonString = JSON.stringify(boards[board]);
+        const arr = breakStringIntoSections(jsonString, 49990)
+        updateWhiteboard(board, arr)
+        delete boards[board]
+        return
+      }
+      socket.to(board).emit("Grid", { page, grid });
+      boards[board].grid[page] = grid
     })
     
   })
