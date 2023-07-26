@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/static/css/main.9e994e22.css",
-    "main.js": "/static/js/main.a97c24dc.js",
+    "main.css": "/static/css/main.f2e5c9f7.css",
+    "main.js": "/static/js/main.c2bf0972.js",
     "static/js/498.ae7ae07a.chunk.js": "/static/js/498.ae7ae07a.chunk.js",
     "static/js/703.0f41c7e0.chunk.js": "/static/js/703.0f41c7e0.chunk.js",
     "static/js/541.f1078d5b.chunk.js": "/static/js/541.f1078d5b.chunk.js",
     "static/media/_NeueMontreal-Regular.otf": "/static/media/_NeueMontreal-Regular.a386af5501c02b65221c.otf",
     "static/media/_PPWoodland-Regular.otf": "/static/media/_PPWoodland-Regular.fd321d9999934a397967.otf",
     "index.html": "/index.html",
-    "main.9e994e22.css.map": "/static/css/main.9e994e22.css.map",
-    "main.a97c24dc.js.map": "/static/js/main.a97c24dc.js.map",
+    "main.f2e5c9f7.css.map": "/static/css/main.f2e5c9f7.css.map",
+    "main.c2bf0972.js.map": "/static/js/main.c2bf0972.js.map",
     "498.ae7ae07a.chunk.js.map": "/static/js/498.ae7ae07a.chunk.js.map",
     "703.0f41c7e0.chunk.js.map": "/static/js/703.0f41c7e0.chunk.js.map",
     "541.f1078d5b.chunk.js.map": "/static/js/541.f1078d5b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9e994e22.css",
-    "static/js/main.a97c24dc.js"
+    "static/css/main.f2e5c9f7.css",
+    "static/js/main.c2bf0972.js"
   ]
 }
