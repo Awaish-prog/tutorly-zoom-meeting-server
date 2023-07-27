@@ -11,7 +11,7 @@ const path = require('path');
 const { createNotionPageWithEmail, createNotionPages, updateNotionPages } = require('./Controllers/Notion.js');
 const { searchFolder } = require('./Controllers/GoogleDrive.js');
 const { createWhiteboardData, getBoardsList } = require('./Controllers/WhiteBoardAppScripts.js');
-
+const { updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink } = require('./Controllers/WhiteBoardAppScripts.js');
 
 const v8 = require('v8');
 
@@ -35,6 +35,8 @@ app.post("/getEvent", downloadRecording )
 app.post("/createWhiteboardData", authentication, createWhiteboardData )
 
 app.post("/getBoardsList", authentication, getBoardsList )
+
+app.post("/deleteWhiteboard", authentication, deleteWhiteboardData )
 
 app.get("/getAvailabilty", authentication, getAvailability)
 
@@ -68,6 +70,10 @@ app.get("/updateMapleSheets", (req, res) => {
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build/index.html"))
 })
+
+
+
+
 
 
 

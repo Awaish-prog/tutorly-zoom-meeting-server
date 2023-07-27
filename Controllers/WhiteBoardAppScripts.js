@@ -45,7 +45,8 @@ async function getWhiteboardData(paperLink){
     
 }
 
-async function deleteWhiteboardData(paperLink){
+async function deleteWhiteboardData(req, res){
+    const { paperLink } = req.body
     try {
         const response = await axios.post(scriptUrl, {operation: "deleteRow", paperData: paperLink});
         return response.data["status"]

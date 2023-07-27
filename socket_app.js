@@ -13,7 +13,7 @@ const io = require("socket.io")(8080, {
   
   
   
-io.on("connection", (socket) => {
+  io.on("connection", (socket) => {
 
     const dataLimit = 5000000
     function getObjectSize(object) {
@@ -116,18 +116,18 @@ io.on("connection", (socket) => {
     })
   
     socket.on("joinWhiteBoard", async (board) => {
-        const joinStatus = await checkLink(board)
-        if(joinStatus !== 200){
-          socket.emit("wrongLink")
-          return
-        }
+        // const joinStatus = await checkLink(board)
+        // if(joinStatus !== 200){
+        //   socket.emit("wrongLink")
+        //   return
+        // }
         socket.join(board);
         
         if(board in boards){
           socket.emit("Joined", boards[board])
         }
         else{
-          const boardData = await getWhiteboardData(board)
+          const boardData = null // await getWhiteboardData(board)
           if(boardData){
             socket.emit("Joined", boardData)
             boards[board] = boardData
