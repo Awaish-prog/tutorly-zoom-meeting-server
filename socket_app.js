@@ -116,18 +116,18 @@ const io = require("socket.io")(8080, {
     })
   
     socket.on("joinWhiteBoard", async (board) => {
-        // const joinStatus = await checkLink(board)
-        // if(joinStatus !== 200){
-        //   socket.emit("wrongLink")
-        //   return
-        // }
+        const joinStatus = await checkLink(board)
+        if(joinStatus !== 200){
+          socket.emit("wrongLink")
+          return
+        }
         socket.join(board);
         
         if(board in boards){
           socket.emit("Joined", boards[board])
         }
         else{
-          const boardData = null // await getWhiteboardData(board)
+          const boardData = await getWhiteboardData(board)
           if(boardData){
             socket.emit("Joined", boardData)
             boards[board] = boardData
