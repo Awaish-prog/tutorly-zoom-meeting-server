@@ -37,6 +37,78 @@ const sheetClient = google.sheets({
     version: "v4",
     auth: clientSheet
 })
+// 1KgbNeRQ5TsS9D0O7Qe_Z8kGwoHc1_FXLW6qKMccj5bg
+
+function createNewSheetWithName(spreadsheetId, newSheetName){
+  return new Promise((resolve, reject) => {
+    sheetClient.spreadsheets.batchUpdate({
+      spreadsheetId: spreadsheetId,
+      resource: {
+        requests: [
+          {
+            addSheet: {
+              properties: {
+                title: newSheetName,
+              },
+            },
+          },
+        ],
+      },
+    }, (err, response) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
+
+async function createNewSheet(sheetId, range, data, calendar){
+  try{
+    const responseInfo = await sheetClient.spreadsheets.values.get({
+      spreadsheetId: sheetId,
+      range: calendar + "!" + range
+    })
+    const sheetData = responseInfo.data.values
+    let name = "New Sheet"
+    if(sheetData && sheetData.length && sheetData[0] && sheetData[1] && sheetData[1][0]){
+      name = sheetData[1][0] + "-" + sheetData[sheetData.length - 1][0]
+    }
+    else{
+      await sheetClient.spreadsheets.values.clear({
+        spreadsheetId: sheetId,
+        range: calendar + "!A:W"
+      });
+      console.log(`Cleared sheet ${sheetId}`);
+      const responseWrite = await updateSheetData(sheetId, calendar + "!A:W", data)
+      console.log(responseWrite.status);
+      return responseWrite
+    }
+    const res = await createNewSheetWithName(sheetId, name)
+    
+    const response = await updateSheetData(sheetId, name + "!A:W", sheetData)
+    await sheetClient.spreadsheets.values.clear({
+      spreadsheetId: sheetId,
+      range: calendar + "!A:W"
+    });
+    console.log(`Cleared sheet ${sheetId}`);
+    const responseWrite = await updateSheetData(sheetId, calendar + "!A:W", data)
+    console.log(responseWrite.status);
+    return responseWrite
+  }
+  catch(e){
+    await sheetClient.spreadsheets.values.clear({
+      spreadsheetId: sheetId,
+      range: calendar + "!A:W"
+    });
+    console.log(`Cleared sheet ${sheetId}`);
+    const responseWrite = await updateSheetData(sheetId, calendar + "!A:W", data)
+    console.log(responseWrite.status);
+    return responseWrite
+    console.log(e);
+  }
+}
 
 async function updateStudentIds(){
   try{
@@ -241,11 +313,7 @@ async function googleSheetDataTutor(req, res){
   acuity.request(`appointments?calendarID=${calenderId}&minDate=${startDate}&maxDate=${endDate}&max=5000&direction=ASC`, async function (err, r, appointments) {
     if (err) return console.error(err);
     console.log("Acuity done");
-    await sheetClient.spreadsheets.values.clear({
-      spreadsheetId: id,
-      range: `A:V`
-    });
-    console.log(`Cleared sheet ${calenderId}`);
+    
     let sessionCountLala = 0
     let sessionCount = 0
     let sessionCountLennox = 0
@@ -300,7 +368,8 @@ async function googleSheetDataTutor(req, res){
       data[1].push(totalSessions)
       data[1].push(totalPay)
     }
-    const response = await updateSheetData(id, "A:W", data)
+    const response = await createNewSheet(id, "A:W", data, appointments[0].calendar)
+    // sheetId, range, data, calendarID
     res.json({status: response.status})
   })
   }
@@ -741,4 +810,4 @@ async function mapleSheetUpdate(){
 
 
 
-module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, appendRowInSheet, updateStudentIds, googleSheetDataTutor, getMapleStudent, mapleSheetUpdate}
+module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, appendRowInSheet, updateStudentIds, googleSheetDataTutor, getMapleStudent, mapleSheetUpdate, createNewSheet}
