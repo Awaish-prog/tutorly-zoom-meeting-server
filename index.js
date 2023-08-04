@@ -14,6 +14,7 @@ const { createWhiteboardData, getBoardsList } = require('./Controllers/WhiteBoar
 const { updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink } = require('./Controllers/WhiteBoardAppScripts.js');
 
 const v8 = require('v8');
+const { createPaper, deleteBitpaper } = require('./Controllers/Bitpapaer');
 
 
 
@@ -33,6 +34,10 @@ app.get("/getUpcomingMeetings/:email/:role/:number", authentication, getUpcoming
 app.post("/getEvent", downloadRecording )
 
 app.post("/createWhiteboardData", authentication, createWhiteboardData )
+
+app.post("/createBitpaper", authentication, createPaper )
+
+app.post("/deleteBitpaper", authentication, deleteBitpaper )
 
 app.post("/getBoardsList", authentication, getBoardsList )
 
@@ -74,11 +79,6 @@ app.get("*", (req, res) => {
 
 
 
-
-
-
-
-
 app.listen("4005", async () => {
   
   //createNotionPageWithEmail("gracebernal@mapleschool.org")
@@ -88,7 +88,8 @@ app.listen("4005", async () => {
   //createNotionPages()
   //updateNotionPages()
   //mapleSheetUpdate()
-  
+
   //createNewSheet()
+  
   console.log("server running");
 })

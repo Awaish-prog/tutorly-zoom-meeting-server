@@ -13,6 +13,10 @@ async function createWhiteboardData(req, res) {
     }
 }
 
+function createBitPaperData(paperName, paperLink, tutorEmail, studentEmail, dateAndTime){
+    axios.post(scriptUrl, {operation: "append", paperData: [paperName, paperLink, tutorEmail, studentEmail, dateAndTime, ""]});
+}
+
 async function updateWhiteboard(paperLink, paperData){
     try {
         const response = await axios.post(scriptUrl, {operation: "updateRow", paperData: { paperLink, paperData }});
@@ -75,4 +79,4 @@ async function getBoardsList(req, res){
     }
 }
 
-module.exports = { createWhiteboardData, updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink, getBoardsList }
+module.exports = { createWhiteboardData, updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink, getBoardsList, createBitPaperData }
