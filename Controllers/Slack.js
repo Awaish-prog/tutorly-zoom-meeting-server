@@ -40,4 +40,9 @@ async function populateConversationStore() {
     }
 }
 
-module.exports = { populateConversationStore }
+function handleSlackMessage(req, res){
+    console.log(req.body);
+    res.status(200).send(req.body.challenge)
+}
+
+module.exports = { populateConversationStore, handleSlackMessage }

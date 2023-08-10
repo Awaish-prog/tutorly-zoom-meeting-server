@@ -15,7 +15,7 @@ const { updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink } =
 
 const v8 = require('v8');
 const { createPaper, deleteBitpaper } = require('./Controllers/Bitpapaer');
-const { populateConversationStore } = require('./Controllers/Slack');
+const { populateConversationStore, handleSlackMessage } = require('./Controllers/Slack');
 
 const { createEventAdapter } = require('@slack/events-api');
 const slackSigningSecret = process.env.SLACK_SIGNING_SECRET;
@@ -36,10 +36,6 @@ slackEvents.on('message', (event) => {
   console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
 });
 
-function handleSlackMessage(req, res){
-  console.log(req);
-  res.status(200).send(req.body.challenge)
-}
 
 app.post("/slackMessage", handleSlackMessage)
 
