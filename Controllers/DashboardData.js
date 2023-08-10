@@ -78,32 +78,32 @@ async function createNewSheet(sheetId, range, data, calendar){
     else{
       await sheetClient.spreadsheets.values.clear({
         spreadsheetId: sheetId,
-        range: calendar + "!A:W"
+        range: calendar + "!A:S"
       });
       console.log(`Cleared sheet ${sheetId}`);
-      const responseWrite = await updateSheetData(sheetId, calendar + "!A:W", data)
+      const responseWrite = await updateSheetData(sheetId, calendar + "!A:S", data)
       console.log(responseWrite.status);
       return responseWrite
     }
     const res = await createNewSheetWithName(sheetId, name)
     
-    const response = await updateSheetData(sheetId, name + "!A:W", sheetData)
+    const response = await updateSheetData(sheetId, name + "!A:S", sheetData)
     await sheetClient.spreadsheets.values.clear({
       spreadsheetId: sheetId,
-      range: calendar + "!A:W"
+      range: calendar + "!A:S"
     });
     console.log(`Cleared sheet ${sheetId}`);
-    const responseWrite = await updateSheetData(sheetId, calendar + "!A:W", data)
+    const responseWrite = await updateSheetData(sheetId, calendar + "!A:S", data)
     console.log(responseWrite.status);
     return responseWrite
   }
   catch(e){
     await sheetClient.spreadsheets.values.clear({
       spreadsheetId: sheetId,
-      range: calendar + "!A:W"
+      range: calendar + "!A:S"
     });
     console.log(`Cleared sheet ${sheetId}`);
-    const responseWrite = await updateSheetData(sheetId, calendar + "!A:W", data)
+    const responseWrite = await updateSheetData(sheetId, calendar + "!A:S", data)
     console.log(responseWrite.status);
     return responseWrite
     console.log(e);
@@ -309,7 +309,7 @@ async function googleSheetDataTutor(req, res){
     await googleSheetDataTutorAll(req, res)
     return
   }
-  const data = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Appointment Price", "Paid?", "Amount Paid Online", "Certificate Code","Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID", "LALA sessions", "Lennox sessions", "Maple Sessions", "Tutoring sessions", "Total", "Total Pay"]]; 
+  const data = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID", "LALA sessions", "Lennox sessions", "Maple Sessions", "Tutoring sessions", "Total", "Total Pay"]]; 
   acuity.request(`appointments?calendarID=${calenderId}&minDate=${startDate}&maxDate=${endDate}&max=5000&direction=ASC`, async function (err, r, appointments) {
     if (err) return console.error(err);
     console.log("Acuity done");
@@ -321,18 +321,18 @@ async function googleSheetDataTutor(req, res){
     for (var i = 0; i < appointments.length; i++) {
       if(appointments[i].labels){
         if(appointments[i].canceled){
-          data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "Yes", appointments[i].id]);
+          data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "Yes", appointments[i].id]);
       }
       else{
-        data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "No", appointments[i].id]);
+        data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].notes, appointments[i].datetimeCreated, appointments[i].labels[0].name, "No", appointments[i].id]);
       }
       }
       else{
         if(appointments[i].canceled){
-          data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "Yes", appointments[i].id]);
+          data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "Yes", appointments[i].id]);
       }
       else{
-        data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].priceSold, appointments[i].paid, appointments[i].price, appointments[i].certificate, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "No", appointments[i].id]);
+        data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "No", appointments[i].id]);
       }
       }
       if(appointments[i].type.toLowerCase().includes("lala")){
@@ -368,7 +368,7 @@ async function googleSheetDataTutor(req, res){
       data[1].push(totalSessions)
       data[1].push(totalPay)
     }
-    const response = await createNewSheet(id, "A:W", data, appointments[0].calendar)
+    const response = await createNewSheet(id, "A:S", data, appointments[0].calendar)
     // sheetId, range, data, calendarID
     res.json({status: response.status})
   })

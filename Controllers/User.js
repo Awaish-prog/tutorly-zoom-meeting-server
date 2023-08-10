@@ -49,4 +49,70 @@ async function login(req, res){
 
 }
 
-module.exports = { login, hashString, acuity }
+function getPayroll(req, res){
+  const tutorEmail = req.body.email.toLowerCase()
+  const startDate = req.body.from
+  const endDate = req.body.to
+ 
+  acuity.request(`calendars`, function (err, r1, calendars) {
+    if (err) return console.error(err);
+    
+    for(let i = 0; i < calendars.length; i++){
+      if(calendars[i].email.includes(tutorEmail)){
+        const calenderId =  calendars[i].id
+        
+        acuity.request(`appointments?calendarID=${calenderId}&minDate=${startDate}&maxDate=${endDate}&max=5000&direction=ASC`, async function (err, r, appointments) {
+          // let sessionCountLala = 0
+          // let sessionCount = 0
+          // let sessionCountLennox = 0
+          // let sessionCountMaple = 0
+
+          // for (var i = 0; i < appointments.length; i++) {
+          //   if(appointments[i].type.toLowerCase().includes("lala")){
+          //     sessionCountLala += Number(appointments[i].duration)
+          //   }
+          //   else if(appointments[i].type.toLowerCase().includes("lennox") || appointments[i].type.toLowerCase().includes("minute check")){
+          //     sessionCountLennox += Number(appointments[i].duration)
+          //   }
+          //   else if(appointments[i].type.toLowerCase().includes("maple tutoring")){
+          //     sessionCountMaple += Number(appointments[i].duration)
+          //   }
+          //   else{
+          //     sessionCount += Number(appointments[i].duration)
+          //   }
+          // }
+
+          // const totalSessions = (sessionCountLala / 50) + (sessionCount / 60) + (sessionCountLennox / 60) + (sessionCountMaple / 35)
+
+          // let totalPay = totalSessions * 25
+
+          res.json({status: 200, appointments})
+        })
+      }
+    }
+
+    return "Not found"
+  })
+}
+
+function markStatus(req, res){
+  const meetingId = req.body.meetingId
+  const labels = req.body.labels
+  var options = {
+    method: 'PUT',
+    body: {
+      labels: labels
+    }
+  };
+
+  var appointmentID = meetingId;
+  acuity.request('/appointments/'+appointmentID, options, function (err, r, appointment) {
+    if (err){
+      res.json({status: 401})
+      return
+    }
+    res.json({status: 201})
+  });
+}
+
+module.exports = { login, hashString, acuity, getPayroll, markStatus }
