@@ -15,7 +15,11 @@ const { updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink } =
 
 const v8 = require('v8');
 const { createPaper, deleteBitpaper } = require('./Controllers/Bitpapaer');
+const { populateConversationStore } = require('./Controllers/Slack');
 
+const { createEventAdapter } = require('@slack/events-api');
+const slackSigningSecret = process.env.SLACK_SIGNING_SECRET;
+const slackEvents = createEventAdapter(slackSigningSecret);
 
 
 
@@ -26,6 +30,11 @@ app.use(express.static(path.join(__dirname, 'build')))
 app.use(express.static(path.join(__dirname, 'tutorly-sheet-update-build')))
 app.use(express.static(path.join(__dirname, 'white-board')))
 
+app.use('/slackEvent', slackEvents.requestListener());
+
+slackEvents.on('message', (event) => {
+  console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
+});
 
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
 
@@ -95,6 +104,8 @@ app.listen("4005", async () => {
 
   //createNewSheet()
   //markStatus()
+
+  //populateConversationStore()
 
   console.log("server running");
 })
