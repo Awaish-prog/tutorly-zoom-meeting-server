@@ -36,6 +36,13 @@ slackEvents.on('message', (event) => {
   console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
 });
 
+function handleSlackMessage(req, res){
+  console.log(req);
+  res.status(200).send(req.body.challenge)
+}
+
+app.post("slackMessage", handleSlackMessage)
+
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
 
 app.get("/getUpcomingMeetings/:email/:role/:number", authentication, getUpcomingMeetings)
