@@ -41,7 +41,7 @@ function handleSlackMessage(req, res){
   res.status(200).send(req.body.challenge)
 }
 
-app.post("slackMessage", handleSlackMessage)
+app.post("/slackMessage", handleSlackMessage)
 
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
 
