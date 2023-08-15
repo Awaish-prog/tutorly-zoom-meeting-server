@@ -15,11 +15,8 @@ const { updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink } =
 
 const v8 = require('v8');
 const { createPaper, deleteBitpaper } = require('./Controllers/Bitpapaer');
-const { populateConversationStore, handleSlackMessage } = require('./Controllers/Slack');
+const { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getBotUserName } = require('./Controllers/Slack');
 
-const { createEventAdapter } = require('@slack/events-api');
-const slackSigningSecret = process.env.SLACK_SIGNING_SECRET;
-const slackEvents = createEventAdapter(slackSigningSecret);
 
 
 
@@ -29,12 +26,6 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'build')))
 app.use(express.static(path.join(__dirname, 'tutorly-sheet-update-build')))
 app.use(express.static(path.join(__dirname, 'white-board')))
-
-app.use('/slackEvent', slackEvents.requestListener());
-
-slackEvents.on('message', (event) => {
-  console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
-});
 
 
 app.post("/slackMessage", handleSlackMessage)
@@ -71,6 +62,12 @@ app.get("/getSheetData", googleSheetTest)
 
 app.get("/getSheetDataTutor/:tutor/:driveId/:from/:to", googleSheetDataTutor)
 
+app.get("/getChannelsList/:email", authentication, getChannels)
+
+app.get("/getChat/:channel", authentication, getChat)
+
+app.get("/getReplies/:channel/:ts", authentication, getReplies)
+
 app.post("/getPayroll", authentication, getPayroll)
 
 app.get("/updateTutorSheets", (req, res) => {
@@ -87,10 +84,36 @@ app.get("/updateMapleSheets", (req, res) => {
 })
 
 
+let outer_socket = null
+
+app.get("/test", (req, res) => {
+  outer_socket.emit("request")
+  res.send("request")
+})
+
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build/index.html"))
 })
+
+
+const io = require("socket.io")(8080, {
+  cors: {
+      origin: "*"
+  }
+});
+
+
+
+io.on("connection", (socket) => {
+  outer_socket = socket
+  console.log("connected");
+
+  socket.on("postMessage", (channel, userName, text, showThread, ts) => {
+     postMessage(channel, userName, text, showThread, ts)
+  })
+})
+
 
 
 
@@ -107,8 +130,9 @@ app.listen("4005", async () => {
 
   //createNewSheet()
   //markStatus()
-
+  //initializeSlackIds()
   //populateConversationStore()
+  
 
   console.log("server running");
 })
