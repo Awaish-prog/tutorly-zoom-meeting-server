@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'white-board')))
 
 
 app.post("/slackMessage", (req, res) => {
-  console.log(outer_socket);
+  outer_socket.emit("sendMessage", req.body.event)
 })
 
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
