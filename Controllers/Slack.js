@@ -102,7 +102,11 @@ async function populateConversationStore() {
 
     //   console.log("search over", result.response_metadata.next_cursor);
 
-    
+    const channelInfoResponse = await client.conversations.info({
+        channel: "C02S4NANDV1"
+    });
+
+    console.log(channelInfoResponse);
 
     // console.log(result);
 
