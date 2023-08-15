@@ -82,6 +82,10 @@ async function initializeSlackIds(){
     }
 }
 
+function getUserName(id){
+    return slackIds[id]
+}
+
 async function populateConversationStore() {
     try {
       // Call the conversations.list method using the WebClient
@@ -260,4 +264,4 @@ async function getChannels(req, res){
     
 }
 
-module.exports = { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage }
+module.exports = { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName }
