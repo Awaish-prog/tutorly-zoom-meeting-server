@@ -1,5 +1,6 @@
 const { WebClient } = require('@slack/web-api');
 
+
 // Read a token from the environment variables
 const token = process.env.SLACK_TOKEN;
 
@@ -64,73 +65,10 @@ const slackMembers = {
 
 const slackIds = { }
 
-const testObj2 = {
-    token: 'XOUFCnaCdiIlcIc6wOphSoWZ',
-    team_id: 'T01EL1JHQLE',
-    context_team_id: 'T01EL1JHQLE',
-    context_enterprise_id: null,
-    api_app_id: 'A05M5CKUMTM',
-    event: {
-      client_msg_id: '202a28d4-3c8b-4b3e-b290-9ee52e2ebe08',
-      type: 'message',
-      text: 'event new',
-      user: 'U02S69ZB9NG',
-      ts: '1692063535.989299',
-      blocks: [ [Object] ],
-      team: 'T01EL1JHQLE',
-      channel: 'C02S4NANDV1',
-      event_ts: '1692063535.989299',
-      channel_type: 'group'
-    },
-    type: 'event_callback',
-    event_id: 'Ev05MQ5QRSG5',
-    event_time: 1692063535,
-    authorizations: [
-      {
-        enterprise_id: null,
-        team_id: 'T01EL1JHQLE',
-        user_id: 'U02S69ZB9NG',
-        is_bot: false,
-        is_enterprise_install: false
-      }
-    ],
-    is_ext_shared_channel: false,
-    event_context: '4-eyJldCI6Im1lc3NhZ2UiLCJ0aWQiOiJUMDFFTDFKSFFMRSIsImFpZCI6IkEwNU01Q0tVTVRNIiwiY2lkIjoiQzAyUzROQU5EVjEifQ'
-  }
+
   
 
-const testObj1 = {
-    token: 'XOUFCnaCdiIlcIc6wOphSoWZ',
-    team_id: 'T01EL1JHQLE',
-    context_team_id: 'T01EL1JHQLE',
-    context_enterprise_id: null,
-    api_app_id: 'A05M5CKUMTM',
-    event: {
-      client_msg_id: '43c13557-6a92-47a6-9d60-8142f1a5f3b8',
-      type: 'message',
-      text: 'new test',
-      user: 'U02S69ZB9NG',
-      ts: '1692062933.215709',
-      team: 'T01EL1JHQLE',
-      channel: 'D02S42SU919',
-      event_ts: '1692062933.215709',
-      channel_type: 'im'
-    },
-    type: 'event_callback',
-    event_id: 'Ev05MQ506ZFX',
-    event_time: 1692062933,
-    authorizations: [
-      {
-        enterprise_id: null,
-        team_id: 'T01EL1JHQLE',
-        user_id: 'U02S69ZB9NG',
-        is_bot: false,
-        is_enterprise_install: false
-      }
-    ],
-    is_ext_shared_channel: false,
-    event_context: '4-eyJldCI6Im1lc3NhZ2UiLCJ0aWQiOiJUMDFFTDFKSFFMRSIsImFpZCI6IkEwNU01Q0tVTVRNIiwiY2lkIjoiRDAyUzQyU1U5MTkifQ'
-  }
+
   
 
 async function initializeSlackIds(){
@@ -218,13 +156,15 @@ async function populateConversationStore() {
 }
 
 function handleSlackMessage(req, res){
+    //outer_socket.emit()
 
-    console.log(req.body);
+    
+    //console.log(req.body);
    // res.status(200).send(req.body.challenge)
 }
 
 async function postMessage(channel, userName, text, showThread, ts){
-    //console.log(channel, userName, text, showThread, ts);
+
     if(showThread){
         const result = await client.chat.postMessage({
             channel: channel,
