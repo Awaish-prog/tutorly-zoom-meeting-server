@@ -89,24 +89,23 @@ function getUserName(id){
 async function populateConversationStore() {
     try {
       // Call the conversations.list method using the WebClient
-    //   const result = await client.conversations.list({types: "public_channel, private_channel, mpim, im", cursor: "dGVhbTpDMDJMWUVEMTZBVQ=="});
-    //     // C04JF7ZPP7H
-    //   const channels = result.channels
-    //     // console.log(result.response_metadata);
-    //     // console.log(result.channels.length);
-    //   for(let i = 0; i < channels.length; i++){
-    //     if(channels[i].name.toLowerCase().includes("awaish")){
-    //         console.log(channels[i].name, channels[i].id);
-    //     }
-    //   }
+      const result = await client.conversations.list({types: "public_channel, private_channel, mpim, im", limit: 999});
+        // C04JF7ZPP7H
+      const channels = result.channels
+        // console.log(result.response_metadata);
+        // console.log(result.channels.length);
+      for(let i = 0; i < channels.length; i++){
+       
+        console.log(channels[i]);
+      }
 
     //   console.log("search over", result.response_metadata.next_cursor);
 
-    const channelInfoResponse = await client.conversations.info({
-        channel: "C02S4NANDV1"
-    });
+    // const channelInfoResponse = await client.conversations.info({
+    //     channel: "C03L9U5GT51"
+    // });
 
-    console.log(channelInfoResponse);
+    // console.log(channelInfoResponse.channel.last_read, new Date(channelInfoResponse.channel.last_read * 1000).toLocaleDateString(), new Date(channelInfoResponse.channel.last_read * 1000).toLocaleTimeString());
 
     // console.log(result);
 
@@ -157,6 +156,8 @@ async function populateConversationStore() {
     //         console.log(channels[i]);
     //     }
     // }
+
+    
     }
     catch (error) {
       console.error(error);
