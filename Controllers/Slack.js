@@ -65,6 +65,8 @@ const slackMembers = {
 
 const slackIds = { }
 
+const usersAndReads = {  }
+
 
   
 
@@ -78,6 +80,7 @@ async function initializeSlackIds(){
     for(let i = 0; i < members.length; i++){
         if(members[i].id && members[i].real_name){
             slackIds[members[i].id] = members[i].real_name
+            usersAndReads[members[i].id] = { }
         }
     }
 }
@@ -89,15 +92,32 @@ function getUserName(id){
 async function populateConversationStore() {
     try {
       // Call the conversations.list method using the WebClient
-      const result = await client.conversations.list({types: "public_channel, private_channel, mpim, im", limit: 999});
-        // C04JF7ZPP7H
-      const channels = result.channels
-        // console.log(result.response_metadata);
-        // console.log(result.channels.length);
-      for(let i = 0; i < channels.length; i++){
+    //   const result = await client.conversations.list({types: "public_channel, private_channel, mpim, im", limit: 999});
+    //     // C04JF7ZPP7H
+    //   const channels = result.channels
+    //     // console.log(result.response_metadata);
+    //     // console.log(result.channels.length);
+    //   for(let i = 0; i < channels.length; i++){
        
-        console.log(channels[i]);
-      }
+    //     const con = await client.conversations.info({channel: channels[i].id})
+
+    //     const result = await client.conversations.history({
+    //         channel: channels[i].id,
+    //         limit: 1
+    //     });
+
+    //     if(con.channel.is_member && result.messages && result.messages.length){
+    //         usersAndReads["U02S69ZB9NG"].push([channels[i].id, con.channel.last_read < result.messages[0].ts])
+    //         console.log(channels[i].id, con.channel.last_read < result.messages[0].ts);
+    //     }
+    //     else{
+    //         console.log("False");
+    //     }
+    //   }
+
+    //   console.log(usersAndReads);
+
+
 
     //   console.log("search over", result.response_metadata.next_cursor);
 
@@ -110,9 +130,11 @@ async function populateConversationStore() {
     // console.log(result);
 
     // const result = await client.conversations.history({
-    //     channel: "C02KBLJQDNZ",
-    //     limit: 10
+    //     channel: "C02S4NANDV1",
+    //     limit: 1
     //   });
+
+    //   console.log(result);
 
     // const res = await client.users.list()
     // const members = res.members
