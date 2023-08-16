@@ -5,7 +5,7 @@ const { WebClient } = require('@slack/web-api');
 const token = process.env.SLACK_TOKEN;
 
 // Initialize
-const client = new WebClient();
+const client = new WebClient(token);
 
 const slackMembers = {
     "aaron@tutorly.com" : "U02695VFE72",
