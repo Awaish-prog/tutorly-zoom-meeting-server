@@ -5,7 +5,7 @@ const { WebClient } = require('@slack/web-api');
 const token = process.env.SLACK_TOKEN;
 
 // Initialize
-const client = new WebClient(token);
+const client = new WebClient();
 
 const slackMembers = {
     "aaron@tutorly.com" : "U02695VFE72",
@@ -72,14 +72,14 @@ const usersAndReads = {  }
 async function updateUsersAndReads(eventData){
     try{
         if(eventData.event){
-            const mem = await client.conversations.members({channel: eventData.event.channel})
+            const mem = await client.conversations.members({channel: eventData.event.channel, token: process.env.ROSE_TOKEN})
             const members = mem.members
             //for(let i = 0; i < members.length; i++){
                 const con = await client.conversations.info({channel: eventData.event.channel, token: process.env.ROSE_TOKEN})
 
                 console.log(con.channel.is_member, con.channel.last_read);
 
-                const his = await client.conversations.history({channel: eventData.event.channel, limit: 1})
+                const his = await client.conversations.history({channel: eventData.event.channel, limit: 1, token: process.env.ROSE_TOKEN})
 
                 console.log(his.messages);
             //}
