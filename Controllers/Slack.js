@@ -78,6 +78,10 @@ async function updateUsersAndReads(eventData){
                 const con = await client.conversations.info({channel: eventData.event.channel})
 
                 console.log(con.channel.is_member, con.channel.last_read);
+
+                const his = await client.conversations.history({channel: eventData.event.channel, limit: 1})
+
+                console.log(his.messages);
             //}
         }
     }
