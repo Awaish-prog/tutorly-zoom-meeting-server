@@ -70,9 +70,19 @@ const usersAndReads = {  }
 
   
 async function updateUsersAndReads(eventData){
-    if(eventData.event){
-        const mem = await client.conversations.members({channel: eventData.event.channel})
-        console.log(mem);
+    try{
+        if(eventData.event){
+            const mem = await client.conversations.members({channel: eventData.event.channel})
+            const members = mem.members
+            //for(let i = 0; i < members.length; i++){
+                const con = await client.conversations.info({channel: eventData.event.channel})
+
+                console.log(con.channel.is_member, con.channel.last_read);
+            //}
+        }
+    }
+    catch(e){
+        console.log("Notification error");
     }
 }
 
