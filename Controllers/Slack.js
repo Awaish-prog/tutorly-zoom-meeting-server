@@ -75,7 +75,7 @@ async function updateUsersAndReads(eventData){
             const mem = await client.conversations.members({channel: eventData.event.channel})
             const members = mem.members
             //for(let i = 0; i < members.length; i++){
-                const con = await client.conversations.info({channel: eventData.event.channel})
+                const con = await client.conversations.info({channel: eventData.event.channel, token: process.env.ROSE_TOKEN})
 
                 console.log(con.channel.is_member, con.channel.last_read);
 
