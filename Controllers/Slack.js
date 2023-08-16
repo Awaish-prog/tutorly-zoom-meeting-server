@@ -72,14 +72,15 @@ const usersAndReads = {  }
 async function updateUsersAndReads(eventData){
     try{
         if(eventData.event){
-            const mem = await client.conversations.members({channel: eventData.event.channel, token: process.env.ROSE_TOKEN})
+            const client = new WebClient(process.env.ROSE_TOKEN);
+            const mem = await client.conversations.members({channel: eventData.event.channel})
             const members = mem.members
             //for(let i = 0; i < members.length; i++){
-                const con = await client.conversations.info({channel: eventData.event.channel, token: process.env.ROSE_TOKEN})
+                const con = await client.conversations.info({channel: eventData.event.channel})
 
                 console.log(con.channel.is_member, con.channel.last_read);
 
-                const his = await client.conversations.history({channel: eventData.event.channel, limit: 1, token: process.env.ROSE_TOKEN})
+                const his = await client.conversations.history({channel: eventData.event.channel, limit: 1})
 
                 console.log(his.messages);
             //}
