@@ -69,7 +69,12 @@ const usersAndReads = {  }
 
 
   
-
+async function updateUsersAndReads(eventData){
+    if(eventData.event){
+        const mem = await client.conversations.members({channel: eventData.event.channel})
+        console.log(mem);
+    }
+}
 
   
 
@@ -291,4 +296,4 @@ async function getChannels(req, res){
     
 }
 
-module.exports = { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName }
+module.exports = { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads }
