@@ -87,7 +87,7 @@ async function updateUsersAndReads(eventData){
             const members = mem.members
             for(let i = 0; i < members.length; i++){
                 if(!slackTokens[members[i]]){
-                    break
+                    continue
                 }
                 const client = new WebClient(slackTokens[members[i]]);
                 const con = await client.conversations.info({channel: eventData.event.channel})
