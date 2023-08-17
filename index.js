@@ -15,7 +15,7 @@ const { updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink } =
 
 const v8 = require('v8');
 const { createPaper, deleteBitpaper } = require('./Controllers/Bitpapaer');
-const { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getBotUserName, getUserName, updateUsersAndReads } = require('./Controllers/Slack');
+const { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getBotUserName, getUserName, updateUsersAndReads, getNotificationFromData, getNotification } = require('./Controllers/Slack');
 
 
 
@@ -73,6 +73,8 @@ app.get("/getChat/:channel", authentication, getChat)
 app.get("/getReplies/:channel/:ts", authentication, getReplies)
 
 app.post("/getPayroll", authentication, getPayroll)
+
+app.get("/getNotification/:email", getNotification)
 
 app.get("/updateTutorSheets", (req, res) => {
   res.sendFile(path.join(__dirname, "tutorly-sheet-update-build/index.html"))
@@ -133,7 +135,7 @@ app.listen("4005", async () => {
 
   //createNewSheet()
   //markStatus()
-  initializeSlackIds()
+  //initializeSlackIds()
   //populateConversationStore()
 
   console.log("server running");

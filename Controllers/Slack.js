@@ -8,59 +8,59 @@ const token = process.env.AWAISH_TOKEN;
 const client = new WebClient(token);
 
 const slackMembers = {
-    "aaron@tutorly.com" : [ "U02695VFE72" ],
-    "aeffia@tutorly.com" : [ "U01PEGST75G" ],
-    "amelya@tutorly.com" : [ "U02JW127J49" ],
-    "antonia@tutorly.com" : [ "U050W1526SC" ],
-    "awaish@tutorly.com" : [ "U02S69ZB9NG", process.env.AWAISH_TOKEN ],
-    "cameron@tutorly.com" : [ "U03L8QXLUTE" ],
-    "charlie@tutorly.com" : [ "U05ALJ3J7E2" ],
-    "craig@tutorly.com" : [ "U03L8QX1WUC" ],
-    "darshan@tutorly.com" : [ "U044Q1KM815" ],
-    "deepak@tutorly.com" : [ "U02NYFCHE0J" ],
-    "dennis@tutorly.com" : [ "U03SSC9HN5Q" ],
-    "dhruva@tutorly.com" : [ "U023AHSA27P" ],
-    "ej@tutorly.com" : [ "U040SAZ7C1Z" ],
-    "eleni@tutorly.com" : [ "U04V5PZ1G8P" ],
-    "frank@tutorly.com" : [ "U0267LVUQAE" ],
-    "hannah@tutorly.com" : [ "U05A4ES0VSN", process.env.HANNAH_TOKEN ],
-    "hiba@tutorly.com" : [ "U01HPQJBS7L" ],
-    "jacqueline@tutorly.com" : [ "U04B5P02Z1S" ],
-    "jake@tutorly.com" : [ "U03M042SFEU" ],
-    "jarett@tutorly.com" : [ "U03L43L0B61" ],
-    "kaitlyn@tutorly.com" : [ "U04B36CEKH9" ],
-    "kate@tutorly.com" : [ "U05AH3WNAEM" ],
-    "krystal@tutorly.com" : [ "U03L8QX5G04" ],
-    "ky@tutorly.com" : [ "U026AB43WHW" ],
-    "laine@tutorly.com" : [ "U042L4KGRBR" ],
-    "lydia@tutorly.com" : [ "U01QFQ95VG8" ],
-    "mahrosh@tutorly.com" : [ "U03LK378HDF" ],
-    "marcus@tutorly.com" : [ "U05D06Y3R3J" ],
-    "mark@tutorly.com" : [ "U025E2KU85R" ],
-    "meredith@tutorly.com" : [ "U03L3FGL2TX" ],
-    "mira@tutorly.com" : [ "U049CKENHJN" ],
-    "narinder@tutorly.com" : [ "U01HVVD4FEY" ],
-    "nathan@tutorly.com" : [ "U0430M3RWD8" ],
-    "nell@tutorly.com" : [ "U042L4KJN07" ],
-    "nikhita@tutorly.com" : [ "U04AJKL2UNQ" ],
-    "noreen@tutorly.com" : [ "U05AH3WR0L9" ],
-    "oleksiy@tutorly.com" : [ "U059PU82LHM" ],
-    "razaaq@tutorly.com" : [ "U04NA0SC90W" ],
-    "richa@tutorly.com" : [ "U038ZC22NCV" ],
-    "rose@tutorly.com" : [ "U057MKTGVQW", process.env.ROSE_TOKEN ],
-    "ryan@tutorly.com" : [ "U025D46TVNF" ],
-    "shaan@tutorly.com" : [ "U05A4AYUY75" ],
-    "shannon@tutorly.com" : [ "U02B4QK8MBK" ],
-    "shanpeartree@tutorly.com" : [ "U0332BS36Q3" ],
-    "sharon@tutorly.com" : [ "U02NAGX0JQY" ],
-    "sivagami@tutorly.com" : [ "U01HVVD43KN" ],
-    "sivani@tutorly.com" : [ "U01F5CZ437B" ],
-    "sravan@tutorly.com" : [ "U01J2DPS8F3" ],
-    "susan@tutorly.com" : [ "U042L4KMEUF" ],
-    "tejas@tutorly.com" : [ "U03L43L44AZ" ],
-    "vikram@tutorly.com" : [ "U01F5C5VBLH" ],
-    "william@tutorly.com" : [ "U04B09J55PT" ],
-    "zibaa@tutorly.com" : [ "U043DA4PLTT" ]
+    "aaron@tutorly.com" : "U02695VFE72",
+    "aeffia@tutorly.com" : "U01PEGST75G",
+    "amelya@tutorly.com" : "U02JW127J49",
+    "antonia@tutorly.com" : "U050W1526SC",
+    "awaish@tutorly.com" : "U02S69ZB9NG",
+    "cameron@tutorly.com" : "U03L8QXLUTE",
+    "charlie@tutorly.com" : "U05ALJ3J7E2",
+    "craig@tutorly.com" : "U03L8QX1WUC",
+    "darshan@tutorly.com" : "U044Q1KM815",
+    "deepak@tutorly.com" : "U02NYFCHE0J",
+    "dennis@tutorly.com" : "U03SSC9HN5Q",
+    "dhruva@tutorly.com" : "U023AHSA27P",
+    "ej@tutorly.com" : "U040SAZ7C1Z",
+    "eleni@tutorly.com" : "U04V5PZ1G8P",
+    "frank@tutorly.com" : "U0267LVUQAE",
+    "hannah@tutorly.com" : "U05A4ES0VSN",
+    "hiba@tutorly.com" : "U01HPQJBS7L",
+    "jacqueline@tutorly.com" : "U04B5P02Z1S",
+    "jake@tutorly.com" : "U03M042SFEU",
+    "jarett@tutorly.com" : "U03L43L0B61",
+    "kaitlyn@tutorly.com" : "U04B36CEKH9",
+    "kate@tutorly.com" : "U05AH3WNAEM",
+    "krystal@tutorly.com" : "U03L8QX5G04",
+    "ky@tutorly.com" : "U026AB43WHW",
+    "laine@tutorly.com" : "U042L4KGRBR",
+    "lydia@tutorly.com" : "U01QFQ95VG8",
+    "mahrosh@tutorly.com" : "U03LK378HDF",
+    "marcus@tutorly.com" : "U05D06Y3R3J",
+    "mark@tutorly.com" : "U025E2KU85R",
+    "meredith@tutorly.com" : "U03L3FGL2TX",
+    "mira@tutorly.com" : "U049CKENHJN",
+    "narinder@tutorly.com" : "U01HVVD4FEY",
+    "nathan@tutorly.com" : "U0430M3RWD8",
+    "nell@tutorly.com" : "U042L4KJN07",
+    "nikhita@tutorly.com" : "U04AJKL2UNQ",
+    "noreen@tutorly.com" : "U05AH3WR0L9",
+    "oleksiy@tutorly.com" : "U059PU82LHM",
+    "razaaq@tutorly.com" : "U04NA0SC90W",
+    "richa@tutorly.com" : "U038ZC22NCV",
+    "rose@tutorly.com" : "U057MKTGVQW",
+    "ryan@tutorly.com" : "U025D46TVNF",
+    "shaan@tutorly.com" : "U05A4AYUY75",
+    "shannon@tutorly.com" : "U02B4QK8MBK",
+    "shanpeartree@tutorly.com" : "U0332BS36Q3",
+    "sharon@tutorly.com" : "U02NAGX0JQY",
+    "sivagami@tutorly.com" : "U01HVVD43KN",
+    "sivani@tutorly.com" : "U01F5CZ437B",
+    "sravan@tutorly.com" : "U01J2DPS8F3",
+    "susan@tutorly.com" : "U042L4KMEUF",
+    "tejas@tutorly.com" : "U03L43L44AZ",
+    "vikram@tutorly.com" : "U01F5C5VBLH",
+    "william@tutorly.com" : "U04B09J55PT",
+    "zibaa@tutorly.com" : "U043DA4PLTT"
 }
 
 const slackIds = { }
@@ -73,6 +73,34 @@ const slackTokens = {
     U057MKTGVQW: process.env.ROSE_TOKEN
 }
 
+function getNotificationFromData(userId){
+    if(!userId){
+        return false
+    }
+
+    const channelData = usersAndReads[userId]
+
+    if(!channelData){
+        return false
+    }
+
+    const channelKeys = Object.keys(channelData)
+
+    for(let i = 0; i < channelKeys.length; i++){
+        if(channelData[channelKeys[i]].lastRead < channelData[channelKeys[i]].latestMessage){
+            return true
+        }
+    }
+    return false
+}
+
+function getNotification(req, res){
+    const email = req.params.email.toLowerCase()
+    const userId = slackMembers[email]
+
+    res.json({ notify: getNotificationFromData(userId) })
+
+}
   
 async function updateUsersAndReads(eventData){
     try{
@@ -317,7 +345,7 @@ async function getChannels(req, res){
     const email = req.params.email
 
     try{
-        const response = await client.users.conversations({user: slackMembers[email][0], types: "public_channel, private_channel, mpim, im", limit: 999})
+        const response = await client.users.conversations({user: slackMembers[email], types: "public_channel, private_channel, mpim, im", limit: 999})
 
         const channels = response.channels
 
@@ -329,13 +357,13 @@ async function getChannels(req, res){
                     id: channels[i].id,
                     name: channels[i].name,
                     private: channels[i].is_private,
-                    read: (usersAndReads[slackMembers[email][0]] && usersAndReads[slackMembers[email][0]][channels[i].id]) ? usersAndReads[slackMembers[email][0]][channels[i].id].lastRead < usersAndReads[slackMembers[email][0]][channels[i].id].latestMessage : false
+                    read: (usersAndReads[slackMembers[email]] && usersAndReads[slackMembers[email]][channels[i].id]) ? usersAndReads[slackMembers[email]][channels[i].id].lastRead < usersAndReads[slackMembers[email]][channels[i].id].latestMessage : false
                 })
             }
             
         }
 
-        res.json({status: 200, channelsList, userId: slackMembers[email][0], userName: slackIds[slackMembers[email][0]]})
+        res.json({status: 200, channelsList, userId: slackMembers[email], userName: slackIds[slackMembers[email]]})
     }
     catch(e){
         res.json({status: 404})
@@ -344,4 +372,4 @@ async function getChannels(req, res){
     
 }
 
-module.exports = { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads }
+module.exports = { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification }
