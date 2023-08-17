@@ -108,15 +108,15 @@ async function updateUsersAndReads(eventData){
             if(!slackTokens[eventData.event.user]){
                 return
             }
-
+            console.log(eventData.event);
             if(usersAndReads[eventData.event.user] && usersAndReads[eventData.event.user][eventData.event.channel] && usersAndReads[eventData.event.user][eventData.event.channel].latestMessage === eventData.event.ts){
                 return
             }
-            
+
             const client = new WebClient(slackTokens[eventData.event.user]);
             const mem = await client.conversations.members({channel: eventData.event.channel})
             const members = mem.members
-            console.log(usersAndReads);
+            
             for(let i = 0; i < members.length; i++){
                 if(!slackTokens[members[i]]){
                     continue
@@ -128,11 +128,11 @@ async function updateUsersAndReads(eventData){
                     continue
                 }
 
-                console.log(con.channel.is_member, con.channel.last_read);
+            
 
                 const his = await client.conversations.history({channel: eventData.event.channel, limit: 1})
 
-                console.log(his.messages);
+        
                 if(his.messages && his.messages.length){
                     const channel = eventData.event.channel
                     if(!usersAndReads.hasOwnProperty(members[i])){
@@ -144,7 +144,7 @@ async function updateUsersAndReads(eventData){
                     }
                 }
             }
-            console.log(usersAndReads);
+            
         }
             
     }
