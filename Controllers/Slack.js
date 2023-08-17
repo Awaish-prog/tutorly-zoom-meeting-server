@@ -65,9 +65,7 @@ const slackMembers = {
 
 const slackIds = { }
 
-const usersAndReads = { U02S69ZB9NG: {
-    C02S4NANDV1: true
-} }
+const usersAndReads = {  }
 
 const slackTokens = {
     U02S69ZB9NG: process.env.AWAISH_TOKEN,
@@ -102,8 +100,8 @@ async function updateUsersAndReads(eventData){
 
                 console.log(his.messages);
                 if(his.messages && his.messages.length){
+                    const channel = eventData.event.channel
                     if(!usersAndReads.hasOwnProperty(members[i])){
-                        const channel = eventData.event.channel
                         usersAndReads[members[i]] = { }
                         usersAndReads[members[i]][channel] = con.channel.last_read >= his.messages[0].ts
                     }
