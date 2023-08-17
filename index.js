@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'white-board')))
 
 app.post("/slackMessage", (req, res) => {
   // req.body.event.userName = getUserName(req.body.event.user)
-   //updateUsersAndReads(req.body);
+  updateUsersAndReads(req.body);
   // outer_socket.emit("sendMessage", req.body.event)
 })
 
@@ -101,22 +101,22 @@ app.get("*", (req, res) => {
 })
 
 
-// const io = require("socket.io")(8080, {
-//   cors: {
-//       origin: "*"
-//   }
-// });
+const io = require("socket.io")(8080, {
+  cors: {
+      origin: "*"
+  }
+});
 
 
 
-// io.on("connection", (socket) => {
-//   outer_socket = socket
-//   console.log("connected");
+io.on("connection", (socket) => {
+  outer_socket = socket
+  console.log("connected");
 
-//   socket.on("postMessage", (channel, userName, text, showThread, ts) => {
-//      postMessage(channel, userName, text, showThread, ts)
-//   })
-// })
+  socket.on("postMessage", (channel, userName, text, showThread, ts) => {
+     postMessage(channel, userName, text, showThread, ts)
+  })
+})
 
 
 
@@ -133,7 +133,7 @@ app.listen("4005", async () => {
 
   //createNewSheet()
   //markStatus()
-  //initializeSlackIds()
+  initializeSlackIds()
   //populateConversationStore()
 
   console.log("server running");
