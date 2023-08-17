@@ -319,7 +319,7 @@ async function getChat(req, res){
             text: messages[i].text,
             ts: messages[i].ts,
             replyCount: messages[i].reply_count ? messages[i].reply_count : 0,
-            read: con.channel.is_member && con.channel.last_read >= messages[i].ts ? true : false
+            read: con.channel.is_member && usersAndReads[userId] && usersAndReads[userId][channel] && usersAndReads[userId][channel].lastRead && usersAndReads[userId][channel].latestMessage && usersAndReads[userId][channel].lastRead < usersAndReads[userId][channel].latestMessage
         })
     }
 
