@@ -294,6 +294,13 @@ async function postMessage(channel, userName, text, showThread, ts){
 async function getChat(req, res){
 
     const channel = req.params.channel
+    const email = req.headers.email
+
+    const userId = slackMembers[email]
+
+    if(userId && usersAndReads[userId] && usersAndReads[userId][channel]){
+        usersAndReads[userId][channel].lastRead = usersAndReads[userId][channel].latestMessage
+    }
     
     const result = await client.conversations.history({
         channel: channel,
