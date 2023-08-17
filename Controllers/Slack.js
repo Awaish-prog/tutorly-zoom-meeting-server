@@ -69,25 +69,37 @@ const usersAndReads = { U02S69ZB9NG: {
     C02S4NANDV1: true
 } }
 
+const slackTokens = {
+    U02S69ZB9NG: process.env.AWAISH_TOKEN,
+    U05A4ES0VSN: process.env.HANNAH_TOKEN,
+    U057MKTGVQW: process.env.ROSE_TOKEN
+}
 
   
 async function updateUsersAndReads(eventData){
     try{
         if(eventData.event){
-            // const client = new WebClient(process.env.ROSE_TOKEN);
-            // const mem = await client.conversations.members({channel: eventData.event.channel})
-            // const members = mem.members
-            // //for(let i = 0; i < members.length; i++){
-            //     const con = await client.conversations.info({channel: eventData.event.channel})
+            if(!slackTokens[eventData.event.user]){
+                return
+            }
+            const client = new WebClient(eventData.event.user);
+            const mem = await client.conversations.members({channel: eventData.event.channel})
+            const members = mem.members
+            for(let i = 0; i < members.length; i++){
+                if(!slackTokens[members[i]]){
+                    break
+                }
+                const client = new WebClient(slackTokens[members[i]]);
+                const con = await client.conversations.info({channel: eventData.event.channel})
 
-            //     console.log(con.channel.is_member, con.channel.last_read);
+                console.log(con.channel.is_member, con.channel.last_read);
 
-            //     const his = await client.conversations.history({channel: eventData.event.channel, limit: 1})
+                const his = await client.conversations.history({channel: eventData.event.channel, limit: 1})
 
-            //     console.log(his.messages);
-            //}
-            console.log(eventData);
+                console.log(his.messages);
+            }
         }
+            
     }
     catch(e){
         console.log("Notification error");
