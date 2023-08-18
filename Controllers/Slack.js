@@ -330,6 +330,7 @@ async function getChat(req, res){
 
     if(userId && usersAndReads[userId] && usersAndReads[userId][channel]){
         usersAndReads[userId][channel].lastRead = usersAndReads[userId][channel].latestMessage
+        console.log("Marked read");
     }
 }
 
