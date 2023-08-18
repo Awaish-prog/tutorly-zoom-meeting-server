@@ -29,9 +29,9 @@ app.use(express.static(path.join(__dirname, 'white-board')))
 
 
 app.post("/slackMessage", (req, res) => {
-  // req.body.event.userName = getUserName(req.body.event.user)
+  req.body.event.userName = getUserName(req.body.event.user)
   updateUsersAndReads(req.body);
-  // outer_socket.emit("sendMessage", req.body.event)
+  outer_socket.emit("sendMessage", req.body.event)
 })
 
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
