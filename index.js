@@ -135,7 +135,7 @@ app.listen("4005", async () => {
 
   //createNewSheet()
   //markStatus()
-  //initializeSlackIds()
+  initializeSlackIds()
   //populateConversationStore()
 
   console.log("server running");
