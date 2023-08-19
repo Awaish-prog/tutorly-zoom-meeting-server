@@ -34,6 +34,7 @@ app.post("/slackMessage", (req, res) => {
   if(checkNotification(req.body)){
     outer_socket.emit("sendNotification")
     outer_socket.emit("sendMessage", req.body.event)
+    console.log("Notification sent");
   }
   
 })
