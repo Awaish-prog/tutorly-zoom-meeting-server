@@ -15,7 +15,7 @@ const { updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink } =
 
 const v8 = require('v8');
 const { createPaper, deleteBitpaper } = require('./Controllers/Bitpapaer');
-const { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getBotUserName, getUserName, updateUsersAndReads, getNotificationFromData, getNotification } = require('./Controllers/Slack');
+const { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getBotUserName, getUserName, updateUsersAndReads, getNotificationFromData, getNotification, checkNotification } = require('./Controllers/Slack');
 
 
 
@@ -31,8 +31,11 @@ app.use(express.static(path.join(__dirname, 'white-board')))
 app.post("/slackMessage", (req, res) => {
   req.body.event.userName = getUserName(req.body.event.user)
   updateUsersAndReads(req.body);
-  outer_socket.emit("sendNotification")
-  outer_socket.emit("sendMessage", req.body.event)
+  if(checkNotification(req.body)){
+    outer_socket.emit("sendNotification")
+    outer_socket.emit("sendMessage", req.body.event)
+  }
+  
 })
 
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)

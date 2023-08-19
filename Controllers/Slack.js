@@ -101,6 +101,13 @@ function getNotification(req, res){
     res.json({ notify: getNotificationFromData(userId) })
 
 }
+
+function checkNotification(eventData){
+    if(usersAndReads[eventData.event.user] && usersAndReads[eventData.event.user][eventData.event.channel] && usersAndReads[eventData.event.user][eventData.event.channel].latestMessage === eventData.event.ts){
+        return false
+    }
+    return true
+}
   
 async function updateUsersAndReads(eventData){
     try{
@@ -386,4 +393,4 @@ async function getChannels(req, res){
     
 }
 
-module.exports = { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification }
+module.exports = { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification, checkNotification }
