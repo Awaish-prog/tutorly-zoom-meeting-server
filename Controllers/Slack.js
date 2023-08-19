@@ -310,6 +310,8 @@ async function getChat(req, res){
 
     const userId = slackMembers[email]
 
+    const lastRead = (usersAndReads[slackMembers[email]] && usersAndReads[slackMembers[email]][channel]) ? usersAndReads[slackMembers[email]][channel].lastRead : null 
+
     
     
     const result = await client.conversations.history({
@@ -322,7 +324,11 @@ async function getChat(req, res){
     const messages = result.messages
     const chat = []
 
+    let unreadMessages = 0;
     for(let i = 0; i < messages.length; i++){
+        if(lastRead && lastRead < messages[i].ts){
+            usersAndReads++;
+        }
         chat.push({
             user: messages[i].user,
             username: messages[i].username ? messages[i].username :  slackIds[messages[i].user],
@@ -333,7 +339,7 @@ async function getChat(req, res){
         })
     }
 
-    res.json({status: 200, chat})
+    res.json({status: 200, chat, unreadMessages})
 
     if(userId && usersAndReads[userId] && usersAndReads[userId][channel]){
         usersAndReads[userId][channel].lastRead = usersAndReads[userId][channel].latestMessage
