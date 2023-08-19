@@ -327,7 +327,7 @@ async function getChat(req, res){
     let unreadMessages = 0;
     for(let i = 0; i < messages.length; i++){
         if(lastRead && lastRead < messages[i].ts){
-            usersAndReads++;
+            unreadMessages++
         }
         chat.push({
             user: messages[i].user,
