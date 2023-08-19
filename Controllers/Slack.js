@@ -103,6 +103,7 @@ function getNotification(req, res){
 }
 
 function checkNotification(eventData){
+    console.log(usersAndReads[eventData.event.user], eventData.event.ts);
     if(usersAndReads[eventData.event.user] && usersAndReads[eventData.event.user][eventData.event.channel] && usersAndReads[eventData.event.user][eventData.event.channel].latestMessage === eventData.event.ts){
         return false
     }
