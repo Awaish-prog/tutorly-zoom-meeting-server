@@ -346,7 +346,7 @@ async function getChat(req, res){
         usersAndReads[userId][channel].lastRead = usersAndReads[userId][channel].latestMessage
         if(slackTokens[slackMembers[email]]){
             const client = new WebClient(slackTokens[slackMembers[email]])
-            const res = client.conversations.mark({channel: usersAndReads[userId][channel], ts: usersAndReads[userId][channel].latestMessage})
+            const res = await client.conversations.mark({channel: channel, ts: usersAndReads[userId][channel].latestMessage})
             console.log(res);
         }
         
