@@ -346,6 +346,10 @@ async function getChat(req, res){
     
 }
 
+function markMessageAsReadSocket(email, channel){
+    markMessageAsRead(slackMembers[email], channel, email)
+}
+
 async function markMessageAsRead(userId, channel, email){
     if(userId && usersAndReads[userId] && usersAndReads[userId][channel]){
         usersAndReads[userId][channel].lastRead = usersAndReads[userId][channel].latestMessage
@@ -411,4 +415,4 @@ async function getChannels(req, res){
     
 }
 
-module.exports = { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification, checkNotification }
+module.exports = { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification, checkNotification, markMessageAsReadSocket }

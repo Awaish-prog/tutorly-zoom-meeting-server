@@ -15,7 +15,7 @@ const { updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink } =
 
 const v8 = require('v8');
 const { createPaper, deleteBitpaper } = require('./Controllers/Bitpapaer');
-const { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getBotUserName, getUserName, updateUsersAndReads, getNotificationFromData, getNotification, checkNotification } = require('./Controllers/Slack');
+const { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getBotUserName, getUserName, updateUsersAndReads, getNotificationFromData, getNotification, checkNotification, markMessageAsReadSocket } = require('./Controllers/Slack');
 
 
 
@@ -124,8 +124,8 @@ io.on("connection", (socket) => {
      postMessage(channel, userName, text, showThread, ts)
   })
 
-  socket.on("markMessageAsRead", (email, channel, ts) => {
-    console.log(email, channel, ts);
+  socket.on("markMessageAsRead", (email, channel) => {
+    markMessageAsReadSocket(email, channel);
  })
 })
 
