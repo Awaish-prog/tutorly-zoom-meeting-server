@@ -123,6 +123,10 @@ io.on("connection", (socket) => {
   socket.on("postMessage", (channel, userName, text, showThread, ts) => {
      postMessage(channel, userName, text, showThread, ts)
   })
+
+  socket.on("markMessageAsRead", (email, id, channel) => {
+    console.log(email, id, channel);
+ })
 })
 
 

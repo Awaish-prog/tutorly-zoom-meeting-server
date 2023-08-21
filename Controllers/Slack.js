@@ -342,6 +342,11 @@ async function getChat(req, res){
 
     res.json({status: 200, chat, unreadMessages})
 
+    markMessageAsRead(userId, channel, email)
+    
+}
+
+async function markMessageAsRead(){
     if(userId && usersAndReads[userId] && usersAndReads[userId][channel]){
         usersAndReads[userId][channel].lastRead = usersAndReads[userId][channel].latestMessage
         if(slackTokens[slackMembers[email]]){
