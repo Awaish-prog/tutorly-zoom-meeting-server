@@ -31,11 +31,20 @@ app.use(express.static(path.join(__dirname, 'white-board')))
 app.post("/slackMessage", (req, res) => {
   req.body.event.userName = getUserName(req.body.event.user)
   
-  //if(checkNotification(req.body)){
-    outer_socket.emit("sendNotification")
-    outer_socket.emit("sendMessage", req.body.event)
-    console.log("Notification sent");
-  //}
+  const event = {
+    userName: req.body.event.userName,
+    ts: req.body.event.ts,
+    channel: req.body.event.channel,
+    event_ts: req.body.event.event_ts,
+    text: req.body.event.text,
+    user: req.body.event.user,
+    type: req.body.event.type
+  }
+  
+  outer_socket.emit("sendNotification")
+  outer_socket.emit("sendMessage", event)
+  console.log("Notification sent");
+  
   updateUsersAndReads(req.body);
 })
 
