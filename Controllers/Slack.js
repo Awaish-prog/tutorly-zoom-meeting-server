@@ -317,7 +317,7 @@ async function getChat(req, res){
     
     const result = await client.conversations.history({
         channel: channel,
-        limit: 10
+        limit: 300
     });
 
     const con = await client.conversations.info({channel: channel})
