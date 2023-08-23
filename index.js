@@ -41,7 +41,7 @@ app.post("/slackMessage", (req, res) => {
     type: req.body.event.type,
     thread_ts: req.body.event.thread_ts
   }
-
+  
   outer_socket.emit("sendNotification")
   outer_socket.emit("sendMessage", event)
   console.log("Notification sent");

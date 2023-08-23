@@ -103,7 +103,7 @@ function getNotification(req, res){
 }
 
 function checkNotification(eventData){
-    console.log(usersAndReads[eventData.event.user] && usersAndReads[eventData.event.user][eventData.event.channel] && usersAndReads[eventData.event.user][eventData.event.channel].latestMessage === eventData.event.ts);
+    
     if(usersAndReads[eventData.event.user] && usersAndReads[eventData.event.user][eventData.event.channel] && usersAndReads[eventData.event.user][eventData.event.channel].latestMessage === eventData.event.ts){
         return false
     }
@@ -120,7 +120,6 @@ async function updateUsersAndReads(eventData){
             if(usersAndReads[eventData.event.user] && usersAndReads[eventData.event.user][eventData.event.channel] && usersAndReads[eventData.event.user][eventData.event.channel].latestMessage === eventData.event.ts){
                 return
             }
-            console.log(eventData.event);
             const client = new WebClient(slackTokens[eventData.event.user]);
             const mem = await client.conversations.members({channel: eventData.event.channel})
             const members = mem.members
@@ -336,7 +335,7 @@ async function getChat(req, res){
             text: messages[i].text,
             ts: messages[i].ts,
             replyCount: messages[i].reply_count ? messages[i].reply_count : 0,
-            read: i < 7 ? true : false /*con.channel.is_member && usersAndReads[userId] && usersAndReads[userId][channel] && usersAndReads[userId][channel].lastRead && usersAndReads[userId][channel].lastRead < messages[i].ts*/
+            read: con.channel.is_member && usersAndReads[userId] && usersAndReads[userId][channel] && usersAndReads[userId][channel].lastRead && usersAndReads[userId][channel].lastRead < messages[i].ts
         })
     }
 
@@ -356,10 +355,8 @@ async function markMessageAsRead(userId, channel, email){
         if(slackTokens[slackMembers[email]]){
             const client = new WebClient(slackTokens[slackMembers[email]])
             const res = await client.conversations.mark({channel: channel, ts: usersAndReads[userId][channel].latestMessage})
-            console.log(res);
         }
-        
-        console.log("Marked read");
+    
     }
 }
 
