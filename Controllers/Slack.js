@@ -336,7 +336,7 @@ async function getChat(req, res){
             text: messages[i].text,
             ts: messages[i].ts,
             replyCount: messages[i].reply_count ? messages[i].reply_count : 0,
-            read: con.channel.is_member && usersAndReads[userId] && usersAndReads[userId][channel] && usersAndReads[userId][channel].lastRead && usersAndReads[userId][channel].lastRead < messages[i].ts
+            read: i > 1 ? true : false /*con.channel.is_member && usersAndReads[userId] && usersAndReads[userId][channel] && usersAndReads[userId][channel].lastRead && usersAndReads[userId][channel].lastRead < messages[i].ts*/
         })
     }
 
