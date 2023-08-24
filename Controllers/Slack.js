@@ -218,13 +218,31 @@ async function populateConversationStore() {
 
     // console.log(result);
 
+    const userMapping = {
+        'U057MKTGVQW': 'Rose Zhu',
+        'U05A4ES0VSN': 'Hannah Go', // Add more mappings as needed
+    };
+
     const result = await client.conversations.history({
         channel: "C02S4NANDV1",
-        limit: 1
+        limit: 10
       });
 
-      console.log(result.messages[0].files);
 
+      const messages = result.messages 
+
+      for(let i = 0; i < messages.length; i++){
+        messages[i].text = messages[i].text.replace(/<@(.*?)>/g, (match, userId) => {
+            // Check if the userId exists in the mapping
+            if (userMapping[userId]) {
+              return userMapping[userId];
+            } else {
+              // If the userId is not in the mapping, keep the original mention
+              return match;
+            }
+          });
+        console.log(messages[i].text);
+      }
     // const res = await client.users.list()
     // const members = res.members
     // let user = null
