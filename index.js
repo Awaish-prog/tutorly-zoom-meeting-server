@@ -15,7 +15,7 @@ const { updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink } =
 
 const v8 = require('v8');
 const { createPaper, deleteBitpaper } = require('./Controllers/Bitpapaer');
-const { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getBotUserName, getUserName, updateUsersAndReads, getNotificationFromData, getNotification, checkNotification, markMessageAsReadSocket } = require('./Controllers/Slack');
+const { populateConversationStore, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification, checkNotification, markMessageAsReadSocket, getSlackFileUrl } = require('./Controllers/Slack');
 
 
 
@@ -86,6 +86,8 @@ app.get("/getSheetDataTutor/:tutor/:driveId/:from/:to", googleSheetDataTutor)
 app.get("/getChannelsList/:email", authentication, getChannels)
 
 app.get("/getChat/:channel", authentication, getChat)
+
+app.get("/getSlackFileUrl/:fileId", authentication, getSlackFileUrl)
 
 app.get("/getReplies/:channel/:ts", authentication, getReplies)
 

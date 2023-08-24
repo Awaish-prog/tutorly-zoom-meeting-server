@@ -275,12 +275,10 @@ async function populateConversationStore() {
     }
 }
 
-function handleSlackMessage(req, res){
-    //outer_socket.emit()
-
-    
-    //console.log(req.body);
-   // res.status(200).send(req.body.challenge)
+async function getSlackFileUrl(req, res){
+    const client = new WebClient(slackTokens[slackMembers[req.headers.email]])
+    const fileUrlRes = await client.files.sharedPublicURL({ file: req.params.fileId })
+    console.log(fileUrlRes);
 }
 
 async function postMessage(channel, userName, text, showThread, ts){
@@ -413,4 +411,4 @@ async function getChannels(req, res){
     
 }
 
-module.exports = { populateConversationStore, handleSlackMessage, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification, checkNotification, markMessageAsReadSocket }
+module.exports = { populateConversationStore, getSlackFileUrl, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification, checkNotification, markMessageAsReadSocket }
