@@ -218,12 +218,12 @@ async function populateConversationStore() {
 
     // console.log(result);
 
-    // const result = await client.conversations.history({
-    //     channel: "C02S4NANDV1",
-    //     limit: 1
-    //   });
+    const result = await client.conversations.history({
+        channel: "C02S4NANDV1",
+        limit: 1
+      });
 
-    //   console.log(result);
+      console.log(result.messages[0].files);
 
     // const res = await client.users.list()
     // const members = res.members
@@ -335,7 +335,8 @@ async function getChat(req, res){
             text: messages[i].text,
             ts: messages[i].ts,
             replyCount: messages[i].reply_count ? messages[i].reply_count : 0,
-            read: con.channel.is_member && usersAndReads[userId] && usersAndReads[userId][channel] && usersAndReads[userId][channel].lastRead && usersAndReads[userId][channel].lastRead < messages[i].ts
+            read: con.channel.is_member && usersAndReads[userId] && usersAndReads[userId][channel] && usersAndReads[userId][channel].lastRead && usersAndReads[userId][channel].lastRead < messages[i].ts,
+            files: messages[i].files
         })
     }
 
