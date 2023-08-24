@@ -276,7 +276,7 @@ async function populateConversationStore() {
 }
 
 async function getSlackFileUrl(req, res){
-    const client = new WebClient(slackTokens[slackMembers[req.headers.email]])
+    //const client = new WebClient(slackTokens[slackMembers[req.headers.email]])
     const fileUrlRes = await client.files.sharedPublicURL({ file: req.params.fileId })
     console.log(fileUrlRes);
 }
