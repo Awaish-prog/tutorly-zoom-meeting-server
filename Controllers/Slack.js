@@ -345,6 +345,15 @@ async function getChat(req, res){
         if(lastRead && lastRead < messages[i].ts){
             unreadMessages++
         }
+        messages[i].text = messages[i].text.replace(/<@(.*?)>/g, (match, userId) => {
+                // Check if the userId exists in the mapping
+            if (slackIds[userId]) {
+                return slackIds[userId];
+            } else {
+                  // If the userId is not in the mapping, keep the original mention
+                return match;
+            }
+        });
         chat.push({
             user: messages[i].user,
             username: messages[i].username ? messages[i].username :  slackIds[messages[i].user],
@@ -354,6 +363,7 @@ async function getChat(req, res){
             read: con.channel.is_member && usersAndReads[userId] && usersAndReads[userId][channel] && usersAndReads[userId][channel].lastRead && usersAndReads[userId][channel].lastRead < messages[i].ts,
             files: messages[i].files
         })
+        console.log(messages[i].text);
     }
 
     res.json({status: 200, chat, unreadMessages})

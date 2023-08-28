@@ -1,4 +1,5 @@
 const Acuity = require('acuityscheduling');
+const { sheetClient, updateSheetData } = require('./DashboardData');
 require('dotenv').config()
 
 
@@ -180,6 +181,93 @@ function getAvailability(req, res){
     });
 }
 
+function updateLalaSheets(){
+    acuity.request(`appointments?minDate=2023-08-21&direction=ASC&max=2147483647`, function (err, r2, appointments) {
+        if (err) return console.error(err);
+        const data = {  }
+
+        const dataStudent = {  }
+
+        for(let i = 0; i < appointments.length; i++){
+            if(appointments[i].type.toLowerCase().includes("lala tutoring")){
+                if(appointments[i].labels){
+                    if(!data.hasOwnProperty(appointments[i].date)){
+                        data[appointments[i].date] = [appointments[i].date, 0, 0, 0, 0]
+                    }
+                    
+                    if(appointments[i].labels[0].name.toLowerCase() === 'completed'){
+                        data[appointments[i].date][1] += 1
+                    }
+                    else{
+                        data[appointments[i].date][2] += 1
+                    }
+                    data[appointments[i].date][3] += 1
+
+                    if(!dataStudent.hasOwnProperty(appointments[i].firstName + " " + appointments[i].lastName)){
+                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName] = [appointments[i].firstName + " " + appointments[i].lastName, 0, 0, 0, 0, 0, 0, 0, 0]
+                    }
+
+                    if(appointments[i].type.toLowerCase().includes("math")){
+                        if(appointments[i].labels[0].name.toLowerCase() === 'completed'){
+                            dataStudent[appointments[i].firstName + " " + appointments[i].lastName][1] += 1
+                        }
+                        else{
+                            dataStudent[appointments[i].firstName + " " + appointments[i].lastName][2] += 1
+                        }
+                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName][3] += 1
+                    }
+                    else if(appointments[i].type.toLowerCase().includes("english")){
+                        if(appointments[i].labels[0].name.toLowerCase() === 'completed'){
+                            dataStudent[appointments[i].firstName + " " + appointments[i].lastName][5] += 1
+                        }
+                        else{
+                            dataStudent[appointments[i].firstName + " " + appointments[i].lastName][6] += 1
+                        }
+                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName][7] += 1
+                    }
+
+                }
+                
+            }
+        }
+        for(const key in data){
+            data[key][4] = Number(((data[key][1] / data[key][3])).toFixed(4))
+        }
+
+        for(const key in dataStudent){
+            dataStudent[key][4] = (dataStudent[key][1] === 0 || dataStudent[key][3] === 0) ? 0 : Number(((dataStudent[key][1] / dataStudent[key][3]) * 100).toFixed(4))
+            dataStudent[key][8] = (dataStudent[key][5] === 0 || dataStudent[key][7] === 0) ? 0 : Number(((dataStudent[key][5] / dataStudent[key][7]) * 100).toFixed(4))
+        }
+        const sheetData = [["Date",	"Completed", "Canceled", "Total", "Attendance %"]]
+        const sheetDataStudent = [["Student Name",	"Math Sessions Completed", "Math Sessions Canceled", "Math Sessions Total", "Math Sessions Attendance %", "English Sessions Completed", "English Sessions Canceled", "English Sessions Total", "English Sessions Attendance %"]]
+        for(const key in data){
+            sheetData.push(data[key])
+        }
+
+        for(const key in dataStudent){
+            sheetDataStudent.push(dataStudent[key])
+        }
+
+        console.log(sheetData);
+
+        console.log(sheetDataStudent);
+
+        // sheetClient.spreadsheets.values.clear({
+        //     spreadsheetId: "1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM",
+        //     range: `Sessions Summary!A:E`
+        // })
+
+        // updateSheetData("1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM", "Sessions Summary!A:E", sheetData)
+
+        // sheetClient.spreadsheets.values.clear({
+        //     spreadsheetId: "1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM",
+        //     range: `Student Wise Sessions Data!A:I`
+        // })
+
+        // updateSheetData("1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM", "Student Wise Sessions Data!A:I", sheetDataStudent)
+    })
+}
 
 
-module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId, getMeetingsList }
+
+module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId, getMeetingsList, updateLalaSheets }

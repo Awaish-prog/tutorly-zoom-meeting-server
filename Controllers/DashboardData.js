@@ -810,4 +810,4 @@ async function mapleSheetUpdate(){
 
 
 
-module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, appendRowInSheet, updateStudentIds, googleSheetDataTutor, getMapleStudent, mapleSheetUpdate, createNewSheet}
+module.exports = { getDashboardData, getRecordingFolderLink, getDashboardDataTest, googleSheetTest, appendRowInSheet, updateStudentIds, googleSheetDataTutor, getMapleStudent, mapleSheetUpdate, createNewSheet, sheetClient, updateSheetData}

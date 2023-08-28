@@ -1,5 +1,5 @@
 const express = require('express');
-const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId } = require('./Controllers/Meetings');
+const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId, updateLalaSheets } = require('./Controllers/Meetings');
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
@@ -29,26 +29,26 @@ app.use(express.static(path.join(__dirname, 'white-board')))
 
 
 app.post("/slackMessage", (req, res) => {
-  // req.body.event.userName = getUserName(req.body.event.user)
+  req.body.event.userName = getUserName(req.body.event.user)
   
-  // const event = {
-  //   userName: req.body.event.userName,
-  //   ts: req.body.event.ts,
-  //   channel: req.body.event.channel,
-  //   event_ts: req.body.event.event_ts,
-  //   text: req.body.event.text,
-  //   user: req.body.event.user,
-  //   type: req.body.event.type,
-  //   thread_ts: req.body.event.thread_ts
-  // }
+  const event = {
+    userName: req.body.event.userName,
+    ts: req.body.event.ts,
+    channel: req.body.event.channel,
+    event_ts: req.body.event.event_ts,
+    text: req.body.event.text,
+    user: req.body.event.user,
+    type: req.body.event.type,
+    thread_ts: req.body.event.thread_ts
+  }
 
 
 
-  // outer_socket.emit("sendNotification")
-  // outer_socket.emit("sendMessage", event)
-  // console.log(outer_socket.emit);
+  outer_socket.emit("sendNotification")
+  outer_socket.emit("sendMessage", event)
+  console.log(outer_socket.emit)
   
-  // updateUsersAndReads(req.body);
+  updateUsersAndReads(req.body);
 })
 
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
@@ -122,26 +122,26 @@ app.get("*", (req, res) => {
 })
 
 
-// const io = require("socket.io")(8080, {
-//   cors: {
-//       origin: "*"
-//   }
-// });
+const io = require("socket.io")(8080, {
+  cors: {
+      origin: "*"
+  }
+});
 
 
 
-// io.on("connection", (socket) => {
-//   outer_socket = socket
-//   console.log("connected");
+io.on("connection", (socket) => {
+  outer_socket = socket
+  console.log("connected");
 
-//   socket.on("postMessage", (channel, userName, text, showThread, ts) => {
-//      postMessage(channel, userName, text, showThread, ts)
-//   })
+  socket.on("postMessage", (channel, userName, text, showThread, ts) => {
+     postMessage(channel, userName, text, showThread, ts)
+  })
 
-//   socket.on("markMessageAsRead", (email, channel) => {
-//     markMessageAsReadSocket(email, channel);
-//  })
-// })
+  socket.on("markMessageAsRead", (email, channel) => {
+    markMessageAsReadSocket(email, channel);
+ })
+})
 
 
 
@@ -158,8 +158,8 @@ app.listen("4005", async () => {
 
   //createNewSheet()
   //markStatus()
-  //initializeSlackIds()
+  initializeSlackIds()
   //populateConversationStore()
-
+  //updateLalaSheets()
   console.log("server running");
 })
