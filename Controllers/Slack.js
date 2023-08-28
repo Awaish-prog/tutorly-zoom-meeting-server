@@ -218,38 +218,39 @@ async function populateConversationStore() {
 
     // console.log(result);
 
-    const userMapping = {
-        'U057MKTGVQW': 'Rose Zhu',
-        'U05A4ES0VSN': 'Hannah Go', // Add more mappings as needed
-    };
+    // const userMapping = {
+    //     'U057MKTGVQW': 'Rose Zhu',
+    //     'U05A4ES0VSN': 'Hannah Go', // Add more mappings as needed
+    // };
 
-    const result = await client.conversations.history({
-        channel: "C02S4NANDV1",
-        limit: 10
-      });
+    // const result = await client.conversations.history({
+    //     channel: "C02S4NANDV1",
+    //     limit: 10
+    //   });
 
 
-      const messages = result.messages 
+    //   const messages = result.messages 
 
-      for(let i = 0; i < messages.length; i++){
-        messages[i].text = messages[i].text.replace(/<@(.*?)>/g, (match, userId) => {
-            // Check if the userId exists in the mapping
-            if (userMapping[userId]) {
-              return userMapping[userId];
-            } else {
-              // If the userId is not in the mapping, keep the original mention
-              return match;
-            }
-          });
-        console.log(messages[i].text);
-      }
+    //   for(let i = 0; i < messages.length; i++){
+    //     messages[i].text = messages[i].text.replace(/<@(.*?)>/g, (match, userId) => {
+    //         // Check if the userId exists in the mapping
+    //         if (userMapping[userId]) {
+    //           return userMapping[userId];
+    //         } else {
+    //           // If the userId is not in the mapping, keep the original mention
+    //           return match;
+    //         }
+    //       });
+    //     console.log(messages[i].text);
+    //   }
     // const res = await client.users.list()
     // const members = res.members
-    // let user = null
+    
     // for(let i = 0; i < members.length; i++){
-    //     if(members[i].id && members[i].real_name){
-    //         slackIds[members[i].id] = members[i].real_name
+    //     if(!members[i].deleted){
+    //         console.log(members[i].real_name);
     //     }
+        
     // }
 
     
@@ -418,6 +419,22 @@ async function getChannels(req, res){
 
         const channelsList = []
 
+        const membersList = []
+
+
+        const res = await client.users.list()
+        const members = res.members
+    
+        for(let i = 0; i < members.length; i++){
+            if(!members[i].deleted){
+                membersList.push({
+                    id: members[i].id,
+                    name: members[i].real_name
+                })
+            }
+        
+        }
+
         for(let i = 0; i < channels.length; i++){
             if(channels[i].id && channels[i].name){
                 channelsList.push({
@@ -430,7 +447,7 @@ async function getChannels(req, res){
             
         }
 
-        res.json({status: 200, channelsList, userId: slackMembers[email], userName: slackIds[slackMembers[email]]})
+        res.json({status: 200, channelsList, membersList, userId: slackMembers[email], userName: slackIds[slackMembers[email]]})
     }
     catch(e){
         res.json({status: 404})
