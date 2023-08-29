@@ -397,7 +397,7 @@ async function getPrivateChat(req, res){
 }
 
 async function getChat(req, res){
-
+    console.log("Received");
     if(req.params.private){
         await getPrivateChat(req, res)
         return
