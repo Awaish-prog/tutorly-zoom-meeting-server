@@ -397,12 +397,12 @@ async function getPrivateChat(req, res){
 }
 
 async function getChat(req, res){
-    if(req.params.private){
-        await getPrivateChat(req, res)
-        return
-    }
+    // if(req.params.private){
+    //     await getPrivateChat(req, res)
+    //     return
+    // }
 
-    console.log("Received");
+    console.log("Received", req.params.private);
 
     const channel = req.params.channel
     const email = req.headers.email
