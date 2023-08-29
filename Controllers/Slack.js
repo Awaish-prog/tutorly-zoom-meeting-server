@@ -113,6 +113,7 @@ function checkNotification(eventData){
 async function updateUsersAndReads(eventData){
     try{
         if(eventData.event){
+            console.log(usersAndReads);
             if(!slackTokens[eventData.event.user]){
                 return
             }
@@ -151,6 +152,8 @@ async function updateUsersAndReads(eventData){
                     }
                 }
             }
+
+            console.log(usersAndReads);
             
         }
             
@@ -397,12 +400,14 @@ async function getPrivateChat(req, res){
 }
 
 async function getChat(req, res){
-    if(req.params.private === true){
+
+    const isPrivate = req.params.private
+
+    if(isPrivate === "true"){
         await getPrivateChat(req, res)
         return
     }
 
-    console.log("Received", req.params.private);
 
     const channel = req.params.channel
     const email = req.headers.email
