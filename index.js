@@ -42,14 +42,14 @@ app.post("/slackMessage", (req, res) => {
     thread_ts: req.body.event.thread_ts
   }
 
-
+  console.log(req.body);
   
   // outer_socket.emit("sendNotification")
   // outer_socket.emit("sendMessage", event)
   // console.log(outer_socket.emit)
   // console.log("Received");
   
-  updateUsersAndReads(req.body);
+  //updateUsersAndReads(req.body);
 })
 
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
