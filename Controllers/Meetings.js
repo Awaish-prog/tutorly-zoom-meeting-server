@@ -192,38 +192,47 @@ function updateLalaSheets(){
             if(appointments[i].type.toLowerCase().includes("lala tutoring")){
                 if(appointments[i].labels){
                     if(!data.hasOwnProperty(appointments[i].date)){
-                        data[appointments[i].date] = [appointments[i].date, 0, 0, 0, 0]
+                        data[appointments[i].date] = [appointments[i].date, 0, 0, 0, 0, 0]
                     }
                     
                     if(appointments[i].labels[0].name.toLowerCase() === 'completed'){
                         data[appointments[i].date][1] += 1
                     }
-                    else{
+                    else if(appointments[i].labels[0].name.toLowerCase().includes("excused")){
                         data[appointments[i].date][2] += 1
                     }
-                    data[appointments[i].date][3] += 1
+                    else{
+                        data[appointments[i].date][3] += 1
+                    }
+                    data[appointments[i].date][4] += 1
 
                     if(!dataStudent.hasOwnProperty(appointments[i].firstName + " " + appointments[i].lastName)){
-                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName] = [appointments[i].firstName + " " + appointments[i].lastName, 0, 0, 0, 0, 0, 0, 0, 0]
+                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName] = [appointments[i].firstName + " " + appointments[i].lastName, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                     }
 
                     if(appointments[i].type.toLowerCase().includes("math")){
                         if(appointments[i].labels[0].name.toLowerCase() === 'completed'){
                             dataStudent[appointments[i].firstName + " " + appointments[i].lastName][1] += 1
                         }
-                        else{
+                        else if(appointments[i].labels[0].name.toLowerCase().includes("excused")){
                             dataStudent[appointments[i].firstName + " " + appointments[i].lastName][2] += 1
                         }
-                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName][3] += 1
+                        else{
+                            dataStudent[appointments[i].firstName + " " + appointments[i].lastName][3] += 1
+                        }
+                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName][4] += 1
                     }
                     else if(appointments[i].type.toLowerCase().includes("english")){
                         if(appointments[i].labels[0].name.toLowerCase() === 'completed'){
-                            dataStudent[appointments[i].firstName + " " + appointments[i].lastName][5] += 1
-                        }
-                        else{
                             dataStudent[appointments[i].firstName + " " + appointments[i].lastName][6] += 1
                         }
-                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName][7] += 1
+                        else if(appointments[i].labels[0].name.toLowerCase().includes("excused")){
+                            dataStudent[appointments[i].firstName + " " + appointments[i].lastName][7] += 1
+                        }
+                        else{
+                            dataStudent[appointments[i].firstName + " " + appointments[i].lastName][8] += 1
+                        }
+                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName][9] += 1
                     }
 
                 }
@@ -231,15 +240,15 @@ function updateLalaSheets(){
             }
         }
         for(const key in data){
-            data[key][4] = Number(((data[key][1] / data[key][3])).toFixed(4))
+            data[key][5] = (data[key][1] === 0 || data[key][4] === 0) ? 0 : Number(((data[key][1] / data[key][4]) * 100).toFixed(4))
         }
 
         for(const key in dataStudent){
-            dataStudent[key][4] = (dataStudent[key][1] === 0 || dataStudent[key][3] === 0) ? 0 : Number(((dataStudent[key][1] / dataStudent[key][3]) * 100).toFixed(4))
-            dataStudent[key][8] = (dataStudent[key][5] === 0 || dataStudent[key][7] === 0) ? 0 : Number(((dataStudent[key][5] / dataStudent[key][7]) * 100).toFixed(4))
+            dataStudent[key][5] = (dataStudent[key][1] === 0 || dataStudent[key][4] === 0) ? 0 : Number(((dataStudent[key][1] / dataStudent[key][4]) * 100).toFixed(4))
+            dataStudent[key][10] = (dataStudent[key][6] === 0 || dataStudent[key][9] === 0) ? 0 : Number(((dataStudent[key][6] / dataStudent[key][9]) * 100).toFixed(4))
         }
-        const sheetData = [["Date",	"Completed", "Canceled", "Total", "Attendance %"]]
-        const sheetDataStudent = [["Student Name",	"Math Sessions Completed", "Math Sessions Canceled", "Math Sessions Total", "Math Sessions Attendance %", "English Sessions Completed", "English Sessions Canceled", "English Sessions Total", "English Sessions Attendance %"]]
+        const sheetData = [["Date",	"Completed", "Excused Absence", "Canceled", "Total", "Attendance %"]]
+        const sheetDataStudent = [["Student Name",	"Math Sessions Completed", "Math Sessions Excused Absence", "Math Sessions Canceled", "Math Sessions Total", "Math Sessions Attendance %", "English Sessions Completed", "English Sessions Excused Absence", "English Sessions Canceled", "English Sessions Total", "English Sessions Attendance %"]]
         for(const key in data){
             sheetData.push(data[key])
         }
@@ -254,20 +263,33 @@ function updateLalaSheets(){
 
         // sheetClient.spreadsheets.values.clear({
         //     spreadsheetId: "1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM",
-        //     range: `Sessions Summary!A:E`
+        //     range: `Sessions Summary!A:F`
         // })
 
-        // updateSheetData("1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM", "Sessions Summary!A:E", sheetData)
+        // updateSheetData("1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM", "Sessions Summary!A:F", sheetData)
 
-        // sheetClient.spreadsheets.values.clear({
-        //     spreadsheetId: "1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM",
-        //     range: `Student Wise Sessions Data!A:I`
-        // })
+        sheetClient.spreadsheets.values.clear({
+            spreadsheetId: "1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM",
+            range: `Student Wise Sessions Data!A:K`
+        })
 
-        // updateSheetData("1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM", "Student Wise Sessions Data!A:I", sheetDataStudent)
+        updateSheetData("1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM", "Student Wise Sessions Data!A:K", sheetDataStudent)
+    })
+}
+
+function countSessions(name){
+    acuity.request(`appointments?minDate=2023-06-01&maxDate=2023-07-01&direction=ASC&max=2147483647`, function (err, r2, appointments) {
+        if (err) return console.error(err);
+        let number = 0
+        for(let i = 0; i < appointments.length; i++){
+            if(name.toLowerCase() === appointments[i].firstName.toLowerCase() && appointments[i].labels && appointments[i].labels[0].name.toLowerCase().includes("completed") && appointments[i].type.toLowerCase().includes("math")){
+                console.log(appointments[i].type);
+                number++
+            }
+        }
+        console.log(number);
     })
 }
 
 
-
-module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId, getMeetingsList, updateLalaSheets }
+module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId, getMeetingsList, updateLalaSheets, countSessions }

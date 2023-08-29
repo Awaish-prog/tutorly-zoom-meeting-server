@@ -190,10 +190,28 @@ async function populateConversationStore() {
        
     //     const con = await client.conversations.info({channel: channels[i].id})
 
-    //     const result = await client.conversations.history({
-    //         channel: channels[i].id,
-    //         limit: 1
-    //     });
+        // const result = await client.conversations.list({
+        //     types: "im"
+        // });
+        
+        // const channels = result.channels
+
+        // for(let i = 0; i < channels.length; i++){
+        //     if("U01F5CZ437B" === channels[i].user){
+        //         const result = await client.conversations.history({
+        //             channel: channels[i].id,
+        //             limit: 10
+        //         });
+        //         console.log(result.messages[0].reactions);
+        //     }
+        // }
+
+        // const messageResponse = await client.chat.postMessage({
+        //     channel: "U01HVVD4FEY", // Use the recipient's user ID as the channel
+        //     text: "api test", // The text of your message
+        // });
+        
+        // console.log(messageResponse);
 
     //     if(con.channel.is_member && result.messages && result.messages.length){
     //         usersAndReads["U02S69ZB9NG"].push([channels[i].id, con.channel.last_read < result.messages[0].ts])
@@ -287,6 +305,9 @@ async function populateConversationStore() {
     //     }
     // }
 
+    // const response = await client.conversations.replies({channel: "D02S42SU919", ts: "1693217922.298639"})
+
+    // console.log(response);
     
     }
     catch (error) {
@@ -301,7 +322,7 @@ async function getSlackFileUrl(req, res){
 }
 
 async function postMessage(channel, userName, text, showThread, ts){
-
+    
     if(showThread){
         const result = await client.chat.postMessage({
             channel: channel,
@@ -320,7 +341,67 @@ async function postMessage(channel, userName, text, showThread, ts){
     
 }
 
+async function getPrivateChat(req, res){
+
+    const id = req.params.channel
+    const email = req.headers.email
+
+    const userId = slackMembers[email]
+
+    const client = new WebClient(slackTokens[userId] ? slackTokens[userId] : slackTokens["U02S69ZB9NG"])
+
+    const result = await client.conversations.list({
+        types: "im"
+    });
+    
+    const channels = result.channels
+
+    let conversationId = null
+
+    for(let i = 0; i < channels.length; i++){
+        if(id === channels[i].user){
+            conversationId = channels[i].id
+            const result = await client.conversations.history({
+                channel: channels[i].id,
+                limit: 10
+            });
+            const messages = result.messages
+            const chat = []
+            let unreadMessages = 0;
+            for(let i = 0; i < messages.length; i++){
+               
+                messages[i].text = messages[i].text.replace(/<@(.*?)>/g, (match, userId) => {
+                // Check if the userId exists in the mapping
+                    if (slackIds[userId]) {
+                        return slackIds[userId];
+                    } else {
+                  // If the userId is not in the mapping, keep the original mention
+                        return match;
+                    }
+                });
+                chat.push({
+                    user: messages[i].user,
+                    username: messages[i].username ? messages[i].username :  slackIds[messages[i].user],
+                    text: messages[i].text,
+                    ts: messages[i].ts,
+                    replyCount: messages[i].reply_count ? messages[i].reply_count : 0,
+                    read: false,
+                    files: messages[i].files
+                })
+                
+            }
+
+            res.json({status: 200, chat, unreadMessages, conversationId})
+        }
+    }
+}
+
 async function getChat(req, res){
+
+    if(req.params.private){
+        await getPrivateChat(req, res)
+        return
+    }
 
     const channel = req.params.channel
     const email = req.headers.email
@@ -364,7 +445,7 @@ async function getChat(req, res){
             read: con.channel.is_member && usersAndReads[userId] && usersAndReads[userId][channel] && usersAndReads[userId][channel].lastRead && usersAndReads[userId][channel].lastRead < messages[i].ts,
             files: messages[i].files
         })
-        console.log(messages[i].text);
+        
     }
 
     res.json({status: 200, chat, unreadMessages})
@@ -389,9 +470,9 @@ async function markMessageAsRead(userId, channel, email){
 }
 
 async function getReplies(req, res){
-    const { channel, ts } = req.params
-    const response = await client.conversations.replies({channel: channel, ts: ts})
-
+    const { channel, ts, conversationId, showChannels } = req.params
+    
+    const response = await client.conversations.replies({channel: showChannels ? conversationId : channel , ts: ts})
     const messages = response.messages
     const chat = []
 
@@ -411,7 +492,7 @@ async function getReplies(req, res){
 async function getChannels(req, res){
 
     const email = req.params.email
-
+    console.log(email);
     try{
         const response = await client.users.conversations({user: slackMembers[email], types: "public_channel, private_channel, mpim, im", limit: 999})
 
@@ -422,18 +503,16 @@ async function getChannels(req, res){
         const membersList = []
 
 
-        const res = await client.users.list()
-        const members = res.members
-    
-        for(let i = 0; i < members.length; i++){
-            if(!members[i].deleted){
-                membersList.push({
-                    id: members[i].id,
-                    name: members[i].real_name
-                })
-            }
         
+    
+        for(const member in slackIds){
+            membersList.push({
+                id: member,
+                name: slackIds[member]
+            })
         }
+
+        
 
         for(let i = 0; i < channels.length; i++){
             if(channels[i].id && channels[i].name){
