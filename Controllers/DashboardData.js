@@ -242,7 +242,7 @@ async function googleSheetDataTutorAll(req, res){
       });
       
       for(let i = 0; i < appointments.length; i++){
-        if(tutors.hasOwnProperty(appointments[i].calendar)){
+        if(tutors.hasOwnProperty(appointments[i].calendar) && appointments[i].labels && (appointments[i].labels[0].name.toLowerCase() === "completed" || appointments[i].labels[0].name.toLowerCase() === "canceled<24 h" || appointments[i].labels[0].name.toLowerCase() === "excused absence")){
           if(appointments[i].type.toLowerCase().includes("lala")){
             tutors[appointments[i].calendar][0] += Number(appointments[i].duration)
           }
@@ -335,18 +335,21 @@ async function googleSheetDataTutor(req, res){
         data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].phone, appointments[i].email, appointments[i].type, appointments[i].calendar, appointments[i].notes, appointments[i].datetimeCreated, "status unavailable", "No", appointments[i].id]);
       }
       }
-      if(appointments[i].type.toLowerCase().includes("lala")){
-        sessionCountLala += Number(appointments[i].duration)
+      if(appointments[i].labels && (appointments[i].labels[0].name.toLowerCase() === "completed" || appointments[i].labels[0].name.toLowerCase() === "canceled<24 h" || appointments[i].labels[0].name.toLowerCase() === "excused absence")){
+        if(appointments[i].type.toLowerCase().includes("lala")){
+          sessionCountLala += Number(appointments[i].duration)
+        }
+        else if(appointments[i].type.toLowerCase().includes("lennox") || appointments[i].type.toLowerCase().includes("minute check")){
+          sessionCountLennox += Number(appointments[i].duration)
+        }
+        else if(appointments[i].type.toLowerCase().includes("maple tutoring")){
+          sessionCountMaple += Number(appointments[i].duration)
+        }
+        else{
+          sessionCount += Number(appointments[i].duration)
+        }
       }
-      else if(appointments[i].type.toLowerCase().includes("lennox") || appointments[i].type.toLowerCase().includes("minute check")){
-        sessionCountLennox += Number(appointments[i].duration)
-      }
-      else if(appointments[i].type.toLowerCase().includes("maple tutoring")){
-        sessionCountMaple += Number(appointments[i].duration)
-      }
-      else{
-        sessionCount += Number(appointments[i].duration)
-      }
+      
     }
 
 
