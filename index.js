@@ -43,7 +43,7 @@ app.post("/slackMessage", (req, res) => {
   }
 
 
-
+  console.log(req.body);
   // outer_socket.emit("sendNotification")
   // outer_socket.emit("sendMessage", event)
   // console.log(outer_socket.emit)
