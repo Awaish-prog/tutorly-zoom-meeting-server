@@ -360,6 +360,10 @@ async function googleSheetDataTutor(req, res){
       totalPay = totalSessions * 35
       console.log("It's Ryan");
     }
+    if(appointments[0] && appointments[0].calendar.includes("Eleni")){
+      totalPay = totalSessions * 50
+      console.log("It's Eleni");
+    }
     if(appointments[0]){
       console.log(`${appointments[0].calendar}'s Payroll`);
     }
