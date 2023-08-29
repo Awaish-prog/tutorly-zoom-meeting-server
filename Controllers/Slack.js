@@ -318,7 +318,7 @@ async function populateConversationStore() {
 async function getSlackFileUrl(req, res){
     const client = new WebClient(slackTokens[slackMembers[req.headers.email]])
     const fileUrlRes = await client.files.sharedPublicURL({ file: req.params.fileId, types: "public_channel, private_channel, mpim, im" })
-    console.log(fileUrlRes);
+
 }
 
 async function postMessage(channel, userName, text, showThread, ts){
@@ -492,7 +492,7 @@ async function getReplies(req, res){
 async function getChannels(req, res){
 
     const email = req.params.email
-    console.log(email);
+    
     try{
         const response = await client.users.conversations({user: slackMembers[email], types: "public_channel, private_channel, mpim, im", limit: 999})
 
