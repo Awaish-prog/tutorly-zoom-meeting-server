@@ -410,7 +410,7 @@ async function getChat(req, res){
 
     const lastRead = (usersAndReads[slackMembers[email]] && usersAndReads[slackMembers[email]][channel]) ? usersAndReads[slackMembers[email]][channel].lastRead : null 
 
-    
+    console.log(channel, email);
     
     const result = await client.conversations.history({
         channel: channel,
