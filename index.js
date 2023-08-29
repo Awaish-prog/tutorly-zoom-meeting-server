@@ -29,18 +29,18 @@ app.use(express.static(path.join(__dirname, 'white-board')))
 
 
 app.post("/slackMessage", (req, res) => {
-  // req.body.event.userName = getUserName(req.body.event.user)
+  req.body.event.userName = getUserName(req.body.event.user)
   
-  // const event = {
-  //   userName: req.body.event.userName,
-  //   ts: req.body.event.ts,
-  //   channel: req.body.event.channel,
-  //   event_ts: req.body.event.event_ts,
-  //   text: req.body.event.text,
-  //   user: req.body.event.user,
-  //   type: req.body.event.type,
-  //   thread_ts: req.body.event.thread_ts
-  // }
+  const event = {
+    userName: req.body.event.userName,
+    ts: req.body.event.ts,
+    channel: req.body.event.channel,
+    event_ts: req.body.event.event_ts,
+    text: req.body.event.text,
+    user: req.body.event.user,
+    type: req.body.event.type,
+    thread_ts: req.body.event.thread_ts
+  }
 
 
 
@@ -49,7 +49,7 @@ app.post("/slackMessage", (req, res) => {
   // console.log(outer_socket.emit)
   // console.log("Received");
   
-  // updateUsersAndReads(req.body);
+  updateUsersAndReads(req.body);
 })
 
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
