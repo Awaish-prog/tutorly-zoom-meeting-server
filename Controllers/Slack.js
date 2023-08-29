@@ -397,10 +397,10 @@ async function getPrivateChat(req, res){
 }
 
 async function getChat(req, res){
-    // if(req.params.private){
-    //     await getPrivateChat(req, res)
-    //     return
-    // }
+    if(req.params.private === true){
+        await getPrivateChat(req, res)
+        return
+    }
 
     console.log("Received", req.params.private);
 
