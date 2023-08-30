@@ -124,7 +124,7 @@ async function updateUsersAndReads(eventData){
             const client = new WebClient(slackTokens[eventData.event.user]);
             const mem = await client.conversations.members({channel: eventData.event.channel})
             const members = mem.members
-            console.log(members);
+            
             for(let i = 0; i < members.length; i++){
                 if(!slackTokens[members[i]]){
                     continue
@@ -132,7 +132,6 @@ async function updateUsersAndReads(eventData){
                 const client = new WebClient(slackTokens[members[i]]);
                 const con = await client.conversations.info({channel: eventData.event.channel})
 
-                console.log(con);
 
                 if(!con.channel.is_member && !con.channel.is_im){
                     continue
@@ -521,7 +520,8 @@ async function getChannels(req, res){
         for(const member in slackIds){
             membersList.push({
                 id: member,
-                name: slackIds[member]
+                name: slackIds[member],
+                read: (usersAndReads[slackMembers[email]] && usersAndReads[slackMembers[email]][channels[i].id]) ? usersAndReads[slackMembers[email]][channels[i].id].lastRead < usersAndReads[slackMembers[email]][channels[i].id].latestMessage : false
             })
         }
 
