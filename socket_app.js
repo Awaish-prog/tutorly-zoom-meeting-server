@@ -10,29 +10,29 @@ const io = require("socket.io")(8081, {
     }
 });
 
-function sendMessageToClient(req, res){
-    // req.body.event.userName = getUserName(req.body.event.user)
+// function sendMessageToClient(req, res){
+//     // req.body.event.userName = getUserName(req.body.event.user)
     
-    // const event = {
-    //   userName: req.body.event.userName,
-    //   ts: req.body.event.ts,
-    //   channel: req.body.event.channel,
-    //   event_ts: req.body.event.event_ts,
-    //   text: req.body.event.text,
-    //   user: req.body.event.user,
-    //   type: req.body.event.type,
-    //   thread_ts: req.body.event.thread_ts
-    // }
+//     // const event = {
+//     //   userName: req.body.event.userName,
+//     //   ts: req.body.event.ts,
+//     //   channel: req.body.event.channel,
+//     //   event_ts: req.body.event.event_ts,
+//     //   text: req.body.event.text,
+//     //   user: req.body.event.user,
+//     //   type: req.body.event.type,
+//     //   thread_ts: req.body.event.thread_ts
+//     // }
   
-    // console.log(req.body);
+//     // console.log(req.body);
     
-    // outer_socket.emit("sendNotification")
-    // outer_socket.emit("sendMessage", event)
-    // console.log(outer_socket.emit)
-    // console.log("Received");
+//     // outer_socket.emit("sendNotification")
+//     // outer_socket.emit("sendMessage", event)
+//     // console.log(outer_socket.emit)
+//     // console.log("Received");
     
-    // updateUsersAndReads(req.body);
-  }
+//     // updateUsersAndReads(req.body);
+//   }
   
   
   
@@ -49,7 +49,7 @@ io.on("connection", (socket) => {
    })
 })
 
-module.exports = { sendMessageToClient }
+//module.exports = { sendMessageToClient }
 
 
 // const { updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink } = require('./Controllers/WhiteBoardAppScripts.js');
