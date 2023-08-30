@@ -49,7 +49,7 @@ app.post("/slackMessage", (req, res) => {
   // console.log(outer_socket.emit)
   // console.log("Received");
   
-  //updateUsersAndReads(req.body);
+  updateUsersAndReads(req.body);
 })
 
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
