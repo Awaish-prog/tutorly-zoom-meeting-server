@@ -401,6 +401,8 @@ async function getPrivateChat(req, res){
             }
 
             res.json({status: 200, chat, unreadMessages, conversationId})
+
+            markMessageAsRead(userId, id, email)
         }
     }
 }
