@@ -475,7 +475,7 @@ function markMessageAsReadSocket(email, channel){
 async function markMessageAsRead(userId, channel, email){
     if(userId && usersAndReads[userId] && usersAndReads[userId][channel]){
         usersAndReads[userId][channel].lastRead = usersAndReads[userId][channel].latestMessage
-        if(slackTokens[slackMembers[email]]){
+        if(slackTokens[slackMembers[email]] && usersAndReads[userId][channel].latestMessage){
             const client = new WebClient(slackTokens[slackMembers[email]])
             const res = await client.conversations.mark({channel: channel, ts: usersAndReads[userId][channel].latestMessage})
         }
@@ -486,9 +486,9 @@ async function markMessageAsRead(userId, channel, email){
 async function markMessageAsReadPrivate(userId, conversationId, email, id){
     if(userId && usersAndReads[userId] && usersAndReads[userId][id]){
         usersAndReads[userId][id].lastRead = usersAndReads[userId][id].latestMessage
-        if(slackTokens[slackMembers[email]]){
+        if(slackTokens[slackMembers[email]] && usersAndReads[userId][id].latestMessage){
             const client = new WebClient(slackTokens[slackMembers[email]])
-            const res = await client.conversations.mark({channel: channel, ts: usersAndReads[userId][channel].latestMessage})
+            const res = await client.conversations.mark({channel: conversationId, ts: usersAndReads[userId][id].latestMessage})
         }
     
     }
