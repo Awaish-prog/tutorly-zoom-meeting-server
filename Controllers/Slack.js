@@ -315,8 +315,8 @@ async function populateConversationStore() {
 
     // console.log(response);
 
-    const res = await client.conversations.members({ channel: "D058JTG1ZPH"})
-    console.log(res);
+    // const res = await client.conversations.members({ channel: "D058JTG1ZPH"})
+    // console.log(res);
     
     }
     catch (error) {
