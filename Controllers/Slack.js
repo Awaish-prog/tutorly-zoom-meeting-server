@@ -357,6 +357,8 @@ async function getPrivateChat(req, res){
 
     const userId = slackMembers[email]
 
+    const lastRead = (usersAndReads[slackMembers[email]] && usersAndReads[slackMembers[email]][id]) ? usersAndReads[slackMembers[email]][id].lastRead : null 
+
     const client = new WebClient(slackTokens[userId] ? slackTokens[userId] : slackTokens["U02S69ZB9NG"])
 
     const result = await client.conversations.list({
@@ -378,6 +380,10 @@ async function getPrivateChat(req, res){
             const chat = []
             let unreadMessages = 0;
             for(let i = 0; i < messages.length; i++){
+
+                if(lastRead && lastRead < messages[i].ts){
+                    unreadMessages++
+                }
                
                 messages[i].text = messages[i].text.replace(/<@(.*?)>/g, (match, userId) => {
                 // Check if the userId exists in the mapping
@@ -394,7 +400,7 @@ async function getPrivateChat(req, res){
                     text: messages[i].text,
                     ts: messages[i].ts,
                     replyCount: messages[i].reply_count ? messages[i].reply_count : 0,
-                    read: false,
+                    read: usersAndReads[userId] && usersAndReads[userId][id] && usersAndReads[userId][id].lastRead && usersAndReads[userId][id].lastRead < messages[i].ts,
                     files: messages[i].files
                 })
                 
