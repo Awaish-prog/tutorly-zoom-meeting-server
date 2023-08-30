@@ -29,9 +29,9 @@ app.use(express.static(path.join(__dirname, 'white-board')))
 
 
 app.post("/slackMessage", (req, res) => {
-  req.body.event.userName = getUserName(req.body.event.user)
+  // req.body.event.userName = getUserName(req.body.event.user)
   
-  const event = {
+  // const event = {
   //   userName: req.body.event.userName,
   //   ts: req.body.event.ts,
   //   channel: req.body.event.channel,
