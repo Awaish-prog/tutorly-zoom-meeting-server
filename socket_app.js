@@ -4,7 +4,7 @@ const { populateConversationStore, getChannels, initializeSlackIds, getChat, get
 
 let outer_socket = null
 
-const io = require("socket.io")(8080, {
+const io = require("socket.io")(8081, {
     cors: {
         origin: "*"
     }
