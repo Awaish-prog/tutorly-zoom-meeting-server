@@ -1,3 +1,57 @@
+const { populateConversationStore, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification, checkNotification, markMessageAsReadSocket, getSlackFileUrl } = require('./Controllers/Slack');
+
+
+
+let outer_socket = null
+
+const io = require("socket.io")(8080, {
+    cors: {
+        origin: "*"
+    }
+});
+
+function sendMessageToClient(req, res){
+    req.body.event.userName = getUserName(req.body.event.user)
+    
+    const event = {
+      userName: req.body.event.userName,
+      ts: req.body.event.ts,
+      channel: req.body.event.channel,
+      event_ts: req.body.event.event_ts,
+      text: req.body.event.text,
+      user: req.body.event.user,
+      type: req.body.event.type,
+      thread_ts: req.body.event.thread_ts
+    }
+  
+    console.log(req.body);
+    
+    outer_socket.emit("sendNotification")
+    outer_socket.emit("sendMessage", event)
+    console.log(outer_socket.emit)
+    console.log("Received");
+    
+    updateUsersAndReads(req.body);
+  }
+  
+  
+  
+io.on("connection", (socket) => {
+    outer_socket = socket
+    console.log("connected");
+  
+    socket.on("postMessage", (channel, userName, text, showThread, ts) => {
+       postMessage(channel, userName, text, showThread, ts)
+    })
+  
+    socket.on("markMessageAsRead", (email, channel) => {
+      markMessageAsReadSocket(email, channel);
+   })
+})
+
+module.exports = { sendMessageToClient }
+
+
 // const { updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink } = require('./Controllers/WhiteBoardAppScripts.js');
 
 // const v8 = require('v8');
@@ -227,3 +281,4 @@
     
 //   })
   
+

@@ -16,6 +16,7 @@ const { updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink } =
 const v8 = require('v8');
 const { createPaper, deleteBitpaper } = require('./Controllers/Bitpapaer');
 const { populateConversationStore, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification, checkNotification, markMessageAsReadSocket, getSlackFileUrl } = require('./Controllers/Slack');
+const { sendMessageToClient } = require('./socket_app');
 
 
 
@@ -28,29 +29,7 @@ app.use(express.static(path.join(__dirname, 'tutorly-sheet-update-build')))
 app.use(express.static(path.join(__dirname, 'white-board')))
 
 
-app.post("/slackMessage", (req, res) => {
-  req.body.event.userName = getUserName(req.body.event.user)
-  
-  const event = {
-    userName: req.body.event.userName,
-    ts: req.body.event.ts,
-    channel: req.body.event.channel,
-    event_ts: req.body.event.event_ts,
-    text: req.body.event.text,
-    user: req.body.event.user,
-    type: req.body.event.type,
-    thread_ts: req.body.event.thread_ts
-  }
-
-  console.log(req.body);
-  
-  outer_socket.emit("sendNotification")
-  outer_socket.emit("sendMessage", event)
-  console.log(outer_socket.emit)
-  console.log("Received");
-  
-  updateUsersAndReads(req.body);
-})
+app.post("/slackMessage", sendMessageToClient)
 
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
 
@@ -110,12 +89,12 @@ app.get("/updateMapleSheets", (req, res) => {
 })
 
 
-let outer_socket = null
 
-app.get("/test", (req, res) => {
-  outer_socket.emit("request")
-  res.send("request")
-})
+
+// app.get("/test", (req, res) => {
+//   outer_socket.emit("request")
+//   res.send("request")
+// })
 
 
 app.get("*", (req, res) => {
@@ -123,26 +102,7 @@ app.get("*", (req, res) => {
 })
 
 
-const io = require("socket.io")(8080, {
-  cors: {
-      origin: "*"
-  }
-});
 
-
-
-io.on("connection", (socket) => {
-  outer_socket = socket
-  console.log("connected");
-
-  socket.on("postMessage", (channel, userName, text, showThread, ts) => {
-     postMessage(channel, userName, text, showThread, ts)
-  })
-
-  socket.on("markMessageAsRead", (email, channel) => {
-    markMessageAsReadSocket(email, channel);
- })
-})
 
 
 
