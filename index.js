@@ -159,7 +159,7 @@ app.listen("4005", async () => {
   //countSessions("Alessandro")
   //createNewSheet()
   //markStatus()
-  //initializeSlackIds()
+  initializeSlackIds()
   //populateConversationStore()
   //updateLalaSheets()
   console.log("server running");
