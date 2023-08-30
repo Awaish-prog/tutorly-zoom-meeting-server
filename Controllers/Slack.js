@@ -134,7 +134,7 @@ async function updateUsersAndReads(eventData){
 
                 console.log(con);
 
-                if(!con.channel.is_member){
+                if(!con.channel.is_member && !con.channel.is_im){
                     continue
                 }
 
@@ -144,7 +144,7 @@ async function updateUsersAndReads(eventData){
                 const his = await client.conversations.history({channel: eventData.event.channel, limit: 1})
 
                 console.log(his);
-                
+
                 if(his.messages && his.messages.length){
                     const channel = eventData.event.channel
                     if(!usersAndReads.hasOwnProperty(members[i])){
