@@ -521,7 +521,7 @@ async function getChannels(req, res){
             membersList.push({
                 id: member,
                 name: slackIds[member],
-                read: (usersAndReads[slackMembers[email]] && usersAndReads[slackMembers[email]][channels[i].id]) ? usersAndReads[slackMembers[email]][channels[i].id].lastRead < usersAndReads[slackMembers[email]][channels[i].id].latestMessage : false
+                read: (usersAndReads[slackMembers[email]] && usersAndReads[slackMembers[email]][member]) ? usersAndReads[slackMembers[email]][member].lastRead < usersAndReads[slackMembers[email]][member].latestMessage : false
             })
         }
 
