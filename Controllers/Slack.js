@@ -148,10 +148,10 @@ async function updateUsersAndReads(eventData){
                     const channel = eventData.event.channel
                     if(!usersAndReads.hasOwnProperty(members[i])){
                         usersAndReads[members[i]] = { }
-                        usersAndReads[members[i]][channel] = { lastRead: con.channel.last_read, latestMessage: his.messages[0].ts }
+                        usersAndReads[members[i]][con.channel.is_im ? eventData.event.user : channel] = { lastRead: con.channel.last_read, latestMessage: his.messages[0].ts }
                     }
                     else{
-                        usersAndReads[members[i]][channel] = { lastRead: con.channel.last_read, latestMessage: his.messages[0].ts }
+                        usersAndReads[members[i]][con.channel.is_im ? eventData.event.user : channel] = { lastRead: con.channel.last_read, latestMessage: his.messages[0].ts }
                     }
                 }
             }
