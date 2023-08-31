@@ -174,18 +174,20 @@ async function updateUsersAndReads(eventData){
 async function initializeSlackIds(){
     const token = process.env.AWAISH_TOKEN;
 
+    console.log(token);
+
 // Initialize
-    const client = new WebClient(token);
-    const result = await client.users.list()
-    const members = result.members
-    let user = null
-    for(let i = 0; i < members.length; i++){
-        if(members[i].id && members[i].real_name){
-            slackIds[members[i].id] = members[i].real_name
-            usersAndReads[members[i].id] = { }
-        }
-    }
-    console.log(slackIds);
+    // const client = new WebClient(token);
+    // const result = await client.users.list()
+    // const members = result.members
+    // let user = null
+    // for(let i = 0; i < members.length; i++){
+    //     if(members[i].id && members[i].real_name){
+    //         slackIds[members[i].id] = members[i].real_name
+    //         usersAndReads[members[i].id] = { }
+    //     }
+    // }
+    // console.log(slackIds);
 }
 
 function getUserName(id){
