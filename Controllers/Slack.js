@@ -112,6 +112,8 @@ function checkNotification(eventData){
   
 async function updateUsersAndReads(eventData){
     try{
+        console.log(slackIds);
+        console.log(usersAndReads);
         if(eventData.event){
             console.log(usersAndReads);
             if(!slackTokens[eventData.event.user]){

@@ -18,7 +18,7 @@ const io = require("socket.io")(8081, {
 
 app.post("/slackapp/slackMessage", (req, res) => {
     req.body.event.userName = getUserName(req.body.event.user)
-    console.log(getUserName);
+    
     const event = {
       userName: req.body.event.userName,
       ts: req.body.event.ts,
@@ -30,7 +30,7 @@ app.post("/slackapp/slackMessage", (req, res) => {
       thread_ts: req.body.event.thread_ts
     }
   
-    console.log(req.body);
+    
     
     outer_socket.emit("sendNotification")
     outer_socket.emit("sendMessage", event)
