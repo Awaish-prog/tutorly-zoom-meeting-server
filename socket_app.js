@@ -38,6 +38,7 @@ app.post("/slackapp/slackMessage", (req, res) => {
     // console.log("Received");
     
     // updateUsersAndReads(req.body);
+    res.send(req.params.challenge)
 })
 
   
