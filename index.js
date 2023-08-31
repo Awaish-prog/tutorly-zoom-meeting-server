@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'tutorly-sheet-update-build')))
 app.use(express.static(path.join(__dirname, 'white-board')))
 
 
-//app.post("/slackMessage", sendMessageToClient)
+//
 
 app.get("/getPreviousMeetings/:email/:role/:number", authentication, getPreviousMeetings)
 

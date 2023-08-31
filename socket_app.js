@@ -1,8 +1,13 @@
 const { populateConversationStore, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification, checkNotification, markMessageAsReadSocket, getSlackFileUrl } = require('./Controllers/Slack');
+const express = require('express');
+const app = express()
+const cors = require('cors')
+const bodyParser = require('body-parser');
+app.use(cors())
+app.use(express.json());
+app.use(bodyParser.json());
 
-
-
-//let outer_socket = null
+let outer_socket = null
 
 const io = require("socket.io")(8081, {
     cors: {
@@ -10,34 +15,35 @@ const io = require("socket.io")(8081, {
     }
 });
 
-// function sendMessageToClient(req, res){
-//     // req.body.event.userName = getUserName(req.body.event.user)
+
+app.post("/slackapp/slackMessage", (req, res) => {
+    // req.body.event.userName = getUserName(req.body.event.user)
     
-//     // const event = {
-//     //   userName: req.body.event.userName,
-//     //   ts: req.body.event.ts,
-//     //   channel: req.body.event.channel,
-//     //   event_ts: req.body.event.event_ts,
-//     //   text: req.body.event.text,
-//     //   user: req.body.event.user,
-//     //   type: req.body.event.type,
-//     //   thread_ts: req.body.event.thread_ts
-//     // }
+    // const event = {
+    //   userName: req.body.event.userName,
+    //   ts: req.body.event.ts,
+    //   channel: req.body.event.channel,
+    //   event_ts: req.body.event.event_ts,
+    //   text: req.body.event.text,
+    //   user: req.body.event.user,
+    //   type: req.body.event.type,
+    //   thread_ts: req.body.event.thread_ts
+    // }
   
-//     // console.log(req.body);
+    // console.log(req.body);
     
-//     // outer_socket.emit("sendNotification")
-//     // outer_socket.emit("sendMessage", event)
-//     // console.log(outer_socket.emit)
-//     // console.log("Received");
+    // outer_socket.emit("sendNotification")
+    // outer_socket.emit("sendMessage", event)
+    // console.log(outer_socket.emit)
+    // console.log("Received");
     
-//     // updateUsersAndReads(req.body);
-//   }
-  
+    // updateUsersAndReads(req.body);
+})
+
   
   
 io.on("connection", (socket) => {
-    //outer_socket = socket
+    outer_socket = socket
     console.log("connected");
   
     socket.on("postMessage", (channel, userName, text, showThread, ts) => {
@@ -47,6 +53,10 @@ io.on("connection", (socket) => {
     socket.on("markMessageAsRead", (email, channel) => {
       markMessageAsReadSocket(email, channel);
    })
+})
+
+app.listen("8080", async () => {
+    console.log("Socket running...");
 })
 
 //module.exports = { sendMessageToClient }
