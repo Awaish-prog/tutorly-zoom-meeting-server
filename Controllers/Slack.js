@@ -1,4 +1,5 @@
 const { WebClient } = require('@slack/web-api');
+require('dotenv').config()
 
 
 // Read a token from the environment variables
