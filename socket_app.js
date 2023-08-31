@@ -1,4 +1,4 @@
-const { populateConversationStore, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification, checkNotification, markMessageAsReadSocket, getSlackFileUrl } = require('./Controllers/SlackSocket');
+const { populateConversationStore, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification, checkNotification, markMessageAsReadSocket, getSlackFileUrl } = require('./Controllers/Slack');
 const express = require('express');
 const app = express()
 const cors = require('cors')
