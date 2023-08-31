@@ -178,6 +178,7 @@ async function initializeSlackIds(){
             usersAndReads[members[i].id] = { }
         }
     }
+    console.log(slackIds);
 }
 
 function getUserName(id){
@@ -317,6 +318,14 @@ async function populateConversationStore() {
 
     // const res = await client.conversations.members({ channel: "D058JTG1ZPH"})
     // console.log(res);
+
+    // const result = await client.chat.postMessage({
+    //     channel: "C02S4NANDV1",
+    //     text: "api",
+    //     username: "Awaish Khan",
+    // });
+
+    // console.log(result);
     
     }
     catch (error) {
