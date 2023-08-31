@@ -114,7 +114,7 @@ async function updateUsersAndReads(eventData){
     try{
         console.log(slackIds);
         console.log(usersAndReads);
-        console.log(client);
+
         if(eventData.event){
             console.log(usersAndReads);
             if(!slackTokens[eventData.event.user]){
