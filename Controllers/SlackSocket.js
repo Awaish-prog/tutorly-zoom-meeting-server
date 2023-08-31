@@ -172,6 +172,10 @@ async function updateUsersAndReads(eventData){
   
 
 async function initializeSlackIds(){
+    const token = process.env.AWAISH_TOKEN;
+
+// Initialize
+    const client = new WebClient(token);
     const result = await client.users.list()
     const members = result.members
     let user = null
