@@ -432,6 +432,7 @@ async function getSlackFileUrl(req, res){
 
 async function postMessage(channel, userName, text, showThread, ts){
     // const client = new WebClient(slackTokens[userName] ? slackTokens[userName] : slackTokens["U02S69ZB9NG"])
+    console.log(channel, userName, text, showThread, ts);
     if(showThread){
         const result = await client.chat.postMessage({
             channel: channel,
