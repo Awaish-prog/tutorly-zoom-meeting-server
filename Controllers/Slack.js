@@ -587,7 +587,7 @@ async function getChannels(req, res){
     const email = req.params.email
     
     const userId = slackIds[email]
-
+    console.log("id:", userId);
     const client = new WebClient(slackTokens[userId] ? slackTokens[userId] : slackTokens["U02S69ZB9NG"])
     try{
         const response = await client.users.conversations({user: slackMembers[email], types: "public_channel, private_channel, mpim, im", limit: 999})
