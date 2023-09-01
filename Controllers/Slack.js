@@ -335,12 +335,14 @@ async function populateConversationStore() {
 
     // https://app.tutorly.com/getReplies/U057MKTGVQW/1693532158.627789/D058JTG1ZPH/false
 
-    const response = await client.conversations.replies({channel: "D058JTG1ZPH" , ts: "1693532158.627789"})
+    // 1693233193.648019  C02S4NANDV1
 
-    console.log(response);
+    // const response = await client.conversations.replies({channel: "C02S4NANDV1" , ts: "1693562851.627199"})
+
+    // console.log(response);
     
     }
-    catch (error) {
+    catch (error) {  
       console.error(error);
     }
 }
@@ -578,6 +580,7 @@ async function getChannels(req, res){
                     private: channels[i].is_private,
                     read: (usersAndReads[slackMembers[email]] && usersAndReads[slackMembers[email]][channels[i].id]) ? usersAndReads[slackMembers[email]][channels[i].id].lastRead < usersAndReads[slackMembers[email]][channels[i].id].latestMessage : false
                 })
+                console.log(usersAndReads[slackMembers[email]], usersAndReads[slackMembers[email]][channels[i].id], usersAndReads[slackMembers[email]][channels[i].id].lastRead, usersAndReads[slackMembers[email]][channels[i].id].latestMessage);
             }
             
         }
