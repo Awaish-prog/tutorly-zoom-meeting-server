@@ -1,5 +1,6 @@
 const { WebClient } = require('@slack/web-api');
 require('dotenv').config()
+const fs = require('fs').promises;
 
 
 // Read a token from the environment variables
@@ -66,7 +67,6 @@ const slackMembers = {
 
 const slackIds = { }
 
-const usersAndReads = {  }
 
 const slackTokens = {
     U02S69ZB9NG: process.env.AWAISH_TOKEN,
@@ -74,10 +74,12 @@ const slackTokens = {
     U057MKTGVQW: process.env.ROSE_TOKEN
 }
 
-function getNotificationFromData(userId){
+async function getNotificationFromData(userId){
     if(!userId){
         return false
     }
+    const data = await fs.readFile('../tutorly-zoom-meeting-server/UsersAndReads.json', 'utf8');
+    const usersAndReads = JSON.parse(data);
 
     const channelData = usersAndReads[userId]
 
@@ -103,8 +105,10 @@ function getNotification(req, res){
 
 }
 
-function checkNotification(eventData){
-    
+async function checkNotification(eventData){
+    const data = await fs.readFile('../tutorly-zoom-meeting-server/UsersAndReads.json', 'utf8');
+    const usersAndReads = JSON.parse(data);
+
     if(usersAndReads[eventData.event.user] && usersAndReads[eventData.event.user][eventData.event.channel] && usersAndReads[eventData.event.user][eventData.event.channel].latestMessage === eventData.event.ts){
         return false
     }
@@ -113,11 +117,12 @@ function checkNotification(eventData){
   
 async function updateUsersAndReads(eventData){
     try{
-        console.log(slackIds);
-        console.log(usersAndReads);
+        
+        const data = await fs.readFile('../tutorly-zoom-meeting-server/UsersAndReads.json', 'utf8');
+        const usersAndReads = JSON.parse(data);
 
         if(eventData.event){
-            console.log(usersAndReads);
+            
             if(!slackTokens[eventData.event.user]){
                 return
             }
@@ -160,8 +165,8 @@ async function updateUsersAndReads(eventData){
                 }
             }
 
-            console.log(usersAndReads);
-            
+            const updatedData = JSON.stringify(usersAndReads, null, 2);
+            await fs.writeFile('../tutorly-zoom-meeting-server/UsersAndReads.json', updatedData);
         }
             
     }
@@ -178,12 +183,16 @@ async function initializeSlackIds(){
     const result = await client.users.list()
     const members = result.members
     let user = null
+    const data = await fs.readFile('../tutorly-zoom-meeting-server/UsersAndReads.json', 'utf8');
+    const usersAndReads = JSON.parse(data);
     for(let i = 0; i < members.length; i++){
         if(members[i].id && members[i].real_name){
             slackIds[members[i].id] = members[i].real_name
             usersAndReads[members[i].id] = { }
         }
     }
+    const updatedData = JSON.stringify(usersAndReads, null, 2);
+    await fs.writeFile('../tutorly-zoom-meeting-server/UsersAndReads.json', updatedData);
     
 }
 
@@ -378,6 +387,10 @@ async function getPrivateChat(req, res){
     const id = req.params.channel
     const email = req.headers.email
 
+    const data = await fs.readFile('../tutorly-zoom-meeting-server/UsersAndReads.json', 'utf8');
+    const usersAndReads = JSON.parse(data);
+
+
     const userId = slackMembers[email]
 
     const lastRead = (usersAndReads[slackMembers[email]] && usersAndReads[slackMembers[email]][id]) ? usersAndReads[slackMembers[email]][id].lastRead : null 
@@ -431,6 +444,9 @@ async function getPrivateChat(req, res){
 
             res.json({status: 200, chat, unreadMessages, conversationId})
 
+            const updatedData = JSON.stringify(usersAndReads, null, 2);
+            await fs.writeFile('../tutorly-zoom-meeting-server/UsersAndReads.json', updatedData);
+
             markMessageAsReadPrivate(userId, conversationId, email, id)
         }
     }
@@ -450,6 +466,9 @@ async function getChat(req, res){
     const email = req.headers.email
 
     const userId = slackMembers[email]
+
+    const data = await fs.readFile('../tutorly-zoom-meeting-server/UsersAndReads.json', 'utf8');
+    const usersAndReads = JSON.parse(data);
 
     const lastRead = (usersAndReads[slackMembers[email]] && usersAndReads[slackMembers[email]][channel]) ? usersAndReads[slackMembers[email]][channel].lastRead : null 
 
@@ -493,6 +512,9 @@ async function getChat(req, res){
 
     res.json({status: 200, chat, unreadMessages})
 
+    const updatedData = JSON.stringify(usersAndReads, null, 2);
+    await fs.writeFile('../tutorly-zoom-meeting-server/UsersAndReads.json', updatedData);
+
     markMessageAsRead(userId, channel, email)
     
 }
@@ -502,6 +524,8 @@ function markMessageAsReadSocket(email, channel){
 }
 
 async function markMessageAsRead(userId, channel, email){
+    const data = await fs.readFile('../tutorly-zoom-meeting-server/UsersAndReads.json', 'utf8');
+    const usersAndReads = JSON.parse(data);
     if(userId && usersAndReads[userId] && usersAndReads[userId][channel]){
         usersAndReads[userId][channel].lastRead = usersAndReads[userId][channel].latestMessage
         if(slackTokens[slackMembers[email]] && usersAndReads[userId][channel].latestMessage){
@@ -510,9 +534,14 @@ async function markMessageAsRead(userId, channel, email){
         }
     
     }
+
+    const updatedData = JSON.stringify(usersAndReads, null, 2);
+    await fs.writeFile('../tutorly-zoom-meeting-server/UsersAndReads.json', updatedData);
 }
 
 async function markMessageAsReadPrivate(userId, conversationId, email, id){
+    const data = await fs.readFile('../tutorly-zoom-meeting-server/UsersAndReads.json', 'utf8');
+    const usersAndReads = JSON.parse(data);
     if(userId && usersAndReads[userId] && usersAndReads[userId][id]){
         usersAndReads[userId][id].lastRead = usersAndReads[userId][id].latestMessage
         if(slackTokens[slackMembers[email]] && usersAndReads[userId][id].latestMessage){
@@ -521,6 +550,8 @@ async function markMessageAsReadPrivate(userId, conversationId, email, id){
         }
     
     }
+    const updatedData = JSON.stringify(usersAndReads, null, 2);
+    await fs.writeFile('../tutorly-zoom-meeting-server/UsersAndReads.json', updatedData);
 }
 
 async function getReplies(req, res){
@@ -559,7 +590,8 @@ async function getChannels(req, res){
 
         const membersList = []
 
-
+        const data = await fs.readFile('../tutorly-zoom-meeting-server/UsersAndReads.json', 'utf8');
+        const usersAndReads = JSON.parse(data);
         
     
         for(const member in slackIds){
@@ -586,6 +618,9 @@ async function getChannels(req, res){
         }
 
         res.json({status: 200, channelsList, membersList, userId: slackMembers[email], userName: slackIds[slackMembers[email]]})
+
+        const updatedData = JSON.stringify(usersAndReads, null, 2);
+        await fs.writeFile('../tutorly-zoom-meeting-server/UsersAndReads.json', updatedData);
     }
     catch(e){
         res.json({status: 404})
