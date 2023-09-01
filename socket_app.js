@@ -47,7 +47,8 @@ io.on("connection", (socket) => {
     console.log("connected");
   
     socket.on("postMessage", (channel, userName, text, showThread, ts) => {
-       postMessage(channel, userName, text, showThread, ts)
+        console.log(channel, userName, text, showThread, ts);
+        postMessage(channel, userName, text, showThread, ts)
     })
   
     socket.on("markMessageAsRead", (email, channel) => {
