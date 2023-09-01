@@ -360,7 +360,7 @@ async function getSlackFileUrl(req, res){
 }
 
 async function postMessage(channel, userName, text, showThread, ts){
-    
+    const client = new WebClient(slackTokens[userName] ? slackTokens[userName] : slackTokens["U02S69ZB9NG"])
     if(showThread){
         const result = await client.chat.postMessage({
             channel: channel,
@@ -470,6 +470,8 @@ async function getChat(req, res){
     const lastRead = (usersAndReads[slackMembers[email]] && usersAndReads[slackMembers[email]][channel]) ? usersAndReads[slackMembers[email]][channel].lastRead : null 
 
     console.log(channel, email);
+
+    const client = new WebClient(slackTokens[userId] ? slackTokens[userId] : slackTokens["U02S69ZB9NG"])
     
     const result = await client.conversations.history({
         channel: channel,
@@ -554,6 +556,12 @@ async function markMessageAsReadPrivate(userId, conversationId, email, id){
 async function getReplies(req, res){
     const { channel, ts, conversationId, showChannels } = req.params
     console.log(channel, ts, conversationId, showChannels);
+
+    const email = req.headers.email
+
+    const userId = slackIds[email]
+
+    const client = new WebClient(slackTokens[userId] ? slackTokens[userId] : slackTokens["U02S69ZB9NG"])
     const response = await client.conversations.replies({channel: channel, ts: ts})
     console.log(response);
     const messages = response.messages
@@ -578,6 +586,9 @@ async function getChannels(req, res){
 
     const email = req.params.email
     
+    const userId = slackIds[email]
+
+    const client = new WebClient(slackTokens[userId] ? slackTokens[userId] : slackTokens["U02S69ZB9NG"])
     try{
         const response = await client.users.conversations({user: slackMembers[email], types: "public_channel, private_channel, mpim, im", limit: 999})
 
