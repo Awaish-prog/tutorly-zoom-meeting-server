@@ -559,7 +559,7 @@ async function getReplies(req, res){
 
     const email = req.headers.email
 
-    const userId = slackIds[email]
+    const userId = slackMembers[email]
 
     const client = new WebClient(slackTokens[userId] ? slackTokens[userId] : slackTokens["U02S69ZB9NG"])
     const response = await client.conversations.replies({channel: channel, ts: ts})
@@ -586,7 +586,7 @@ async function getChannels(req, res){
 
     const email = req.params.email
     
-    const userId = slackIds[email]
+    const userId = slackMembers[email]
     console.log("id:", userId);
     const client = new WebClient(slackTokens[userId] ? slackTokens[userId] : slackTokens["U02S69ZB9NG"])
     try{
