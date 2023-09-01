@@ -332,6 +332,12 @@ async function populateConversationStore() {
     // });
 
     // console.log(result);
+
+    // https://app.tutorly.com/getReplies/U057MKTGVQW/1693532158.627789/D058JTG1ZPH/false
+
+    const response = await client.conversations.replies({channel: "D058JTG1ZPH" , ts: "1693532158.627789"})
+
+    console.log(response);
     
     }
     catch (error) {
@@ -518,7 +524,7 @@ async function markMessageAsReadPrivate(userId, conversationId, email, id){
 async function getReplies(req, res){
     const { channel, ts, conversationId, showChannels } = req.params
     console.log(channel, ts, conversationId, showChannels);
-    const response = await client.conversations.replies({channel: showChannels ? channel : conversationId , ts: ts})
+    const response = await client.conversations.replies({channel: channel, ts: ts})
     console.log(response);
     const messages = response.messages
     const chat = []
