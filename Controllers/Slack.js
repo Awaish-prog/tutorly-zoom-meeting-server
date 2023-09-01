@@ -580,7 +580,7 @@ async function getChannels(req, res){
                     private: channels[i].is_private,
                     read: (usersAndReads[slackMembers[email]] && usersAndReads[slackMembers[email]][channels[i].id]) ? usersAndReads[slackMembers[email]][channels[i].id].lastRead < usersAndReads[slackMembers[email]][channels[i].id].latestMessage : false
                 })
-                console.log(usersAndReads[slackMembers[email]], usersAndReads[slackMembers[email]][channels[i].id], usersAndReads[slackMembers[email]][channels[i].id].lastRead, usersAndReads[slackMembers[email]][channels[i].id].latestMessage);
+                console.log(usersAndReads[slackMembers[email]]);
             }
             
         }
