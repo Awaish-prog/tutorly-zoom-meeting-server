@@ -183,16 +183,13 @@ async function initializeSlackIds(){
     const result = await client.users.list()
     const members = result.members
     let user = null
-    const data = await fs.readFile('../tutorly-zoom-meeting-server/UsersAndReads.json', 'utf8');
-    const usersAndReads = JSON.parse(data);
+    
     for(let i = 0; i < members.length; i++){
         if(members[i].id && members[i].real_name){
             slackIds[members[i].id] = members[i].real_name
-            usersAndReads[members[i].id] = { }
         }
     }
-    const updatedData = JSON.stringify(usersAndReads, null, 2);
-    await fs.writeFile('../tutorly-zoom-meeting-server/UsersAndReads.json', updatedData);
+    
     
 }
 
