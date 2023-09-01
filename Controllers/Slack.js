@@ -571,7 +571,7 @@ async function getChannels(req, res){
         }
 
         
-
+        console.log("New Print-------------------------------------------------------------------------");
         for(let i = 0; i < channels.length; i++){
             if(channels[i].id && channels[i].name){
                 channelsList.push({
