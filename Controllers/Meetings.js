@@ -261,12 +261,12 @@ function updateLalaSheets(){
 
         console.log(sheetDataStudent);
 
-        // sheetClient.spreadsheets.values.clear({
-        //     spreadsheetId: "1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM",
-        //     range: `Sessions Summary!A:F`
-        // })
+        sheetClient.spreadsheets.values.clear({
+            spreadsheetId: "1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM",
+            range: `Sessions Summary!A:F`
+        })
 
-        // updateSheetData("1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM", "Sessions Summary!A:F", sheetData)
+        updateSheetData("1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM", "Sessions Summary!A:F", sheetData)
 
         sheetClient.spreadsheets.values.clear({
             spreadsheetId: "1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM",

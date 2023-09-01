@@ -65,7 +65,78 @@ const slackMembers = {
     "zibaa@tutorly.com" : "U043DA4PLTT"
 }
 
-const slackIds = { }
+const slackIds = {
+    USLACKBOT: 'Slackbot',
+    U01ESV45GUT: 'Lauren Kay',
+    U01EV1K2Z27: 'Google Drive',
+    U01F5C5VBLH: 'Vikram Akula',
+    U01F5CZ437B: 'Sivani Shankar',
+    U01G8TXJ6Q6: 'Asana',
+    U01HJ6G8TBL: 'Zapier',
+    U01HPQJBS7L: 'Hiba fathima',
+    U01HVVD43KN: 'Sivagami Ramanathan',
+    U01HVVD4FEY: 'Narinder Kumar',
+    U01J2DPS8F3: 'Sravan Chinthaparthi',
+    U01JAQ29F8B: 'Zoom',
+    U01LR8AHZND: 'Simple Poll',
+    U01PEGST75G: 'Aeffia Feuerstein',
+    U01SFQUT4PL: 'HubSpot',
+    U01SWHAV5SR: 'GrowSurf',
+    U023AHSA27P: 'Dhruva Samhith',
+    U024EFM0X89: 'Google Calendar',
+    U025D46TVNF: 'Ryan Aniceto',
+    U025E2KU85R: 'Mark Soliman',
+    U0267LVUQAE: 'Frank Serbeniuk',
+    U02695VFE72: 'Aaron Galaif',
+    U02AJ2H0KLJ: 'JustCall',
+    U02B4QK8MBK: 'Shannon Herrera',
+    U02JW127J49: 'Amelya Hensley',
+    U02NAGX0JQY: 'Sharon Thomas',
+    U02NYFCHE0J: 'Deepak Mooda',
+    U02S69ZB9NG: 'Awaish Khan',
+    U0332BS36Q3: 'Shannon Peartree',
+    U03449DDTQU: 'Pooja Bharath',
+    U038ZC22NCV: 'Richa Saha',
+    U03F3EHS1LH: 'Trello',
+    U03G1K75WR1: 'Calendly',
+    U03L43L0B61: 'Jarett Bigej',
+    U03L43L44AZ: 'Tejas Akula',
+    U03L8QX1WUC: 'Craig Zacker',
+    U03L8QX5G04: 'Krystal Navarro',
+    U03L8QXLUTE: 'Cameron Marchese',
+    U03LK378HDF: 'Mahrosh Gealani',
+    U03M042SFEU: 'Jake Lansberg',
+    U03REEKGL8N: 'Intercom Convert',
+    U03SSC9HN5Q: 'Dennis Nolasco',
+    U040SAZ7C1Z: 'Elijah J Gaal',
+    U04117ENPQU: 'OneDrive and SharePoint',
+    U042L4KGRBR: "Laine O'Donnell",
+    U042L4KJN07: 'Nell Scherfling',
+    U042L4KMEUF: 'Susan Carman',
+    U0430M3RWD8: 'Nathan Bussey',
+    U043DA4PLTT: 'Zibaa Adil',
+    U044Q1KM815: 'Darshan Maheshwari',
+    U049CKENHJN: 'Mira',
+    U04A1K8AB6F: 'Ky Huynh',
+    U04AJKL2UNQ: 'Nikhita Sareen',
+    U04B09J55PT: 'William Henderson',
+    U04B36CEKH9: 'Kaitlyn Eng',
+    U04B5P02Z1S: 'Jacqueline Penn',
+    U04NA0SC90W: 'Razaaq Adoti',
+    U04V5PZ1G8P: 'Eleni Sklavenitis',
+    U050W1526SC: 'Antonia Fariña',
+    U057MKTGVQW: 'Rose Zhu',
+    U059JQ3TV1R: 'Nicolette Profeta',
+    U059PU82LHM: 'Oleksiy Meleshko',
+    U05A4AYUY75: 'Shaan',
+    U05A4ES0VSN: 'Hannah Go',
+    U05AH3WNAEM: 'Kate Ferrick',
+    U05AH3WR0L9: 'Noreen Gunnell',
+    U05ALJ3J7E2: 'Charlie Fry',
+    U05D06Y3R3J: 'Marcus Gutierrez',
+    U05M9NXRU1J: 'Tutorly App'
+  }
+  
 
 
 const slackTokens = {
@@ -190,7 +261,7 @@ async function initializeSlackIds(){
         }
     }
     
-    
+    console.log(slackIds);
 }
 
 function getUserName(id){
