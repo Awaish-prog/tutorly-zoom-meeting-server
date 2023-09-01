@@ -531,6 +531,8 @@ async function getReplies(req, res){
         })
     }
 
+    console.log(chat);
+
     res.json({status: 200, chat})
 
 }
