@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.3322d67c.css",
-    "main.js": "/static/js/main.48491b20.js",
+    "main.js": "/static/js/main.b87b643c.js",
     "static/media/folder.png": "/static/media/folder.e11601cf070f884fdebd.png",
     "static/media/callUs.png": "/static/media/callUs.dbbc71996ca6793b882e.png",
     "static/media/logo1.png": "/static/media/logo1.4bce56b7065ea3e7c8a1.png",
@@ -11,10 +11,10 @@
     "static/media/_PPWoodland-Regular.otf": "/static/media/_PPWoodland-Regular.fd321d9999934a397967.otf",
     "index.html": "/index.html",
     "main.3322d67c.css.map": "/static/css/main.3322d67c.css.map",
-    "main.48491b20.js.map": "/static/js/main.48491b20.js.map"
+    "main.b87b643c.js.map": "/static/js/main.b87b643c.js.map"
   },
   "entrypoints": [
     "static/css/main.3322d67c.css",
-    "static/js/main.48491b20.js"
+    "static/js/main.b87b643c.js"
   ]
 }

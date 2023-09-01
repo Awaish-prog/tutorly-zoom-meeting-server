@@ -26,7 +26,20 @@
   "U02JW127J49": {},
   "U02NAGX0JQY": {},
   "U02NYFCHE0J": {},
-  "U02S69ZB9NG": {},
+  "U02S69ZB9NG": {
+    "C02S4NANDV1": {
+      "lastRead": "1693573455.732379",
+      "latestMessage": "1693573455.732379"
+    },
+    "U057MKTGVQW": {
+      "lastRead": "1693573522.794389",
+      "latestMessage": "1693573522.794389"
+    },
+    "U02S69ZB9NG": {
+      "lastRead": "1693573522.794389",
+      "latestMessage": "1693573522.794389"
+    }
+  },
   "U0332BS36Q3": {},
   "U03449DDTQU": {},
   "U038ZC22NCV": {},
@@ -58,11 +71,29 @@
   "U04NA0SC90W": {},
   "U04V5PZ1G8P": {},
   "U050W1526SC": {},
-  "U057MKTGVQW": {},
+  "U057MKTGVQW": {
+    "C02S4NANDV1": {
+      "lastRead": "1693573455.732379",
+      "latestMessage": "1693573455.732379"
+    },
+    "U057MKTGVQW": {
+      "lastRead": "1693573687.993379",
+      "latestMessage": "1693573522.794389"
+    },
+    "U02S69ZB9NG": {
+      "lastRead": "1693573687.993379",
+      "latestMessage": "1693573522.794389"
+    }
+  },
   "U059JQ3TV1R": {},
   "U059PU82LHM": {},
   "U05A4AYUY75": {},
-  "U05A4ES0VSN": {},
+  "U05A4ES0VSN": {
+    "C02S4NANDV1": {
+      "lastRead": "1692847341.085549",
+      "latestMessage": "1693573455.732379"
+    }
+  },
   "U05AH3WNAEM": {},
   "U05AH3WR0L9": {},
   "U05ALJ3J7E2": {},
