@@ -518,7 +518,7 @@ async function markMessageAsReadPrivate(userId, conversationId, email, id){
 async function getReplies(req, res){
     const { channel, ts, conversationId, showChannels } = req.params
     console.log(channel, ts, conversationId, showChannels);
-    const response = await client.conversations.replies({channel: showChannels ? conversationId : channel , ts: ts})
+    const response = await client.conversations.replies({channel: showChannels ? channel : conversationId , ts: ts})
     console.log(response);
     const messages = response.messages
     const chat = []
