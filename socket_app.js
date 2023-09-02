@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
   
     socket.on("markMessageAsRead", (email, channel) => {
       markMessageAsReadSocket(email, channel);
-   })
+    })
 })
 
 app.listen("8080", async () => {
