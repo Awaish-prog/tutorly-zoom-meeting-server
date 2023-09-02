@@ -45,14 +45,14 @@ app.post("/slackapp/slackMessage", (req, res) => {
   
   
 io.on("connection", (socket) => {
-    outer_socket = socket
+    outer_socket = io
     console.log("connected");
   
-    socket.on("postMessage", (channel, userName, text, showThread, ts) => {
+    io.on("postMessage", (channel, userName, text, showThread, ts) => {
         postMessage(channel, userName, text, showThread, ts)
     })
   
-    socket.on("markMessageAsRead", (email, channel) => {
+    io.on("markMessageAsRead", (email, channel) => {
       markMessageAsReadSocket(email, channel);
     })
 })
