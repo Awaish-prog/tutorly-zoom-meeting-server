@@ -48,11 +48,11 @@ io.on("connection", (socket) => {
     outer_socket = io
     console.log("connected");
   
-    io.on("postMessage", (channel, userName, text, showThread, ts) => {
+    socket.on("postMessage", (channel, userName, text, showThread, ts) => {
         postMessage(channel, userName, text, showThread, ts)
     })
   
-    io.on("markMessageAsRead", (email, channel) => {
+    socket.on("markMessageAsRead", (email, channel) => {
       markMessageAsReadSocket(email, channel);
     })
 })
