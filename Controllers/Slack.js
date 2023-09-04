@@ -503,7 +503,7 @@ async function getPrivateChat(req, res){
                 const pattern = /<([^|>]+)\|([^>]+)>/g;
 
 
-                messages[i].text = text.replace(pattern, '<a href="$1" target="_blank">$2</a>');
+                messages[i].text = messages[i].text.replace(pattern, '<a href="$1" target="_blank">$2</a>');
                 chat.push({
                     user: messages[i].user,
                     username: messages[i].username ? messages[i].username :  slackIds[messages[i].user],
@@ -578,7 +578,7 @@ async function getChat(req, res){
         const pattern = /<([^|>]+)\|([^>]+)>/g;
 
 
-        messages[i].text = text.replace(pattern, '<a href="$1" target="_blank">$2</a>');
+        messages[i].text = messages[i].text.replace(pattern, '<a href="$1" target="_blank">$2</a>');
 
         chat.push({
             user: messages[i].user,
@@ -665,7 +665,7 @@ async function getReplies(req, res){
         const pattern = /<([^|>]+)\|([^>]+)>/g;
 
 
-        messages[i].text = text.replace(pattern, '<a href="$1" target="_blank">$2</a>');
+        messages[i].text = messages[i].text.replace(pattern, '<a href="$1" target="_blank">$2</a>');
         chat.push({
             user: messages[i].user,
             username: messages[i].username ? messages[i].username :  slackIds[messages[i].user],
