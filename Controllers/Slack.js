@@ -499,6 +499,11 @@ async function getPrivateChat(req, res){
                         return match;
                     }
                 });
+
+                const pattern = /<([^|>]+)\|([^>]+)>/g;
+
+
+                messages[i].text = text.replace(pattern, '<a href="$1" target="_blank">$2</a>');
                 chat.push({
                     user: messages[i].user,
                     username: messages[i].username ? messages[i].username :  slackIds[messages[i].user],
@@ -569,6 +574,12 @@ async function getChat(req, res){
                 return match;
             }
         });
+
+        const pattern = /<([^|>]+)\|([^>]+)>/g;
+
+
+        messages[i].text = text.replace(pattern, '<a href="$1" target="_blank">$2</a>');
+
         chat.push({
             user: messages[i].user,
             username: messages[i].username ? messages[i].username :  slackIds[messages[i].user],
@@ -640,6 +651,21 @@ async function getReplies(req, res){
     const chat = []
 
     for(let i = 0; i < messages.length; i++){
+
+        messages[i].text = messages[i].text.replace(/<@(.*?)>/g, (match, userId) => {
+            // Check if the userId exists in the mapping
+            if (slackIds[userId]) {
+                return slackIds[userId];
+            } else {
+              // If the userId is not in the mapping, keep the original mention
+                return match;
+            }
+        });
+
+        const pattern = /<([^|>]+)\|([^>]+)>/g;
+
+
+        messages[i].text = text.replace(pattern, '<a href="$1" target="_blank">$2</a>');
         chat.push({
             user: messages[i].user,
             username: messages[i].username ? messages[i].username :  slackIds[messages[i].user],
