@@ -503,11 +503,13 @@ async function getPrivateChat(req, res){
                 const pattern = /<([^|>]+)\|([^>]+)>/g;
 
 
-                messages[i].text = messages[i].text.replace(pattern, '<a href="$1" target="_blank">$2</a>');
+                messages[i].patternLink = messages[i].text.replace(pattern, '$1');
+                messages[i].text = messages[i].text.replace(pattern, '$2');
                 chat.push({
                     user: messages[i].user,
                     username: messages[i].username ? messages[i].username :  slackIds[messages[i].user],
                     text: messages[i].text,
+                    patternLink: messages[i].patternLink,
                     ts: messages[i].ts,
                     replyCount: messages[i].reply_count ? messages[i].reply_count : 0,
                     read: usersAndReads[userId] && usersAndReads[userId][id] && usersAndReads[userId][id].lastRead && usersAndReads[userId][id].lastRead < messages[i].ts,
