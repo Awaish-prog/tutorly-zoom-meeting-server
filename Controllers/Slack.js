@@ -222,7 +222,7 @@ async function updateUsersAndReads(eventData){
 
                 const his = await client.conversations.history({channel: eventData.event.channel, limit: 1})
 
-                console.log(his);
+                
 
                 if(his.messages && his.messages.length){
                     const channel = eventData.event.channel
@@ -260,8 +260,7 @@ async function initializeSlackIds(){
             slackIds[members[i].id] = members[i].real_name
         }
     }
-    
-    console.log(slackIds);
+
 }
 
 function getUserName(id){
@@ -509,7 +508,6 @@ async function getPrivateChat(req, res){
                     user: messages[i].user,
                     username: messages[i].username ? messages[i].username :  slackIds[messages[i].user],
                     text: messages[i].text,
-                    patternLink: messages[i].patternLink,
                     ts: messages[i].ts,
                     replyCount: messages[i].reply_count ? messages[i].reply_count : 0,
                     read: usersAndReads[userId] && usersAndReads[userId][id] && usersAndReads[userId][id].lastRead && usersAndReads[userId][id].lastRead < messages[i].ts,
@@ -548,7 +546,6 @@ async function getChat(req, res){
 
     const lastRead = (usersAndReads[slackMembers[email]] && usersAndReads[slackMembers[email]][channel]) ? usersAndReads[slackMembers[email]][channel].lastRead : null 
 
-    console.log(channel, email);
 
     const client = new WebClient(slackTokens[userId] ? slackTokens[userId] : slackTokens["U02S69ZB9NG"])
     
@@ -640,7 +637,7 @@ async function markMessageAsReadPrivate(userId, conversationId, email, id){
 
 async function getReplies(req, res){
     const { channel, ts, conversationId, showChannels } = req.params
-    console.log(channel, ts, conversationId, showChannels);
+
 
     const email = req.headers.email
 
@@ -648,7 +645,7 @@ async function getReplies(req, res){
 
     const client = new WebClient(slackTokens[userId] ? slackTokens[userId] : slackTokens["U02S69ZB9NG"])
     const response = await client.conversations.replies({channel: channel, ts: ts})
-    console.log(response);
+    
     const messages = response.messages
     const chat = []
 
@@ -676,7 +673,6 @@ async function getReplies(req, res){
         })
     }
 
-    console.log(chat);
 
     res.json({status: 200, chat})
 
@@ -687,7 +683,7 @@ async function getChannels(req, res){
     const email = req.params.email
     
     const userId = slackMembers[email]
-    console.log("id:", userId);
+    
     const client = new WebClient(slackTokens[userId] ? slackTokens[userId] : slackTokens["U02S69ZB9NG"])
     try{
         const response = await client.users.conversations({user: slackMembers[email], types: "public_channel, private_channel, mpim, im", limit: 999})
@@ -711,7 +707,7 @@ async function getChannels(req, res){
         }
 
         
-        console.log("New Print-------------------------------------------------------------------------");
+        
         for(let i = 0; i < channels.length; i++){
             if(channels[i].id && channels[i].name){
                 channelsList.push({
@@ -720,7 +716,7 @@ async function getChannels(req, res){
                     private: channels[i].is_private,
                     read: (usersAndReads[slackMembers[email]] && usersAndReads[slackMembers[email]][channels[i].id]) ? usersAndReads[slackMembers[email]][channels[i].id].lastRead < usersAndReads[slackMembers[email]][channels[i].id].latestMessage : false
                 })
-                console.log(usersAndReads[slackMembers[email]]);
+                
             }
             
         }
