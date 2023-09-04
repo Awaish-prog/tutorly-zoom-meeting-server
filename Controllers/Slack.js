@@ -509,7 +509,7 @@ async function getPrivateChat(req, res){
                         messages[i].patternLink = messages[i].patternLink.filter(text => text.startsWith("http"))
                     }
                 }
-                messages[i].text = messages[i].text.replace(pattern, '$2');
+                messages[i].text = messages[i].text.replace(pattern, '<a href="$1">$2</a>');
                 chat.push({
                     user: messages[i].user,
                     username: messages[i].username ? messages[i].username :  slackIds[messages[i].user],
@@ -591,7 +591,7 @@ async function getChat(req, res){
                 messages[i].patternLink = messages[i].patternLink.filter(text => text.startsWith("http"))
             }
         }
-        messages[i].text = messages[i].text.replace(pattern, '$2');
+        messages[i].text = messages[i].text.replace(pattern, '<a href="$1">$2</a>');
 
         chat.push({
             user: messages[i].user,
@@ -686,7 +686,7 @@ async function getReplies(req, res){
                 messages[i].patternLink = messages[i].patternLink.filter(text => text.startsWith("http"))
             }
         }
-        messages[i].text = messages[i].text.replace(pattern, '$2');
+        messages[i].text = messages[i].text.replace(pattern, '<a href="$1">$2</a>');
         chat.push({
             user: messages[i].user,
             username: messages[i].username ? messages[i].username :  slackIds[messages[i].user],
