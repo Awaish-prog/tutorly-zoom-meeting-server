@@ -668,6 +668,12 @@ async function getReplies(req, res){
 
 
         messages[i].patternLink = messages[i].text.replace(pattern, '$1');
+        if(messages[i].patternLink.includes("http")){
+            messages[i].patternLink = messages[i].patternLink.split(' ')
+            if(messages[i].patternLink && messages[i].patternLink.length){
+                messages[i].patternLink = messages[i].patternLink.filter(text => text.startsWith("http"))
+            }
+        }
         messages[i].text = messages[i].text.replace(pattern, '$2');
         chat.push({
             user: messages[i].user,
