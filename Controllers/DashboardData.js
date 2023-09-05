@@ -78,35 +78,35 @@ async function createNewSheet(sheetId, range, data, calendar){
     else{
       await sheetClient.spreadsheets.values.clear({
         spreadsheetId: sheetId,
-        range: calendar + "!A:S"
+        range: calendar + "!" + range
       });
       console.log(`Cleared sheet ${sheetId}`);
-      const responseWrite = await updateSheetData(sheetId, calendar + "!A:S", data)
+      const responseWrite = await updateSheetData(sheetId, calendar + "!" + range, data)
       console.log(responseWrite.status);
       return responseWrite
     }
     const res = await createNewSheetWithName(sheetId, name)
     
-    const response = await updateSheetData(sheetId, name + "!A:S", sheetData)
+    const response = await updateSheetData(sheetId, name + "!" + range, sheetData)
     await sheetClient.spreadsheets.values.clear({
       spreadsheetId: sheetId,
-      range: calendar + "!A:S"
+      range: calendar + "!" + range
     });
     console.log(`Cleared sheet ${sheetId}`);
-    const responseWrite = await updateSheetData(sheetId, calendar + "!A:S", data)
+    const responseWrite = await updateSheetData(sheetId, calendar + "!" + range, data)
     console.log(responseWrite.status);
     return responseWrite
   }
   catch(e){
     await sheetClient.spreadsheets.values.clear({
       spreadsheetId: sheetId,
-      range: calendar + "!A:S"
+      range: calendar + "!" + range
     });
     console.log(`Cleared sheet ${sheetId}`);
-    const responseWrite = await updateSheetData(sheetId, calendar + "!A:S", data)
+    const responseWrite = await updateSheetData(sheetId, calendar + "!" + range, data)
     console.log(responseWrite.status);
     return responseWrite
-    console.log(e);
+    
   }
 }
 
@@ -299,6 +299,34 @@ async function googleSheetDataTutorAll(req, res){
   }
 }
 
+async function updateLalaSessionDetails(id, calenderId, startDate, endDate, res){
+  try{
+    const data = [["Start time", "End time", "First name", "Last name", "Tutor", "Appointment ID"]]
+
+    acuity.request(`appointments?calendarID=${calenderId}&minDate=${startDate}&maxDate=${endDate}&max=5000&direction=ASC`, async function (err, r, appointments) {
+      if (err) return console.error(err);
+      console.log("Acuity done");
+
+      let tutorName = ""
+
+      for(let i = 0; i < appointments.length; i++){
+        if(appointments[i].calendar === "Eleni S"){
+          tutorName = appointments[i].calendar
+          data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].calendar, appointments[i].id])
+          
+        }
+        
+      }
+      const response = await createNewSheet(id, "A:F", data, tutorName)
+      res.json({status: response.status})
+    })
+  }
+  catch(e){
+    console.log(e);
+  }
+}
+
+
 async function googleSheetDataTutor(req, res){
   try{
     const id = req.params.driveId
@@ -307,6 +335,10 @@ async function googleSheetDataTutor(req, res){
   const endDate = req.params.to
   if(calenderId === "AllTutors"){
     await googleSheetDataTutorAll(req, res)
+    return
+  }
+  if(calenderId === "Lala 2023-24"){
+    updateLalaSessionDetails(id, calenderId, startDate, endDate, res)
     return
   }
   const data = [["Start time", "Ent time", "First name", "Last name", "Phone", "Email", "Type", "Calendar", "Notes", "Date Scheduled", "Label", "Canceled", "Appointment ID", "LALA sessions", "Lennox sessions", "Maple Sessions", "Tutoring sessions", "Total", "Total Pay"]]; 
