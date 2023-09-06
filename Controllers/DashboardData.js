@@ -667,12 +667,13 @@ async function getDashboardDataTutor(email){
     for(let i = 0; i < data.length; i++){
         if(data[i][18] && (data[i][18].toLowerCase().includes(email) || data[i][18].toLowerCase().includes(email.replaceAll("@", "@my")))){
             studentsList.push(data[i])
+            console.log(data[i]);
         }
 
         if(data[i][46] && (data[i][46].toLowerCase().includes(email) || data[i][46].toLowerCase().includes(email.replaceAll("@", "@my")))){
           studentsList.push(data[i])
         }
-        console.log(data[i][46]);
+        
     }
     return { status: 200, studentsList }
     }
