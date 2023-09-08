@@ -310,7 +310,7 @@ async function updateLalaSessionDetails(id, calenderId, startDate, endDate, res)
       let tutorName = ""
 
       for(let i = 0; i < appointments.length; i++){
-        if(appointments[i].calendar === "Eleni S" && (new Date(appointments[i].date) >= new Date(startDate)) && (new Date(appointments[i].date) < new Date(endDate))){
+        if(appointments[i].calendar === "Eleni S" && (new Date(appointments[i].date) >= new Date(startDate)) && (new Date(appointments[i].date) <= new Date(endDate))){
           tutorName = appointments[i].calendar
           data.push([appointments[i].date + " " + appointments[i].time, appointments[i].date + " " + appointments[i].endTime, appointments[i].firstName, appointments[i].lastName, appointments[i].calendar, appointments[i].id])
           
