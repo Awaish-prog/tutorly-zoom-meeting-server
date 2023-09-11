@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.680dd2dc.css",
-    "main.js": "/static/js/main.e0baa859.js",
+    "main.css": "/static/css/main.a0db7ecf.css",
+    "main.js": "/static/js/main.0f5959bf.js",
     "static/media/folder.png": "/static/media/folder.e11601cf070f884fdebd.png",
     "static/media/callUs.png": "/static/media/callUs.dbbc71996ca6793b882e.png",
     "static/media/logo1.png": "/static/media/logo1.4bce56b7065ea3e7c8a1.png",
@@ -10,11 +10,11 @@
     "static/media/_NeueMontreal-Regular.otf": "/static/media/_NeueMontreal-Regular.a386af5501c02b65221c.otf",
     "static/media/_PPWoodland-Regular.otf": "/static/media/_PPWoodland-Regular.fd321d9999934a397967.otf",
     "index.html": "/index.html",
-    "main.680dd2dc.css.map": "/static/css/main.680dd2dc.css.map",
-    "main.e0baa859.js.map": "/static/js/main.e0baa859.js.map"
+    "main.a0db7ecf.css.map": "/static/css/main.a0db7ecf.css.map",
+    "main.0f5959bf.js.map": "/static/js/main.0f5959bf.js.map"
   },
   "entrypoints": [
-    "static/css/main.680dd2dc.css",
-    "static/js/main.e0baa859.js"
+    "static/css/main.a0db7ecf.css",
+    "static/js/main.0f5959bf.js"
   ]
 }

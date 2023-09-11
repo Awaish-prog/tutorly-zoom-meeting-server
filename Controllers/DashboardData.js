@@ -711,7 +711,7 @@ async function getDashboardDataTest(email){
     const data = response.data.values
     for(let i = 0; i < data.length; i++){
         if(data[i][1] && data[i][1].toLowerCase().includes(email)){
-            console.log(data[i][3]);
+            
             const getDriveFolderData = await getFolderInfo(data[i][3])
             getDriveFolderData["meetingLink"] = data[i][46]
             getDriveFolderData['studentName'] = data[i][0]
