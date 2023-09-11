@@ -660,7 +660,7 @@ async function getDashboardDataTutor(email){
     const studentsList = []
     const response = await sheetClient.spreadsheets.values.get({
         spreadsheetId: "1-wqELarzcQLs8bPNVC_kUiWZMCX6QPX9Acr3rjRov2k",
-        range: 'A:AU'
+        range: 'A:AV'
     })
     const data = response.data.values
     for(let i = 0; i < data.length; i++){
