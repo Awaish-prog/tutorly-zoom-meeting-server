@@ -384,9 +384,9 @@ async function googleSheetDataTutor(req, res){
     }
 
 
-    const totalSessions = (sessionCountLala / 50) + (sessionCount / 60) + (sessionCountLennox / 60) + (sessionCountMaple / 35)
-    console.log(totalSessions, (sessionCountLala / 50), (sessionCount / 60), (sessionCountLennox / 60), (sessionCountMaple / 35));
-    let totalPay = totalSessions * 25
+    const totalSessions = (sessionCountLala / 50) + (sessionCount / 60) + (sessionCountLennox / 60)
+    
+    let totalPay = totalSessions * 25 + (sessionCountMaple / 30) * 15
     if(appointments[0] && appointments[0].calendar === "Ryan"){
       totalPay = totalSessions * 35
       console.log("It's Ryan");
@@ -401,7 +401,7 @@ async function googleSheetDataTutor(req, res){
     if(data.length > 1){
       data[1].push(sessionCountLala / 50)
       data[1].push(sessionCountLennox / 60)
-      data[1].push(sessionCountMaple / 35)
+      data[1].push(sessionCountMaple / 30)
       data[1].push(sessionCount / 60)
       data[1].push(totalSessions)
       data[1].push(totalPay)

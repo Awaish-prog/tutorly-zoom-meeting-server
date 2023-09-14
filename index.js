@@ -121,9 +121,9 @@ app.listen("4005", async () => {
   //markStatus()
   //initializeSlackIds()
   //populateConversationStore()
-  //updateLalaSheets()
-
-  
+  // updateLalaSheets("2023-08-21", "lala tutoring", "english", "1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM")
+  // updateLalaSheets("2023-09-12", "maple", " ela ", "1UHge0WVFWozPd3DoVU-vOn4Qs8UjQUx8HF_eh2r6dB8")
+  // 1UHge0WVFWozPd3DoVU-vOn4Qs8UjQUx8HF_eh2r6dB8
 
   console.log("server running");
 })

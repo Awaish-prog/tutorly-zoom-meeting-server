@@ -180,16 +180,17 @@ function getAvailability(req, res){
         res.json({ status: 200, timings })
     });
 }
+// 2023-08-21, lala tutoring, english, 1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM
 
-function updateLalaSheets(){
-    acuity.request(`appointments?minDate=2023-08-21&direction=ASC&max=2147483647`, function (err, r2, appointments) {
+function updateLalaSheets(minDate, school, english, sheetId){
+    acuity.request(`appointments?minDate=${minDate}&direction=ASC&max=2147483647`, function (err, r2, appointments) {
         if (err) return console.error(err);
         const data = {  }
 
         const dataStudent = {  }
 
         for(let i = 0; i < appointments.length; i++){
-            if(appointments[i].type.toLowerCase().includes("lala tutoring")){
+            if(appointments[i].type.toLowerCase().includes(school)){
                 if(appointments[i].labels){
                     if(!data.hasOwnProperty(appointments[i].date)){
                         data[appointments[i].date] = [appointments[i].date, 0, 0, 0, 0, 0]
@@ -222,7 +223,7 @@ function updateLalaSheets(){
                         }
                         dataStudent[appointments[i].firstName + " " + appointments[i].lastName][4] += 1
                     }
-                    else if(appointments[i].type.toLowerCase().includes("english")){
+                    else if(appointments[i].type.toLowerCase().includes(english)){
                         if(appointments[i].labels[0].name.toLowerCase() === 'completed'){
                             dataStudent[appointments[i].firstName + " " + appointments[i].lastName][6] += 1
                         }
@@ -262,18 +263,18 @@ function updateLalaSheets(){
         console.log(sheetDataStudent);
 
         sheetClient.spreadsheets.values.clear({
-            spreadsheetId: "1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM",
+            spreadsheetId: sheetId,
             range: `Sessions Summary!A:F`
         })
 
-        updateSheetData("1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM", "Sessions Summary!A:F", sheetData)
+        updateSheetData(sheetId, "Sessions Summary!A:F", sheetData)
 
         sheetClient.spreadsheets.values.clear({
-            spreadsheetId: "1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM",
+            spreadsheetId: sheetId,
             range: `Student Wise Sessions Data!A:K`
         })
 
-        updateSheetData("1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM", "Student Wise Sessions Data!A:K", sheetDataStudent)
+        updateSheetData(sheetId, "Student Wise Sessions Data!A:K", sheetDataStudent)
     })
 }
 
