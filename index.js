@@ -83,6 +83,11 @@ app.get("/joinWhiteboard*", (req, res) => {
   res.sendFile(path.join(__dirname, "white-board/index.html"))
 })
 
+app.get("/updateStudentIds", (req, res) => {
+  updateStudentIds()
+  res.send("Request Sent....")
+})
+
 app.get("/updateMapleSheets", (req, res) => {
   mapleSheetUpdate()
   res.send("Please check Maple sessions sheet, it will update in few seconds..")
