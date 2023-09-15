@@ -262,9 +262,9 @@ async function googleSheetDataTutorAll(req, res){
         tutors[tutorKeys[i]][0] /= 50;
         tutors[tutorKeys[i]][1] /= 60;
         tutors[tutorKeys[i]][3] /= 60;
-        tutors[tutorKeys[i]][4] /= 35;
-        tutors[tutorKeys[i]][6] = tutors[tutorKeys[i]][0] + tutors[tutorKeys[i]][1] + tutors[tutorKeys[i]][3] + tutors[tutorKeys[i]][4];
-        tutors[tutorKeys[i]][8] = tutors[tutorKeys[i]][7] * tutors[tutorKeys[i]][6]
+        tutors[tutorKeys[i]][4] /= 30;
+        tutors[tutorKeys[i]][6] = tutors[tutorKeys[i]][0] + tutors[tutorKeys[i]][1] + tutors[tutorKeys[i]][3];
+        tutors[tutorKeys[i]][8] = tutors[tutorKeys[i]][7] * tutors[tutorKeys[i]][6] + tutors[tutorKeys[i]][4] * 15
         tutors[tutorKeys[i]][10] = tutors[tutorKeys[i]][8]
         tutors[tutorKeys[i]].unshift(tutorKeys[i])
         sheetData.push(tutors[tutorKeys[i]])
