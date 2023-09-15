@@ -1,7 +1,6 @@
 const Acuity = require('acuityscheduling');
 const crypto = require('crypto-js');
 const jwt = require("jsonwebtoken");
-const { eliminateDuplicates } = require('./Meetings');
 require('dotenv').config()
 
 const acuity = Acuity.basic({
@@ -13,6 +12,26 @@ function hashString(inputString) {
   const hmac = crypto.HmacSHA1(inputString, process.env.HASH_KEY);
   const hash = hmac.toString(crypto.enc.Hex);
   return hash.substr(0, 10)
+}
+
+function contains(filteredApp, appointment){
+  for(let i = 0; i < filteredApp.length; i++){
+      if(filteredApp[i].date + " " + filteredApp[i].time + " " + filteredApp[i].calendarID === appointment.date + " " + appointment.time + " " + appointment.calendarID){
+          return true
+      }
+  }
+  return false
+}
+
+function eliminateDuplicates(appointments){
+  const filteredApp = []
+
+  for(let i = 0; i < appointments.length; i++){
+      if(!contains(filteredApp, appointments[i])){
+          filteredApp.push(appointments[i])
+      }
+  }
+  return filteredApp
 }
 
 function authorizeUser(list, email, id){
