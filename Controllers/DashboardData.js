@@ -1,7 +1,6 @@
 const {google} = require('googleapis');
 const Acuity = require('acuityscheduling');
 const { hashString } = require('./User');
-const { eliminateDuplicates } = require('./Meetings');
 require('dotenv').config()
 
 
@@ -326,7 +325,25 @@ async function updateLalaSessionDetails(id, calenderId, startDate, endDate, res)
   }
 }
 
+function contains(filteredApp, appointment){
+  for(let i = 0; i < filteredApp.length; i++){
+      if(filteredApp[i].date + " " + filteredApp[i].time + " " + filteredApp[i].calendarID === appointment.date + " " + appointment.time + " " + appointment.calendarID){
+          return true
+      }
+  }
+  return false
+}
 
+function eliminateDuplicates(appointments){
+  const filteredApp = []
+
+  for(let i = 0; i < appointments.length; i++){
+      if(!contains(filteredApp, appointments[i])){
+          filteredApp.push(appointments[i])
+      }
+  }
+  return filteredApp
+}
 async function googleSheetDataTutor(req, res){
   try{
     const id = req.params.driveId
