@@ -56,9 +56,10 @@ function getPayroll(req, res){
  
   acuity.request(`calendars`, function (err, r1, calendars) {
     if (err) return console.error(err);
-    
+    console.log("received");
     for(let i = 0; i < calendars.length; i++){
-      if(calendars[i].email.includes(tutorEmail)){
+      
+      if(calendars[i].email.toLowerCase().includes(tutorEmail) || calendars[i].email.toLowerCase().includes(tutorEmail.replace("@", "@my"))){
         const calenderId =  calendars[i].id
         
         acuity.request(`appointments?calendarID=${calenderId}&minDate=${startDate}&maxDate=${endDate}&max=5000&direction=ASC`, async function (err, r, appointments) {
