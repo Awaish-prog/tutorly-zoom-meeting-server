@@ -1,6 +1,7 @@
 const Acuity = require('acuityscheduling');
 const crypto = require('crypto-js');
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const { eliminateDuplicates } = require('./Meetings');
 require('dotenv').config()
 
 const acuity = Acuity.basic({
@@ -86,6 +87,8 @@ function getPayroll(req, res){
           // const totalSessions = (sessionCountLala / 50) + (sessionCount / 60) + (sessionCountLennox / 60) + (sessionCountMaple / 35)
 
           // let totalPay = totalSessions * 25
+
+          appointments = eliminateDuplicates(appointments)
 
           res.json({status: 200, appointments})
         })

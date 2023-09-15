@@ -182,6 +182,26 @@ function getAvailability(req, res){
 }
 // 2023-08-21, lala tutoring, english, 1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM
 
+function contains(filteredApp, appointment){
+    for(let i = 0; i < filteredApp.length; i++){
+        if(filteredApp[i].date + " " + filteredApp[i].time + " " + filteredApp[i].calendarID === appointment.date + " " + appointment.time + " " + appointment.calendarID){
+            return true
+        }
+    }
+    return false
+}
+
+function eliminateDuplicates(appointments){
+    const filteredApp = []
+
+    for(let i = 0; i < appointments.length; i++){
+        if(!contains(filteredApp, appointments[i])){
+            filteredApp.push(appointments[i])
+        }
+    }
+    return filteredApp
+}
+
 function updateLalaSheets(minDate, school, english, sheetId){
     acuity.request(`appointments?minDate=${minDate}&direction=ASC&max=2147483647`, function (err, r2, appointments) {
         if (err) return console.error(err);
@@ -189,8 +209,12 @@ function updateLalaSheets(minDate, school, english, sheetId){
 
         const dataStudent = {  }
 
+        
+
         for(let i = 0; i < appointments.length; i++){
+            
             if(appointments[i].type.toLowerCase().includes(school)){
+                console.log(appointments[i].date + " " + appointments[i].time + " " + appointments[i].calendarID);
                 if(appointments[i].labels){
                     if(!data.hasOwnProperty(appointments[i].date)){
                         data[appointments[i].date] = [appointments[i].date, 0, 0, 0, 0, 0]
@@ -293,4 +317,4 @@ function countSessions(name){
 }
 
 
-module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId, getMeetingsList, updateLalaSheets, countSessions }
+module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId, getMeetingsList, updateLalaSheets, countSessions, eliminateDuplicates }

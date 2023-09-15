@@ -1,6 +1,7 @@
 const {google} = require('googleapis');
 const Acuity = require('acuityscheduling');
 const { hashString } = require('./User');
+const { eliminateDuplicates } = require('./Meetings');
 require('dotenv').config()
 
 
@@ -240,7 +241,7 @@ async function googleSheetDataTutorAll(req, res){
         spreadsheetId: id,
         range: `A:K`
       });
-      
+      appointments = eliminateDuplicates(appointments)
       for(let i = 0; i < appointments.length; i++){
         if(tutors.hasOwnProperty(appointments[i].calendar) && appointments[i].labels && (appointments[i].labels[0].name.toLowerCase() === "completed" || appointments[i].labels[0].name.toLowerCase() === "canceled<24 h" || appointments[i].labels[0].name.toLowerCase() === "excused absence")){
           if(appointments[i].type.toLowerCase().includes("lala")){
@@ -349,6 +350,7 @@ async function googleSheetDataTutor(req, res){
     let sessionCount = 0
     let sessionCountLennox = 0
     let sessionCountMaple = 0
+    appointments = eliminateDuplicates(appointments)
     for (var i = 0; i < appointments.length; i++) {
       if(appointments[i].labels){
         if(appointments[i].canceled){
