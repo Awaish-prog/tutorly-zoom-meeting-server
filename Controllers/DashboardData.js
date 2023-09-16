@@ -289,8 +289,9 @@ async function googleSheetDataTutorAll(req, res){
       sheetData.push(total)
 
       
+      
       const response = await updateSheetData(id, "A:L", sheetData)
-      //console.log(sheetData);
+      console.log(sheetData);
       res.json({status: response.status})
     })
   }
