@@ -82,7 +82,7 @@ app.get("/updateTutorSheets", (req, res) => {
 })
 
 app.post("/wordpress", (req, res) => {
-  console.log(req.body);
+  console.log(req);
 })
 
 app.get("/joinWhiteboard*", (req, res) => {
