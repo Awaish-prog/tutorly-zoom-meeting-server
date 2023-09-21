@@ -21,10 +21,13 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "googleapis": "^115.0.0",
+    "instagram-private-api": "^1.45.3",
     "jsonwebtoken": "^9.0.0",
     "node-downloader-helper": "^2.1.6",
     "nodemon": "^2.0.22",
     "request": "^2.88.2",
-    "socket.io": "^4.6.2"
+    "request-promise": "^4.2.6",
+    "socket.io": "^4.6.2",
+    "twitter-api-v2": "^1.15.1"
   }
 }

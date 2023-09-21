@@ -16,6 +16,8 @@ const { updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink } =
 const v8 = require('v8');
 const { createPaper, deleteBitpaper } = require('./Controllers/Bitpapaer');
 const { populateConversationStore, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification, checkNotification, markMessageAsReadSocket, getSlackFileUrl } = require('./Controllers/Slack');
+const { tweet } = require('./Controllers/Twitter');
+const { postToInsta } = require('./Controllers/Instagaram');
 //const { sendMessageToClient } = require('./socket_app');
 
 
@@ -79,6 +81,10 @@ app.get("/updateTutorSheets", (req, res) => {
   res.sendFile(path.join(__dirname, "tutorly-sheet-update-build/index.html"))
 })
 
+app.post("/wordpress", (req, res) => {
+  console.log("word press");
+})
+
 app.get("/joinWhiteboard*", (req, res) => {
   res.sendFile(path.join(__dirname, "white-board/index.html"))
 })
@@ -129,6 +135,8 @@ app.listen("4005", async () => {
   // updateLalaSheets("2023-08-21", "lala tutoring", "english", "1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM")
   // updateLalaSheets("2023-09-12", "maple", " ela ", "1UHge0WVFWozPd3DoVU-vOn4Qs8UjQUx8HF_eh2r6dB8")
   // 1UHge0WVFWozPd3DoVU-vOn4Qs8UjQUx8HF_eh2r6dB8
+  // tweet()
 
+  // postToInsta()
   console.log("server running");
 })

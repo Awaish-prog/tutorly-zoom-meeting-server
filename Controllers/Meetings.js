@@ -8,6 +8,50 @@ const acuity = Acuity.basic({
   apiKey: process.env.ACUITY_API_KEY
 });
 
+const studentIds = {
+    "Alexia Melecio Olivas": "103266",
+    "Nayomi Garcia": "102187",
+    "Eduardo Nunez": "102854",
+    "Matthew Garcia": "102460",
+    "Bryan Garcia": "101500",
+    "James Evan Lopez": "102159",
+    "Yoselin Gonzalez": "103139",
+    "Vanessa Garcia": "103293",
+    "marie guillen": "100982",
+    "Angeles Garcia": "103129",
+    "Natalie Valencia": "102637",
+    "Benji Estrada": "100669",
+    "Victor Pozos": "103262",
+    "Natalie Navas": "100446",
+    "Angel Ramos": "100696",
+    "Jocelyn Santos": "103137",
+    "Zoe Garcia": "101144",
+    "Yanni Zambrano": "101011",
+    "Jaida Wilson": "102358",
+    "Jasmine Echeverria": "102807",
+    "Daniel Tran": "103190",
+    "Jocelyn Campillo": "102495",
+    "Michael Abraham Sabaj": "101145",
+    "Emely Solis": "M2023312",
+    "Nico Velasquez": "M202337",
+    "Alex Lopez": "M202353",
+    "Alessandro Martinez": "M202352",
+    "Mekayla Chacon": "M202367",
+    "Layla Hernandez": "M202366",
+    "Francisco Solano": "M202363",
+    "Anaid Lagunas": "M202371",
+    "Misael Solano Solis": "M202378",
+    "Lilyth Willis": "M202376",
+    "Gabriella Gonzalez": "M202364",
+    "Elias Fuentes": "M20234",
+    "Iliana Fuentes": "M202341",
+    "Alan Renteria": "M202342",
+    "Gilberto Solis": "M202351",
+    "Yaretzi Garcia": "M20236",
+    "Javi Gonzalez": "M202334",
+    "Rosalie Lopez": "M202339"
+}
+
 function printCalenderId(email){
     let calendarID = null
     acuity.request('calendars', function (err, r1, calendars) {
@@ -214,32 +258,32 @@ function updateLalaSheets(minDate, school, english, sheetId){
                     data[appointments[i].date][4] += 1
 
                     if(!dataStudent.hasOwnProperty(appointments[i].firstName + " " + appointments[i].lastName)){
-                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName] = [appointments[i].firstName + " " + appointments[i].lastName, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName] = [appointments[i].lastName + ", " + appointments[i].firstName, studentIds[appointments[i].firstName + " " + appointments[i].lastName], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                     }
 
                     if(appointments[i].type.toLowerCase().includes("math")){
                         if(appointments[i].labels[0].name.toLowerCase() === 'completed'){
-                            dataStudent[appointments[i].firstName + " " + appointments[i].lastName][1] += 1
-                        }
-                        else if(appointments[i].labels[0].name.toLowerCase().includes("excused")){
                             dataStudent[appointments[i].firstName + " " + appointments[i].lastName][2] += 1
                         }
-                        else{
+                        else if(appointments[i].labels[0].name.toLowerCase().includes("excused")){
                             dataStudent[appointments[i].firstName + " " + appointments[i].lastName][3] += 1
                         }
-                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName][4] += 1
+                        else{
+                            dataStudent[appointments[i].firstName + " " + appointments[i].lastName][4] += 1
+                        }
+                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName][5] += 1
                     }
                     else if(appointments[i].type.toLowerCase().includes(english)){
                         if(appointments[i].labels[0].name.toLowerCase() === 'completed'){
-                            dataStudent[appointments[i].firstName + " " + appointments[i].lastName][6] += 1
-                        }
-                        else if(appointments[i].labels[0].name.toLowerCase().includes("excused")){
                             dataStudent[appointments[i].firstName + " " + appointments[i].lastName][7] += 1
                         }
-                        else{
+                        else if(appointments[i].labels[0].name.toLowerCase().includes("excused")){
                             dataStudent[appointments[i].firstName + " " + appointments[i].lastName][8] += 1
                         }
-                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName][9] += 1
+                        else{
+                            dataStudent[appointments[i].firstName + " " + appointments[i].lastName][9] += 1
+                        }
+                        dataStudent[appointments[i].firstName + " " + appointments[i].lastName][10] += 1
                     }
 
                 }
@@ -251,11 +295,11 @@ function updateLalaSheets(minDate, school, english, sheetId){
         }
 
         for(const key in dataStudent){
-            dataStudent[key][5] = (dataStudent[key][1] === 0 || dataStudent[key][4] === 0) ? 0 : Number(((dataStudent[key][1] / dataStudent[key][4]) * 100).toFixed(4))
-            dataStudent[key][10] = (dataStudent[key][6] === 0 || dataStudent[key][9] === 0) ? 0 : Number(((dataStudent[key][6] / dataStudent[key][9]) * 100).toFixed(4))
+            dataStudent[key][6] = (dataStudent[key][2] === 0 || dataStudent[key][5] === 0) ? 0 : Number(((dataStudent[key][2] / dataStudent[key][5]) * 100).toFixed(4))
+            dataStudent[key][11] = (dataStudent[key][7] === 0 || dataStudent[key][10] === 0) ? 0 : Number(((dataStudent[key][7] / dataStudent[key][10]) * 100).toFixed(4))
         }
         const sheetData = [["Date",	"Completed", "Excused Absence", "Canceled", "Total", "Attendance %"]]
-        const sheetDataStudent = [["Student Name",	"Math Sessions Completed", "Math Sessions Excused Absence", "Math Sessions Canceled", "Math Sessions Total", "Math Sessions Attendance %", "English Sessions Completed", "English Sessions Excused Absence", "English Sessions Canceled", "English Sessions Total", "English Sessions Attendance %"]]
+        const sheetDataStudent = [["Student Name", "Student Id", "Math Sessions Completed", "Math Sessions Excused Absence", "Math Sessions Canceled", "Math Sessions Total", "Math Sessions Attendance %", "English Sessions Completed", "English Sessions Excused Absence", "English Sessions Canceled", "English Sessions Total", "English Sessions Attendance %"]]
         for(const key in data){
             sheetData.push(data[key])
         }
@@ -277,10 +321,10 @@ function updateLalaSheets(minDate, school, english, sheetId){
 
         sheetClient.spreadsheets.values.clear({
             spreadsheetId: sheetId,
-            range: `Student Wise Sessions Data!A:K`
+            range: `Student Wise Sessions Data!A:L`
         })
 
-        updateSheetData(sheetId, "Student Wise Sessions Data!A:K", sheetDataStudent)
+        updateSheetData(sheetId, "Student Wise Sessions Data!A:L", sheetDataStudent)
     })
 }
 
