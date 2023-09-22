@@ -49,7 +49,9 @@ const studentIds = {
     "Gilberto Solis": "M202351",
     "Yaretzi Garcia": "M20236",
     "Javi Gonzalez": "M202334",
-    "Rosalie Lopez": "M202339"
+    "Rosalie Lopez": "M202339",
+    "Jesus Hernandez": "M202335",
+    "Ashley Lopez": "M20237"
 }
 
 function printCalenderId(email){
