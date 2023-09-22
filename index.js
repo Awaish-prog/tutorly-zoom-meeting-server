@@ -83,6 +83,7 @@ app.get("/updateTutorSheets", (req, res) => {
 
 app.post("/wordpress", (req, res) => {
   console.log(req.body);
+  res.json({status: 201})
 })
 
 app.get("/joinWhiteboard*", (req, res) => {
