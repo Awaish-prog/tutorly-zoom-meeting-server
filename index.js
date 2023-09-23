@@ -18,6 +18,7 @@ const { createPaper, deleteBitpaper } = require('./Controllers/Bitpapaer');
 const { populateConversationStore, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification, checkNotification, markMessageAsReadSocket, getSlackFileUrl } = require('./Controllers/Slack');
 const { tweet } = require('./Controllers/Twitter');
 const { postToInsta } = require('./Controllers/Instagaram');
+const { postToSocials } = require('./Controllers/SocialPost');
 //const { sendMessageToClient } = require('./socket_app');
 
 
@@ -82,7 +83,12 @@ app.get("/updateTutorSheets", (req, res) => {
 })
 
 app.post("/wordpress", (req, res) => {
-  console.log(req.body);
+  
+  if(req.body && req.body.post && req.body.post.post_title && req.body.post_thumbnail && req.body.post_permalink){
+    postToInsta(req.body.post.post_title, req.body.post_thumbnail, req.body.post_permalink)
+    tweet(req.body.post.post_title, req.body.post_thumbnail, req.body.post_permalink)
+    postToSocials(req.body.post.post_title, req.body.post_thumbnail, req.body.post_permalink)
+  }
   res.json({status: 201})
 })
 
@@ -137,6 +143,8 @@ app.listen("4005", async () => {
   // updateLalaSheets("2023-09-12", "maple", " ela ", "1UHge0WVFWozPd3DoVU-vOn4Qs8UjQUx8HF_eh2r6dB8")
   // 1UHge0WVFWozPd3DoVU-vOn4Qs8UjQUx8HF_eh2r6dB8
   // tweet()
+
+
 
   // postToInsta()
   console.log("server running");
