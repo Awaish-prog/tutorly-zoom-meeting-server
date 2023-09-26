@@ -6,7 +6,7 @@ const social = new SocialPost(process.env.SOCIAL_POST_API_KEY)
 
 const getPostData = (title, imgUrl, link) => {
     return {
-        post: title + ", article link: " + link,
+        post: title + ", blog link: " + link,
         media_urls: [imgUrl],
         platforms: ["facebook"]
     }

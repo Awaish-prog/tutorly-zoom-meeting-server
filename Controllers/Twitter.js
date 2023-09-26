@@ -29,7 +29,7 @@ async function tweet(title, imgUrl, link){
           
           // mediaIds is a string[], can be given to .tweet
           await client.v2.tweet({
-            text: title + ", article link: " + link,
+            text: title + ", blog link: " + link,
             media: { media_ids: mediaIds }
           });
     }

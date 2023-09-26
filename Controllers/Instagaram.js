@@ -16,7 +16,7 @@ const postToInsta = async (title, imgUrl, link) => {
 
         await ig.publish.photo({
             file: imageBuffer,
-            caption: title + ", article link: " + link, // nice caption (optional)
+            caption: title + ", blog link: " + link, // nice caption (optional)
         });
 
         console.log("Done");
