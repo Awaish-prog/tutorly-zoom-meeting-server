@@ -1,5 +1,5 @@
 const express = require('express');
-const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId, updateLalaSheets, countSessions } = require('./Controllers/Meetings');
+const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId, updateLalaSheets, countSessions, getReviewSessions } = require('./Controllers/Meetings');
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
@@ -19,6 +19,14 @@ const { populateConversationStore, getChannels, initializeSlackIds, getChat, get
 const { tweet } = require('./Controllers/Twitter');
 const { postToInsta } = require('./Controllers/Instagaram');
 const { postToSocials } = require('./Controllers/SocialPost');
+const { runTest } = require('./Controllers/Twilio');
+const { testCalendly } = require('./Controllers/Calendly');
+const { testHubspot } = require('./Controllers/Hubspot');
+const { testJustcall } = require('./Controllers/Justcall');
+const { testForm } = require('./Controllers/Form');
+const { testDoc } = require('./Controllers/GoogleDocs');
+const { testGmail } = require('./Controllers/Gmail');
+const { testCalendar } = require('./Controllers/Calendar');
 //const { sendMessageToClient } = require('./socket_app');
 
 
@@ -92,6 +100,11 @@ app.post("/wordpress", (req, res) => {
   res.json({status: 201})
 })
 
+app.post("/hubspotevent", (req, res) => {
+  console.log(req.body);
+  res.status(200).json({status: 200})
+})
+
 app.get("/joinWhiteboard*", (req, res) => {
   res.sendFile(path.join(__dirname, "white-board/index.html"))
 })
@@ -143,9 +156,15 @@ app.listen("4005", async () => {
   // updateLalaSheets("2023-09-12", "maple", " ela ", "1UHge0WVFWozPd3DoVU-vOn4Qs8UjQUx8HF_eh2r6dB8")
   // 1UHge0WVFWozPd3DoVU-vOn4Qs8UjQUx8HF_eh2r6dB8
   // tweet()
-
-
-
+  // runTest()
+  // getReviewSessions()
+  // testCalendly()
+  // testHubspot()
+  // testJustcall()
   // postToInsta()
+  // testForm()
+  // testDoc()
+  // testGmail()
+  // testCalendar()
   console.log("server running");
 })

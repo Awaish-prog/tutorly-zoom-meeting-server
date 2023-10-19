@@ -85,6 +85,29 @@ function getCalendarId(calendars, email, calendarID){
     return calendarID
 }
 
+function getReviewSessions(){
+    acuity.request(`appointments?minDate=2023-08-01&direction=ASC&max=10000`, function (err, r2, appointments) {
+        if (err) return console.error(err);
+
+        const reviewSessions = [["Date and Time", "Tutor name", "Student name", "Subject", "recording link"]]
+
+        for(let i = 0; i < appointments.length; i++){
+            if(appointments[i].type && appointments[i].type.toLowerCase().includes("maple")){
+                reviewSessions.push([appointments[i].date + " " + appointments[i].time, appointments[i].calendar, appointments[i].firstName + " " + appointments[i].lastName, appointments[i].type.toLowerCase().includes(" ela ") ? "ELA" : "Math", appointments[i].notes])
+            }
+        }
+        // 1DSsYuy-hzXogzz0dJI9BpY_JODsWFeQKjfCCWontMB4
+
+        sheetClient.spreadsheets.values.clear({
+            spreadsheetId: "1DSsYuy-hzXogzz0dJI9BpY_JODsWFeQKjfCCWontMB4",
+            range: `A:E`
+        })
+
+        updateSheetData("1DSsYuy-hzXogzz0dJI9BpY_JODsWFeQKjfCCWontMB4", "A:E", reviewSessions)
+
+    })
+}
+
 function getMeetingsList(appointments, upcoming) {
     const tutorAppointments = []
     appointments.forEach((appointment) => {
@@ -345,4 +368,4 @@ function countSessions(name){
 }
 
 
-module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId, getMeetingsList, updateLalaSheets, countSessions}
+module.exports = { getPreviousMeetings, getUpcomingMeetings, getCalendarId, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId, getMeetingsList, updateLalaSheets, countSessions, getReviewSessions }
