@@ -1,6 +1,8 @@
 const hubspot = require('@hubspot/api-client');
+require('dotenv').config()
 
-const hubspotClient = new hubspot.Client({"accessToken":"pat-na1-280a1cdc-31a5-4286-b681-2a7acc047254"});
+
+const hubspotClient = new hubspot.Client({"accessToken": process.env.HUBSPOT_ACCESS_TOKEN});
 
 const limit = 10;
 const after = undefined;

@@ -1,9 +1,10 @@
 const { google } = require('googleapis');
+require('dotenv').config()
 
-const GOOGLE_FORM_CLIENT_ID = "399908208550-v04vvivroj43v02scn5lqpdu6uk6tbkc.apps.googleusercontent.com"
-const GOOGLE_FORM_CLIENT_SECRET = "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"
-const GOOGLE_FORM_REDIRECT_URI = "https://developers.google.com/oauthplayground"
-const GOOGLE_FORM_REFRESH_TOKEN = "1//04tjVNqBYIULrCgYIARAAGAQSNwF-L9IrA0RvauW3zYrzL4Kz6wt6SfszIOtQI04r6cos1fXgfT36VpVRi9mXCs_DzypDpI7KXeU"
+const GOOGLE_FORM_CLIENT_ID = process.env.GOOGLE_FORM_CLIENT_ID
+const GOOGLE_FORM_CLIENT_SECRET = process.env.GOOGLE_FORM_CLIENT_SECRET
+const GOOGLE_FORM_REDIRECT_URI = process.env.GOOGLE_FORM_REDIRECT_URI
+const GOOGLE_FORM_REFRESH_TOKEN = process.env.GOOGLE_FORM_REFRESH_TOKEN
 
 const client = new google.auth.OAuth2(GOOGLE_FORM_CLIENT_ID, GOOGLE_FORM_CLIENT_SECRET, GOOGLE_FORM_REDIRECT_URI);
 

@@ -1,7 +1,9 @@
 const axios = require('axios');
+require('dotenv').config()
 
-const api_key = 'c2fa3dc554d6553acd98228146e4afe30bf654be';
-const api_secret = '11a5420b854b0478feded726c8f02ddd688c4aae';
+
+const api_key = process.env.api_key
+const api_secret = process.env.api_secret
 
 const requestData = {
   page: 1,

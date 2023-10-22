@@ -1,33 +1,24 @@
 const express = require('express');
-const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, getAvailability, printCalenderId, updateLalaSheets, countSessions, getReviewSessions } = require('./Controllers/Meetings');
+const { getPreviousMeetings, getUpcomingMeetings, rescheduleMeeting, cancelMeeting, getAvailability } = require('./Controllers/Meetings');
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const { downloadRecording } = require('./Controllers/ZoomWebhook.js');
-const { getDashboardData, googleSheetTest, updateStudentIds, googleSheetDataTutor, getMapleStudent, mapleSheetUpdate, getDashboardDataTest, createNewSheet } = require('./Controllers/DashboardData.js');
+const { getDashboardData, googleSheetTest, updateStudentIds, googleSheetDataTutor, mapleSheetUpdate } = require('./Controllers/DashboardData.js');
 const { login, getPayroll, markStatus } = require('./Controllers/User.js');
 const { authentication } = require('./Middlewares/Authenticate.js');
 const path = require('path');
-const { createNotionPageWithEmail, createNotionPages, updateNotionPages } = require('./Controllers/Notion.js');
 const { searchFolder } = require('./Controllers/GoogleDrive.js');
 const { createWhiteboardData, getBoardsList } = require('./Controllers/WhiteBoardAppScripts.js');
-const { updateWhiteboard, getWhiteboardData, deleteWhiteboardData, checkLink } = require('./Controllers/WhiteBoardAppScripts.js');
+const { deleteWhiteboardData } = require('./Controllers/WhiteBoardAppScripts.js');
 
 const v8 = require('v8');
 const { createPaper, deleteBitpaper } = require('./Controllers/Bitpapaer');
-const { populateConversationStore, getChannels, initializeSlackIds, getChat, getReplies, postMessage, getUserName, updateUsersAndReads, getNotification, checkNotification, markMessageAsReadSocket, getSlackFileUrl } = require('./Controllers/Slack');
+const { getChannels, getChat, getReplies, getNotification, getSlackFileUrl } = require('./Controllers/Slack');
 const { tweet } = require('./Controllers/Twitter');
 const { postToInsta } = require('./Controllers/Instagaram');
 const { postToSocials } = require('./Controllers/SocialPost');
-const { runTest } = require('./Controllers/Twilio');
-const { testCalendly } = require('./Controllers/Calendly');
-const { testHubspot } = require('./Controllers/Hubspot');
-const { testJustcall } = require('./Controllers/Justcall');
-const { testForm } = require('./Controllers/Form');
-const { testDoc } = require('./Controllers/GoogleDocs');
-const { testGmail } = require('./Controllers/Gmail');
-const { testCalendar } = require('./Controllers/Calendar');
-//const { sendMessageToClient } = require('./socket_app');
+
 
 
 
@@ -122,11 +113,6 @@ app.get("/updateMapleSheets", (req, res) => {
 
 
 
-// app.get("/test", (req, res) => {
-//   outer_socket.emit("request")
-//   res.send("request")
-// })
-
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build/index.html"))
@@ -140,31 +126,11 @@ app.get("*", (req, res) => {
 
 app.listen("4005", async () => {
   
-  //createNotionPageWithEmail("gracebernal@mapleschool.org")
+  
   //updateStudentIds()
-  //printCalenderId("awaish@tutorly.com")
-  //googleSheetDataTutor(null, null)
-  //createNotionPages()
-  //updateNotionPages()
-  //mapleSheetUpdate()
-  //countSessions("Alessandro")
-  //createNewSheet()
-  //markStatus()
-  //initializeSlackIds()
-  //populateConversationStore()
+  
   // updateLalaSheets("2023-08-21", "lala tutoring", "english", "1FVLzaWrh9KArTZGEe0MX01SwEKkuqf_EUdSytAHQzfM")
   // updateLalaSheets("2023-09-12", "maple", " ela ", "1UHge0WVFWozPd3DoVU-vOn4Qs8UjQUx8HF_eh2r6dB8")
-  // 1UHge0WVFWozPd3DoVU-vOn4Qs8UjQUx8HF_eh2r6dB8
-  // tweet()
-  // runTest()
-  // getReviewSessions()
-  // testCalendly()
-  // testHubspot()
-  // testJustcall()
-  // postToInsta()
-  // testForm()
-  // testDoc()
-  // testGmail()
-  // testCalendar()
+  
   console.log("server running");
 })
